@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="icon" type="image/png" href="assets/petflix-logo_prev_ui.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <title>Petflix</title>
+</head>
+<body>
+
+<!-- tela login  -->
+
+    <div class="login-wrapper">
+      <div class="logo">
+        <img src="assets/petflix-logo_prev_ui.png" alt="Netflix Logo">
+      </div>
+      <div class="users">
+        <div class="user">
+          <img src="assets/caramelo.jpg" id="user1" alt="Avatar 1">
+          <div class="username" >Cachorro</div>
+        </div>
+        <div class="user">
+            <img src="assets/gato-siames-1.jpg" id="user2" alt="Avatar 2">
+            <div class="username" >Gato</div>
+        </div>
+      </div>
+    </div>
+
+
+
+<script>
+
+// seleciona as imagens dos usuários
+const user1 = document.querySelector('#user1');
+const user2 = document.querySelector('#user2');
+
+// adiciona um evento de clique em cada imagem do usuário
+user1.addEventListener('click', () => {
+  // redireciona para a página de carregamento após 1 segundo 
+  setTimeout(() => {
+    window.location.href = 'wait.html';
+  }, 1000);
+  
+  // redireciona para a página de cachorro após 3 segundos 
+  setTimeout(() => {
+    window.location.href = 'indexcach.html';
+  }, 2000);
+});
+
+user2.addEventListener('click', () => {
+  // redireciona para a página de carregamento após 1 segundo 
+  setTimeout(() => {
+    window.location.href = 'waitgato.html';
+  }, 1000);
+  
+  // redireciona para a página de gato após 3 segundos 
+  setTimeout(() => {
+    window.location.href = 'indexgato.html';
+  }, 2000);
+});
+
+
+
+</script>
+
+
+
+  </body>
+  
+</html>
+
+
+

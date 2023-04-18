@@ -1,0 +1,74 @@
+/* mobile styles */
+@media only screen and (max-width: 768px) { 
+    .menu-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .menu-logo {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  
+    .menu-logo img {
+      max-height: 40px;
+    }
+  
+    .menu {
+      position: absolute;
+      box-sizing: border-box;
+      width: 268px;
+      left: -305px;
+      top: 0;
+      margin: -20px;
+      padding: 75px 50px 50px;
+      background: #cdcdcd5e;
+      -webkit-font-smoothing: antialiased;
+      /* to stop flickering of text in safari */
+      transform-origin: 0% 0%;
+      transform: translateX(0%);
+      transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+    }
+  
+    .menu-container input:checked ~ .menu {
+      transform: translateX(100%);
+    }
+  }
+
+  /* video play */
+
+  @media (max-width: 768px) {
+    .video-wrapper {
+      padding-bottom: 75%;
+    }
+  }
+
+/* titulo do video  */
+
+
+@media only screen and (max-width: 768px) {
+    .title {
+      font-size: 24px;
+    }
+  
+    .title-wrapper {
+      padding: 8px;
+    }
+  }
+
+
+
+  /* sessao dos proximosss */
+
+  @media only screen and (max-width: 768px) {
+    .recomendacoes-container {
+      display: block;
+    }
+  
+    .recomendacao {
+      margin: 10px auto;
+      max-width: 80%;
+    }
+  }

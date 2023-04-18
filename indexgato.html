@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/gato-siames-1.jpg"/>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/reponsive.css">
+    <link rel="stylesheet" href="css/desktop.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+
+    
+    <title>PetFlix</title>
+</head>
+<body>
+
+  <!-- sessão navbar  -->
+  <nav class="menu-container">
+    <!-- burger menu -->
+    <input type="checkbox" aria-label="Toggle menu" />
+    <span></span>
+    <span></span>
+    <span></span>
+  
+    <!-- logo -->
+    <a href="indexgato.html" class="menu-logo">
+      <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="My Awesome Website"/>
+    </a>
+  
+    <!-- menu items -->
+    <div class="menu">
+      <ul>
+      </ul>
+      <ul>
+        <li>
+          <a href="">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </a>    
+        </li>
+        <li>
+          <a href="indexgato.html">
+            Início
+          </a>
+        </li>
+        <li>
+          <a href="#series">
+            Séries
+          </a>
+        </li>
+        <li>
+          <a href="#filmes">
+            Filmes
+          </a>
+        </li>
+        <li>
+          <a href="#docs">
+            Documentários
+          </a>
+        </li>
+       
+        <li>
+          <a href="index.html">
+            <i class="fa-regular fa-user"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>  
+
+<!-- video play -->
+ <div class="video-wrapper">
+  <iframe  src="assets/SaveTube.App-Virei Um Gato Trailer Oficial Dublado(720p).mp4"></iframe>
+  <div class="title-wrapper">
+    <h1 class="title">Virei um gato</h1>
+  </div>
+</div> 
+
+
+
+
+
+<!-- sessão dos proximos -->
+
+<section class="recomendacoes">
+  <h2>Proximos</h2>
+  <div class="recomendacoes-container">
+    <div class="recomendacao">
+      <img src="assets/filmegato1.jpg" alt="Imagem do Filme 1">
+      
+    </div>
+    <div class="recomendacao">
+      <img src="assets/gato3.jpg" alt="Imagem do Filme 2">
+     
+    </div>
+    <div class="recomendacao">
+      <img src="assets/capa-filme-gato-de-botas-2-o-ultimo-pedido-1f766-large.jpg" alt="Imagem do Filme 3">
+      
+    </div>
+    <div class="recomendacao">
+      <img src="assets/fimlegato6.png" alt="Imagem do Filme 4">
+     
+    </div>
+    <div class="recomendacao">
+      <img src="assets/filmegato5.png" alt="Imagem do Filme 5">
+      
+    </div>
+  </div>
+</section>
+
+
+<script>
+
+
+const iframe = document.querySelector('iframe');
+const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
+const video = iframeContent.querySelector('video');
+
+video.setAttribute('poster', 'assets/4.jpg');
+
+
+</script>
+
+
+
+      <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
+</body>
+</html>
