@@ -13,7 +13,13 @@ h1{
 
 /* navbar */
 
-.menu-container {
+.menu-container{
+  display: fixed;
+}
+
+
+
+.menu-content {
   position: relative;
   display: flex;
   align-items: center;
@@ -49,7 +55,7 @@ h1{
 }
 
 .menu-container input {
-  display: block;
+  /* display: block; */
   width: 35px;
   height: 25px;
   margin: 0;
@@ -62,7 +68,7 @@ h1{
 
 /* Burger menu */
 .menu-container span {
-  display: block;
+  /* display: block; */
   width: 33px;
   height: 4px;
   margin-bottom: 5px;
