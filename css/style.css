@@ -5,9 +5,6 @@ html, body {
   font-family: 'Open Sans', sans-serif;
 }
 
-h1{
-  color: #fff;
-}
 
 
 /* navbar */
@@ -183,7 +180,7 @@ iframe {
 .recomendacoes h2 {
   margin-bottom: 30px;
   color: #fff;
-  text-align: center;
+  text-align: left;
   font-family: sans-serif;
 }
 
