@@ -5,11 +5,10 @@ html, body {
   font-family: 'Open Sans', sans-serif;
 }
 
+
 h1{
-color:#fff;
+  color: #fff;
 }
-
-
 /* navbar */
 
 .menu-container {
