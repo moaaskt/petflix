@@ -19,12 +19,12 @@
     .menu {
       position: absolute;
       box-sizing: border-box;
-      width: 268px;
-      left: -305px;
-      top: 0;
-      margin: -20px;
-      padding: 75px 50px 50px;
-      background: #cdcdcd5e;
+      width: 286px;
+left: -305px;
+top: 39px;
+margin: -40px;
+padding: 75px 48px 5px;
+background: #f4f4f4e3;
       -webkit-font-smoothing: antialiased;
       /* to stop flickering of text in safari */
       transform-origin: 0% 0%;

@@ -5,12 +5,10 @@ html, body {
   font-family: 'Open Sans', sans-serif;
 }
 
+
 h1{
   color: #fff;
 }
-
-
-
 /* navbar */
 
 .menu-container{
@@ -190,9 +188,11 @@ iframe {
 .recomendacoes h2 {
   margin-bottom: 30px;
   color: #fff;
-  text-align: left;
+  text-align: center;
   font-family: sans-serif;
 }
+
+
 
 .recomendacoes-container {
   display: flex;
