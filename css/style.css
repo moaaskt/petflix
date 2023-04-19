@@ -10,10 +10,7 @@ h1{
 }
 
 
-
 /* navbar */
-
-
 
 .menu-container {
   position: relative;
@@ -51,7 +48,7 @@ h1{
 }
 
 .menu-container input {
- display: block;
+  display: block;
   width: 35px;
   height: 25px;
   margin: 0;
@@ -186,7 +183,7 @@ iframe {
 .recomendacoes h2 {
   margin-bottom: 30px;
   color: #fff;
-  text-align: center;
+  text-align: left;
   font-family: sans-serif;
 }
 
