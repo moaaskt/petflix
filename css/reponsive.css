@@ -19,11 +19,11 @@
     .menu {
       position: absolute;
       box-sizing: border-box;
-      width: 268px;
-      left: -305px;
-      top: 0;
-      margin: -20px;
-      padding: 75px 50px 50px;
+    width: 262px;
+left: -302px;
+top: 23px;
+margin: -22px;
+padding: 96px 50px 50px;
       background: #cdcdcd5e;
       -webkit-font-smoothing: antialiased;
       /* to stop flickering of text in safari */
