@@ -1,123 +1,129 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/caramelo.jpg"/>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/reponsive.css">
-    <link rel="stylesheet" href="css/desktop.css">
-    <link rel="stylesheet" href="">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
-  
-    
-    <title>PetFlix</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="assets/caramelo.jpg" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/reponsive.css" />
+    <link rel="stylesheet" href="css/desktop.css" />
+    <link rel="stylesheet" href="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
-  <!-- sessão navbar  -->
-  <nav class="menu-container">
-    
-    <!-- burger menu -->
-    <input type="checkbox" aria-label="Toggle menu" />
-    <span></span>
-    <span></span>
-    <span></span>
-  
-    <!-- logo -->
-    <a href="indexcach.html" class="menu-logo">
-      <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="My Awesome Website"/>
-    </a>
-  
-    <!-- menu items -->
-    <div class="menu">
-      <ul>
-      </ul>
-      <ul>
-        <li>
-          <a href="">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </a>    
-        </li>
-        <li>
-          <a href="indexcach.html">
-            Início
-          </a>
-        </li>
-        <li>
-          <a href="series.html">
-            Séries
-          </a>
-        </li>
-        <li>
-          <a href="filmes.html">
-            Filmes
-          </a>
-        </li>
-        <li>
-          <a href="docs.html">
-            Documentários
-          </a>
-        </li>
-       
-        <li>
-          <a href="index.html">
-            <i class="fa-regular fa-user"></i>
-          </a>
-        </li>
-      </ul>
-    </div>
+
+    <title>PetFlix</title>
+  </head>
+  <body>
+    <!-- sessão navbar  -->
+    <nav class="menu-container">
+      <!-- burger menu -->
+      <input type="checkbox" aria-label="Toggle menu" />
+      <span></span>
+      <span></span>
+      <span></span>
+
+      <!-- logo -->
+      <a href="indexcach.html" class="menu-logo">
+        <img
+          src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png"
+          alt="My Awesome Website"
+        />
+      </a>
+
+      <!-- menu items -->
+      <div class="menu">
+        <ul></ul>
+        <ul>
+          <li>
+            <div class="search">
+              <i class="fas fa-search" id="searchIcon"></i>
+              <input type="text" id="searchInput" placeholder="Pesquisar..." />
+            </div>
+          </li>
+          <li>
+            <a href="indexcach.html"> Início </a>
+          </li>
+          <li>
+            <a href="series.html"> Séries </a>
+          </li>
+          <li>
+            <a href="filmes.html"> Filmes </a>
+          </li>
+          <li>
+            <a href="docs.html"> Documentários </a>
+          </li>
+
+          <li>
+            <a href="index.html">
+              <i class="fa-regular fa-user"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
     </nav>
 
-<!-- video play -->
+    <!-- video play -->
     <h1 class="title">FUNNY DOGS</h1>
- <div class="video-wrapper">
-     <iframe width="560" height="315" src="https://www.youtube.com/embed/9Y31YSPo2i0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-     
-  <div class="title-wrapper">
-    
-  </div>
-</div> 
+    <div class="video-wrapper">
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/9Y31YSPo2i0"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      ></iframe>
 
-
-
-
-
-<!-- sessão dos proximos -->
-
-<section class="recomendacoes">
-
-  <h2>RECOMENDAÇÕES</h2>
-  <div class="recomendacoes-container">
-    <div class="recomendacao">
-      <img src="assets/1.jpg" alt="Imagem do Filme 1">
-      
+      <div class="title-wrapper"></div>
     </div>
-    <div class="recomendacao">
-      <img src="assets/2.jpg" alt="Imagem do Filme 2">
-     
-    </div>
-    <div class="recomendacao">
-      <img src="assets/3.jpg" alt="Imagem do Filme 3">
-      
-    </div>
-    <div class="recomendacao">
-      <img src="assets/4.jpg" alt="Imagem do Filme 4">
-     
-    </div>
-    <div class="recomendacao">
-      <img src="assets/5.png" alt="Imagem do Filme 5">
-      
-    </div>
-  </div>
-</section>
 
+    <!-- sessão dos proximos -->
 
-<script src="JS/java.js"></script>
+    <section class="recomendacoes">
+      <h2>RECOMENDAÇÕES</h2>
+      <div class="recomendacoes-container">
+        <div class="recomendacao">
+          <img src="assets/1.jpg" alt="Imagem do Filme 1" />
+        </div>
+        <div class="recomendacao">
+          <img src="assets/2.jpg" alt="Imagem do Filme 2" />
+        </div>
+        <div class="recomendacao">
+          <img src="assets/3.jpg" alt="Imagem do Filme 3" />
+        </div>
+        <div class="recomendacao">
+          <img src="assets/4.jpg" alt="Imagem do Filme 4" />
+        </div>
+        <div class="recomendacao">
+          <img src="assets/5.png" alt="Imagem do Filme 5" />
+        </div>
+      </div>
+    </section>
 
+    <script>
+      const searchIcon = document.getElementById('searchIcon');
+const searchInput = document.getElementById('searchInput');
 
+searchIcon.addEventListener('click', () => {
+  searchInput.style.display = 'block';
+  searchInput.focus();
+});
 
-      <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
-</body>
+searchInput.addEventListener('blur', () => {
+  searchInput.style.display = 'none';
+});
+
+    </script>
+
+    <script
+      src="https://kit.fontawesome.com/8f4efb61a3.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
