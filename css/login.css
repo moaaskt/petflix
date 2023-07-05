@@ -18,7 +18,9 @@ body {
   
   .logo img {
 	width: 200px;
+	transition: transform 0.5s ease-in-out;
   }
+  
   
   .users {
 	display: flex;
@@ -27,6 +29,7 @@ body {
 	align-items: center;
   }
   
+  
   .user {
 	display: flex;
 	flex-direction: column;
@@ -34,6 +37,13 @@ body {
 	align-items: center;
 	margin: 20px;
 	cursor: pointer;
+	transition: transform 0.6s ease;
+
+  }
+
+  .user:hover{
+	transform: scale(1.1); /* Aumenta em 10% o tamanho da miniatura em relação ao tamanho original */
+
   }
   
   .user img {
