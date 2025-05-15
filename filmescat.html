@@ -4,15 +4,43 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/gato-siames-1.jpg"/>
+    <link rel="icon" type="image/png" href="assets/caramelo.jpg"/>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/reponsive.css">
     <link rel="stylesheet" href="css/style-filmes.css">
     <link rel="stylesheet" href="css/desktop.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
-  
-    
-    <title>PetFlix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title>PetFlix - Documentários para Cães</title>
+    <style>
+        .youtube-player {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .youtube-player iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .loading-spinner {
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+            color: #e50914;
+        }
+        .fa-paw { animation: spin 1s linear infinite; }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
 
@@ -69,35 +97,54 @@
     </div>
   </nav>  
 
-<!-- video play -->
-    <h1 class="title">Filmes</h1>
- 
-    <div class="movies-container">
-      <div class="movie">
-        <img src="assets/capa-filme-gato-de-botas-2-o-ultimo-pedido-1f766-large.jpg" alt="Movie 1">
-        <div class="movie-name">Gato de Botas 2, o último pedido </div>
-      </div>
-      <div class="movie">
-        <img src="assets/filmegato1.jpg" alt="Movie 2">
-        <div class="movie-name">Gatos</div>
-      </div>
-      <div class="movie">
-        <img src="assets/filmegato5.png" alt="Movie 3">
-        <div class="movie-name">Good Felines</div>
-      </div>
-      <div class="movie">
-        <img src="assets/filmegato3.jpg" alt="Movie 3">
-        <div class="movie-name">Cat's Eye</div>
-      </div>
+  <main class="movies-main">
+    <h1 class="title">Filmes para Gatos</h1>
+    
+    <div class="movies-container" id="youtubeMoviesContainer">
+        <div class="loading-spinner">
+            <i class="fas fa-paw"></i>
+            <p>Carregando filmes...</p>
+        </div>
     </div>
+</main>
 
+<script>
+  const CAT_MOVIES = [
+            { id: 'kA244gAQhns', title: 'Gato de Botas' },
+            { id: '8nQF3zVotOg', title: 'Aristogatas' },
+            { id: 'QH2-TGUlwu4', title: 'O Gato' },
+            { id: 'ByXuk9QqQkk', title: 'Oliver & Companhia' }
+        ];
 
+        function loadYouTubeVideos() {
+        const container = document.getElementById('youtubeDocsContainer');
+        container.innerHTML = '';
+        
+        CAT_MOVIES.forEach(video => {
+            const videoElement = document.createElement('div');
+            videoElement.className = 'movie';
+            videoElement.innerHTML = `
+                <div class="youtube-player">
+                    <iframe src="https://www.youtube.com/embed/${video.id}?rel=0&enablejsapi=1" 
+                            frameborder="0" 
+                            allowfullscreen></iframe>
+                </div>
+                <div class="movie-name">${video.title}</div>
+            `;
+            container.appendChild(videoElement);
+        });
+    }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        loadYouTubeVideos();
+        if (!sessionStorage.getItem('isLoggedIn')) {
+            window.location.href = 'index.html';
+        }
+    });
+</script>
 
+<script src="https://www.youtube.com/iframe_api"></script>
 <script src="JS/java.js"></script>
-
-
-
-      <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
 </body>
 </html>
