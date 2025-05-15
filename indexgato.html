@@ -13,6 +13,7 @@
     
     <title>PetFlix</title>
 </head>
+
 <body>
 
   <!-- sessão navbar  -->
@@ -74,13 +75,23 @@
     </div>
   </nav>  
 
-<!-- video play -->  <h1 class="title">Virei um gato</h1>
- <div class="video-wrapper">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/8nQF3zVotOg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-  <div class="title-wrapper">
-  
+
+    <!-- Novo Player de Vídeo -->
+    <div class="pet-player-container">
+      <div class="pet-player-title">GATOS ENGRAÇADOS</div>
+      <div class="pet-video-wrapper">
+          <iframe id="petVideoPlayer" src="https://www.youtube.com/embed/8nQF3zVotOg?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="pet-player-controls">
+          <button class="pet-control-btn" id="petPlayPause"><i class="fas fa-paw"></i></button>
+          <button class="pet-control-btn" id="petMute"><i class="fas fa-volume-up"></i></button>
+          <div class="pet-volume-control">
+              <i class="fas fa-volume-down"></i>
+              <input type="range" min="0" max="1" step="0.1" value="1" class="pet-volume-slider" id="petVolume">
+          </div>
+          <button class="pet-control-btn" id="petFullscreen"><i class="fas fa-expand"></i></button>
+      </div>
   </div>
-</div> 
 
 
 
@@ -117,22 +128,77 @@
 
 <script>
   
-  const iframe = document.querySelector('iframe');
-  const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
-  const video = iframeContent.querySelector('video');
-  
-if (!sessionStorage.getItem('isLoggedIn')) {
-        window.location.href = 'index.html';
-    }
-
-    // Botão de logout
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-        sessionStorage.removeItem('isLoggedIn');
-        window.location.href = 'index.html';
-    });
-
-video.setAttribute('poster', 'assets/4.jpg');
-
+     // Player de Vídeo Customizado
+     document.addEventListener('DOMContentLoaded', function() {
+            // Configuração do player
+            const player = document.getElementById('petVideoPlayer');
+            const playPauseBtn = document.getElementById('petPlayPause');
+            const muteBtn = document.getElementById('petMute');
+            const volumeSlider = document.getElementById('petVolume');
+            const fullscreenBtn = document.getElementById('petFullscreen');
+            
+            // Inicializa a API do YouTube
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            
+            let ytPlayer;
+            window.onYouTubeIframeAPIReady = function() {
+                ytPlayer = new YT.Player('petVideoPlayer', {
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+            };
+            
+            function onPlayerReady(event) {
+                // Autoplay sem som (seguro para pets)
+                event.target.mute();
+                event.target.playVideo();
+            }
+            
+            function onPlayerStateChange(event) {
+                if (event.data == YT.PlayerState.PLAYING) {
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    playPauseBtn.innerHTML = '<i class="fas fa-paw"></i>';
+                }
+            }
+            
+            // Controles customizados
+            playPauseBtn.addEventListener('click', function() {
+                if (ytPlayer.getPlayerState() == YT.PlayerState.PLAYING) {
+                    ytPlayer.pauseVideo();
+                } else {
+                    ytPlayer.playVideo();
+                }
+            });
+            
+            muteBtn.addEventListener('click', function() {
+                if (ytPlayer.isMuted()) {
+                    ytPlayer.unMute();
+                    muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                } else {
+                    ytPlayer.mute();
+                    muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                }
+            });
+            
+            volumeSlider.addEventListener('input', function() {
+                ytPlayer.setVolume(this.value * 100);
+            });
+            
+            fullscreenBtn.addEventListener('click', function() {
+                if (player.requestFullscreen) {
+                    player.requestFullscreen();
+                } else if (player.webkitRequestFullscreen) {
+                    player.webkitRequestFullscreen();
+                } else if (player.msRequestFullscreen) {
+                    player.msRequestFullscreen();
+                }
+            });
 
 </script>
 

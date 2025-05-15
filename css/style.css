@@ -233,3 +233,85 @@ iframe {
   display: block;
   width: 200px; /* Ajuste a largura conforme necessário */
 }
+   /* Novos estilos para o player */
+   .pet-player-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.pet-video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+}
+
+.pet-video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.pet-player-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.pet-player-container:hover .pet-player-controls {
+    opacity: 1;
+}
+
+.pet-control-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pet-control-btn:hover {
+    color: #e50914;
+    transform: scale(1.2);
+}
+
+.pet-volume-control {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.pet-volume-slider {
+    width: 100px;
+    margin-left: 10px;
+    display: none;
+}
+
+.pet-volume-control:hover .pet-volume-slider {
+    display: block;
+}
+
+.pet-player-title {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 24px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    z-index: 2;
+}
