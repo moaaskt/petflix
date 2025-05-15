@@ -148,3 +148,70 @@ button {
     width: 18px;
     height: 18px;
 }
+.logo-animation {
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 0 8px rgba(229, 9, 20, 0.7));
+}
+
+.logo-animation:hover {
+    transform: scale(1.05);
+}
+
+.hover-effect {
+    transition: all 0.3s ease;
+}
+
+.hover-effect:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+}
+
+/* Estilo dos inputs */
+.form-control {
+    transition: all 0.3s ease;
+    height: 50px;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.5);
+    background-color: #333 !important;
+}
+
+.input-label {
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+/* Botão personalizado */
+.btn-danger {
+    background-color: #e50914;
+    border: none;
+    letter-spacing: 0.5px;
+}
+
+/* Responsividade */
+@media (max-width: 576px) {
+    .login-container {
+        width: 90% !important;
+        padding: 2rem !important;
+    }
+    
+    .logo-animation {
+        max-width: 140px !important;
+    }
+}
+
+/* Efeito de fundo opcional */
+body {
+    background: radial-gradient(circle at center, #222, #000);
+}
+/* Estilo dos inputs flutuantes */
+.password-toggle {
+    right: 1rem !important;
+    top: 50% !important;
+    transform: translateY(-50%);
+    color: #8c8c8c !important;
+}
+
+.password-toggle:hover {
+    color: #e50914 !important;
+}

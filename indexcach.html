@@ -45,6 +45,7 @@
               <input type="text" id="searchInput" placeholder="Pesquisar..." />
             </div>
           </li>
+          
           <li>
             <a href="indexcach.html"> Início </a>
           </li>
@@ -59,12 +60,17 @@
           </li>
 
           <li>
-            <a href="index.html">
+            <a href="home.html">
               <i class="fa-regular fa-user"></i>
             </a>
           </li>
+          <li>
+            <a href="">
+              <i id="logoutBtn" class="logout-btn fa-solid fa-right-from-bracket"></i>
+            </a>
+          </li>
         </ul>
-      </div>
+        
     </nav>
 
     <!-- video play -->
@@ -119,6 +125,16 @@ searchInput.addEventListener('blur', () => {
   searchInput.style.display = 'none';
 });
 
+    // Verifica se está logado ao carregar
+    if (!sessionStorage.getItem('isLoggedIn')) {
+        window.location.href = 'index.html';
+    }
+
+    // Botão de logout
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        sessionStorage.removeItem('isLoggedIn');
+        window.location.href = 'index.html';
+    });
     </script>
 
     <script

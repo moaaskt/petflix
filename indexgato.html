@@ -60,11 +60,17 @@
         </li>
        
         <li>
-          <a href="index.html">
+          <a href="home.html">
             <i class="fa-regular fa-user" title="voltar a tela de ínicio"></i>
           </a>
         </li>
+        <li>
+          <a href="">
+            <i id="logoutBtn" class="logout-btn fa-solid fa-right-from-bracket"></i>
+          </a>
+        </li>
       </ul>
+      
     </div>
   </nav>  
 
@@ -110,11 +116,20 @@
 
 
 <script>
+  
+  const iframe = document.querySelector('iframe');
+  const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
+  const video = iframeContent.querySelector('video');
+  
+if (!sessionStorage.getItem('isLoggedIn')) {
+        window.location.href = 'index.html';
+    }
 
-
-const iframe = document.querySelector('iframe');
-const iframeContent = iframe.contentDocument || iframe.contentWindow.document;
-const video = iframeContent.querySelector('video');
+    // Botão de logout
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        sessionStorage.removeItem('isLoggedIn');
+        window.location.href = 'index.html';
+    });
 
 video.setAttribute('poster', 'assets/4.jpg');
 
