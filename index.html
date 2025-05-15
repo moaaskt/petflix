@@ -22,7 +22,7 @@
             <div class="login-form">
                 <h2 class="text-white mb-4 fw-bold text-center">Entrar</h2>
                 <form id="loginForm">
-                    <!-- Campo de Email - Melhorado -->
+                    <!-- Campo de Email -->
                     <div class="form-floating mb-4">
                         <input 
                             type="email" 
@@ -35,24 +35,26 @@
                         <div class="form-text text-end text-muted mt-1">exemplo: pet@email.com</div>
                     </div>
                     
+                    <!-- Campo de Senha com ícone posicionado corretamente -->
                     <div class="form-floating mb-4 position-relative">
                         <input 
                             type="password" 
                             id="password" 
-                            class="form-control pe-5" 
+                            class="form-control" 
                             placeholder="Senha"
                             required
+                            style="padding-right: 40px;"
                         >
                         <label for="password">Senha</label>
                         <button 
                             type="button" 
-                            class="btn btn-link position-absolute password-toggle"
+                            class="btn btn-link position-absolute end-0 top-0 h-400 d-flex align-items-center justify-content-center password-toggle"
+                            style="width: 10px ;"
                         >
                             <i class="fas fa-eye-slash"></i>
                         </button>
                     </div>
                     
-            
                     <button type="submit" class="btn btn-danger w-100 py-3 fw-bold mb-3">
                         Entrar
                     </button>
@@ -85,24 +87,24 @@
         // Efeito de toggle para senha
         document.querySelector('.password-toggle').addEventListener('click', function() {
             const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                this.classList.replace('fa-eye-slash', 'fa-eye');
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
             } else {
                 passwordInput.type = 'password';
-                this.classList.replace('fa-eye', 'fa-eye-slash');
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
             }
         });
         
         // Efeito de foco nos inputs
-        document.querySelectorAll('input').forEach(input => {
+        document.querySelectorAll('.form-control').forEach(input => {
             input.addEventListener('focus', function() {
-                this.previousElementSibling?.classList.add('active-label');
+                this.style.boxShadow = '0 0 0 3px rgba(229, 9, 20, 0.2)';
             });
             input.addEventListener('blur', function() {
-                if (!this.value) {
-                    this.previousElementSibling?.classList.remove('active-label');
-                }
+                this.style.boxShadow = 'none';
             });
         });
     </script>
