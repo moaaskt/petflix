@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petflix - Login</title>
+    <link rel="stylesheet" href="css/login-prin.css">
+</head>
+<body>
+    <div class="login-container">
+        <header class="login-header">
+            <h1>PETFLIX</h1>
+        </header>
+        
+        <div class="login-form">
+            <h2>Entrar</h2>
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="email" id="email" required>
+                    <label for="email">Email</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" required>
+                    <label for="password">Senha</label>
+                </div>
+                <div class="pet-selection">
+                    <h3>Você tem:</h3>
+                    <div class="pet-options">
+                        <label>
+                            <input type="radio" name="petType" value="dog" required>
+                            <span>Cachorro</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="petType" value="cat" required>
+                            <span>Gato</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit">Entrar</button>
+            </form>
+            
+            <div class="login-help">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Lembre-se de mim</label>
+                </div>
+                <a href="#">Precisa de ajuda?</a>
+            </div>
+            
+            <div class="signup-option">
+                <p>Novo por aqui? <a href="#" id="signupLink">Assine agora</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>
