@@ -47,10 +47,11 @@ body {
   }
   
   .user img {
-	width: 120px;
-	height: 120px;
+	width: 160px;
+	height: 140px;
 	border-radius: 50%;
 	margin-bottom: 10px;
+	transition: transform 0.6s ease;
   }
   
   .username {
