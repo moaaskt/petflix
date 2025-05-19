@@ -4,206 +4,415 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/gato-siames-1.jpg"/>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/reponsive.css">
-    <link rel="stylesheet" href="css/desktop.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
-
+       <link rel="icon" type="image/png" href="assets/petflix-logo_prev_ui.png"/>
+    <title>PetFlix - Para Gatos</title>
     
-    <title>PetFlix</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+    
+    <!-- CSS Personalizado -->
+    <style>
+        :root {
+            --netflix-red: #e50914;
+            --netflix-dark: #141414;
+            --netflix-gray: #303030;
+            --netflix-light: #f5f5f1;
+        }
+        
+        body {
+            background-color: var(--netflix-dark);
+            color: white;
+            font-family: 'Open Sans', sans-serif;
+            padding-top: 70px;
+        }
+        
+        /* Navbar estilo Netflix */
+        .navbar-petflix {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+            padding: 20px 50px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background-color 0.4s;
+        }
+        
+        .navbar-petflix.scrolled {
+            background-color: var(--netflix-dark);
+        }
+        
+        .navbar-brand img {
+            height: 40px;
+        }
+        
+        .nav-link {
+            color: var(--netflix-light) !important;
+            margin: 0 10px;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-link:hover {
+            opacity: 0.8;
+            color: var(--netflix-light) !important;
+        }
+        
+        .navbar-nav {
+            align-items: center;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            height: 80vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+            margin-bottom: 30px;
+        }
+        
+        .hero-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .hero-video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, var(--netflix-dark) 0%, transparent 50%),
+                        linear-gradient(to left, var(--netflix-dark) 0%, transparent 30%);
+            z-index: 1;
+        }
+        
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero-buttons .btn {
+            padding: 8px 25px;
+            margin-right: 10px;
+            font-weight: 600;
+            border-radius: 4px;
+        }
+        
+        .btn-play {
+            background-color: var(--netflix-light);
+            color: var(--netflix-dark);
+        }
+        
+        .btn-play:hover {
+            background-color: rgba(255,255,255,0.8);
+        }
+        
+        .btn-info {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: var(--netflix-light);
+        }
+        
+        .btn-info:hover {
+            background-color: rgba(109, 109, 110, 0.5);
+        }
+        
+        /* Carrossel de conteúdo */
+        .content-row {
+            padding: 0 50px;
+            margin-bottom: 40px;
+        }
+        
+        .row-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .content-carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 10px 0;
+            gap: 10px;
+        }
+        
+        .content-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .content-item {
+            flex: 0 0 auto;
+            width: 300px;
+            transition: transform 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .content-item:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+        
+        .content-item img {
+            width: 100%;
+            border-radius: 4px;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+        
+        .content-item .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-shadow: 0 0 10px rgba(0,0,0,0.7);
+        }
+        
+        .content-item:hover .play-icon {
+            opacity: 1;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .navbar-petflix {
+                padding: 15px 20px;
+            }
+            
+            .hero-section {
+                height: 60vh;
+                padding: 0 20px;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .content-row {
+                padding: 0 20px;
+            }
+            
+            .content-item {
+                width: 200px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-
-  <!-- sessão navbar  -->
-  <nav class="menu-container">
-    <!-- burger menu -->
-    <input type="checkbox" aria-label="Toggle menu" />
-    <span></span>
-    <span></span>
-    <span></span>
-  
-    <!-- logo -->
-    <a href="indexgato.html" class="menu-logo">
-      <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="My Awesome Website"/>
-    </a>
-  
-    <!-- menu items -->
-    <div class="menu">
-      <ul>
-      </ul>
-      <ul>
-        <li>
-          <a href="">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </a>    
-        </li>
-        <li>
-          <a href="indexgato.html">
-            Início
-          </a>
-        </li>
-        <li>
-          <a href="seriescats.html">
-            Séries
-          </a>
-        </li>
-        <li>
-          <a href="filmescat.html">
-            Filmes
-          </a>
-        </li>
-        <li>
-          <a href="docscats.html">
-            Documentários
-          </a>
-        </li>
-       
-        <li>
-          <a href="home.html">
-            <i class="fa-regular fa-user" title="voltar a tela de ínicio"></i>
-          </a>
-        </li>
-        <li>
-          <a href="">
-            <i id="logoutBtn" class="logout-btn fa-solid fa-right-from-bracket"></i>
-          </a>
-        </li>
-      </ul>
-      
-    </div>
-  </nav>  
-
-
-    <!-- Novo Player de Vídeo -->
-    <div class="pet-player-container">
-      <div class="pet-player-title">GATOS ENGRAÇADOS</div>
-      <div class="pet-video-wrapper">
-          <iframe id="petVideoPlayer" src="https://www.youtube.com/embed/8nQF3zVotOg?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
-      </div>
-      <div class="pet-player-controls">
-          <button class="pet-control-btn" id="petPlayPause"><i class="fas fa-paw"></i></button>
-          <button class="pet-control-btn" id="petMute"><i class="fas fa-volume-up"></i></button>
-          <div class="pet-volume-control">
-              <i class="fas fa-volume-down"></i>
-              <input type="range" min="0" max="1" step="0.1" value="1" class="pet-volume-slider" id="petVolume">
-          </div>
-          <button class="pet-control-btn" id="petFullscreen"><i class="fas fa-expand"></i></button>
-      </div>
-  </div>
-
-
-
-
-
-<!-- sessão dos proximos -->
-
-<section class="recomendacoes">
-  <h2>Recomendações</h2>
-  <div class="recomendacoes-container">
-    <div class="recomendacao">
-      <img src="assets/filmegato1.jpg" alt="Imagem do Filme 1">
-      
-    </div>
-    <div class="recomendacao">
-      <img src="assets/gato3.jpg" alt="Imagem do Filme 2">
-     
-    </div>
-    <div class="recomendacao">
-      <img src="assets/capa-filme-gato-de-botas-2-o-ultimo-pedido-1f766-large.jpg" alt="Imagem do Filme 3">
-      
-    </div>
-    <div class="recomendacao">
-      <img src="assets/fimlegato6.png" alt="Imagem do Filme 4">
-     
-    </div>
-    <div class="recomendacao">
-      <img src="assets/filmegato5.png" alt="Imagem do Filme 5">
-      
-    </div>
-  </div>
-</section>
-
-
-<script>
-  
-     // Player de Vídeo Customizado
-     document.addEventListener('DOMContentLoaded', function() {
-            // Configuração do player
-            const player = document.getElementById('petVideoPlayer');
-            const playPauseBtn = document.getElementById('petPlayPause');
-            const muteBtn = document.getElementById('petMute');
-            const volumeSlider = document.getElementById('petVolume');
-            const fullscreenBtn = document.getElementById('petFullscreen');
+    <!-- Navbar Netflix -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-petflix">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="indexgato.html">
+                <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="Petflix">
+            </a>
             
-            // Inicializa a API do YouTube
-            const tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
-            const firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             
-            let ytPlayer;
-            window.onYouTubeIframeAPIReady = function() {
-                ytPlayer = new YT.Player('petVideoPlayer', {
-                    events: {
-                        'onReady': onPlayerReady,
-                        'onStateChange': onPlayerStateChange
-                    }
-                });
-            };
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="indexgato.html">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="seriescats.html">Séries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="filmescat.html">Filmes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="docscats.html">Documentários</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html"><i class="fa-regular fa-user"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="logoutBtn" href="#"><i class="fas fa-right-from-bracket"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section com Vídeo -->
+    <section class="hero-section">
+        <div class="hero-video-container">
+            <iframe class="hero-video" src="https://www.youtube.com/embed/8nQF3zVotOg?autoplay=1&mute=1&loop=1&playlist=8nQF3zVotOg&controls=0&modestbranding=1&rel=0" frameborder="0" allow="autoplay"></iframe>
+            <div class="hero-video-overlay"></div>
+        </div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">Diversão para seu Gato</h1>
+            <p class="hero-description">Vídeos especialmente selecionados para entreter e relaxar seu felino.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-play" id="heroPlayBtn"><i class="fas fa-play"></i> Assistir</button>
+                <button class="btn btn-info"><i class="fas fa-info-circle"></i> Mais Informações</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conteúdo em Destaque - YouTube API -->
+    <div class="content-row">
+        <h2 class="row-title">Em Destaque</h2>
+        <div class="content-carousel" id="featuredContent">
+            <!-- Carregado via JavaScript -->
+        </div>
+    </div>
+
+    <!-- Mais Conteúdo - YouTube API -->
+    <div class="content-row">
+        <h2 class="row-title">Recomendados para seu Gato</h2>
+        <div class="content-carousel" id="recommendedContent">
+            <!-- Carregado via JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal do Vídeo -->
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="ratio ratio-16x9">
+                        <iframe id="modalVideoFrame" src="" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- YouTube API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    
+    <!-- Seu JS -->
+    <script>
+        // Dados dos vídeos para gatos
+        const videoData = {
+            featured: [
+                { id: 'kA244gAQhns', title: 'Gato de Botas', thumb: 'https://i.ytimg.com/vi/kA244gAQhns/maxresdefault.jpg' },
+                { id: '8nQF3zVotOg', title: 'Aristogatas', thumb: 'https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg' },
+                { id: 'QH2-TGUlwu4', title: 'O Gato', thumb: 'https://i.ytimg.com/vi/QH2-TGUlwu4/maxresdefault.jpg' },
+                { id: 'ByXuk9QqQkk', title: 'Oliver & Companhia', thumb: 'https://i.ytimg.com/vi/ByXuk9QqQkk/maxresdefault.jpg' },
+                { id: 'jNQXAC9IVRw', title: 'Gatos - O Filme', thumb: 'https://i.ytimg.com/vi/jNQXAC9IVRw/maxresdefault.jpg' }
+            ],
+            recommended: [
+                { id: 'oHg5SJYRHA0', title: 'Gatos Engraçados', thumb: 'https://i.ytimg.com/vi/oHg5SJYRHA0/maxresdefault.jpg' },
+                { id: 'QH2-TGUlwu4', title: 'Vídeos para Gatos', thumb: 'https://i.ytimg.com/vi/QH2-TGUlwu4/maxresdefault.jpg' },
+                { id: 'ByXuk9QqQkk', title: 'Pássaros para Gatos', thumb: 'https://i.ytimg.com/vi/ByXuk9QqQkk/maxresdefault.jpg' },
+                { id: 'kA244gAQhns', title: 'Brincadeiras Felinas', thumb: 'https://i.ytimg.com/vi/kA244gAQhns/maxresdefault.jpg' },
+                { id: '8nQF3zVotOg', title: 'Sons para Gatos', thumb: 'https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg' }
+            ]
+        };
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar-petflix');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Carrega os conteúdos
+        document.addEventListener('DOMContentLoaded', function() {
+            loadContent('featuredContent', videoData.featured);
+            loadContent('recommendedContent', videoData.recommended);
             
-            function onPlayerReady(event) {
-                // Autoplay sem som (seguro para pets)
-                event.target.mute();
-                event.target.playVideo();
+            // Botão play do hero
+            document.getElementById('heroPlayBtn').addEventListener('click', function() {
+                playVideo('8nQF3zVotOg');
+            });
+            
+            // Logout
+            if (!sessionStorage.getItem('isLoggedIn')) {
+                window.location.href = 'index.html';
             }
             
-            function onPlayerStateChange(event) {
-                if (event.data == YT.PlayerState.PLAYING) {
-                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                } else {
-                    playPauseBtn.innerHTML = '<i class="fas fa-paw"></i>';
-                }
-            }
-            
-            // Controles customizados
-            playPauseBtn.addEventListener('click', function() {
-                if (ytPlayer.getPlayerState() == YT.PlayerState.PLAYING) {
-                    ytPlayer.pauseVideo();
-                } else {
-                    ytPlayer.playVideo();
-                }
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                sessionStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
             });
+        });
+
+        // Função para carregar conteúdo
+        function loadContent(containerId, videos) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
             
-            muteBtn.addEventListener('click', function() {
-                if (ytPlayer.isMuted()) {
-                    ytPlayer.unMute();
-                    muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                } else {
-                    ytPlayer.mute();
-                    muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                }
+            videos.forEach(video => {
+                const videoElement = document.createElement('div');
+                videoElement.className = 'content-item';
+                videoElement.innerHTML = `
+                    <img src="${video.thumb}" alt="${video.title}">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                `;
+                videoElement.addEventListener('click', () => playVideo(video.id));
+                container.appendChild(videoElement);
             });
+        }
+
+        // Função para reproduzir vídeo no modal
+        function playVideo(videoId) {
+            const modal = new bootstrap.Modal(document.getElementById('videoModal'));
+            const iframe = document.getElementById('modalVideoFrame');
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+            modal.show();
             
-            volumeSlider.addEventListener('input', function() {
-                ytPlayer.setVolume(this.value * 100);
+            // Limpa o vídeo quando o modal é fechado
+            document.getElementById('videoModal').addEventListener('hidden.bs.modal', function () {
+                iframe.src = '';
             });
-            
-            fullscreenBtn.addEventListener('click', function() {
-                if (player.requestFullscreen) {
-                    player.requestFullscreen();
-                } else if (player.webkitRequestFullscreen) {
-                    player.webkitRequestFullscreen();
-                } else if (player.msRequestFullscreen) {
-                    player.msRequestFullscreen();
-                }
-            });
-
-</script>
-
-
-
-      <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
+        }
+    </script>
+    
+    <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
 </body>
 </html>

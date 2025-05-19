@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,16 +11,33 @@
     <link rel="stylesheet" href="css/desktop.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <title>PetFlix - Filmes para Cães</title>
+     <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>PetFlix - Filmes </title>
     <style>
+        :root {
+            --netflix-red: #e50914;
+            --netflix-dark: #141414;
+            --netflix-gray: #303030;
+            --netflix-light: #f5f5f1;
+        }
+        
+        body {
+            background-color: var(--netflix-dark);
+            color: white;
+            font-family: 'Open Sans', sans-serif;
+            padding-top: 70px;
+        }
+        
         .youtube-player {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%;
+            padding-bottom: 56.25%; /* Proporção 16:9 */
             margin-bottom: 15px;
             border-radius: 8px;
             overflow: hidden;
         }
+        
         .youtube-player iframe {
             position: absolute;
             top: 0;
@@ -29,13 +46,53 @@
             height: 100%;
             border: none;
         }
+        
         .loading-spinner {
             text-align: center;
             padding: 20px;
             font-size: 24px;
             color: #e50914;
         }
-        .fa-paw { animation: spin 1s linear infinite; }
+        
+        .fa-paw {
+            animation: spin 1s linear infinite;
+        }
+/* Navbar estilo Netflix */
+        .navbar-petflix {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+            padding: 20px 50px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background-color 0.4s;
+        }
+        
+        .navbar-petflix.scrolled {
+            background-color: var(--netflix-dark);
+        }
+        
+        .navbar-brand img {
+            height: 40px;
+        }
+        
+        .nav-link {
+            color: var(--netflix-light) !important;
+            margin: 0 10px;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-link:hover {
+            opacity: 0.8;
+            color: var(--netflix-light) !important;
+        }
+        
+        .navbar-nav {
+            align-items: center;
+        }
+        
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -45,77 +102,51 @@
 <body>
 
   <!-- sessão navbar  -->
+   <nav class="navbar navbar-expand-lg navbar-dark navbar-petflix">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="indexcach.html">
+                <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="Petflix">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="indexcach.html">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="series.html">Séries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="filmes.html">Filmes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="docs.html">Documentários</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html"><i class="fa-regular fa-user"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="logoutBtn" href="#"><i class="fas fa-right-from-bracket"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-  <nav class="menu-container">
-
-    <!-- burger menu -->
-    <input type="checkbox" aria-label="Toggle menu" />
-    <span></span>
-    <span></span>
-    <span></span>
-  
-    <!-- logo -->
-    <a href="indexcach.html" class="menu-logo">
-      <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="My Awesome Website"/>
-    </a>
-  
-    <!-- menu items -->
-    <div class="menu">
-      <ul>
-      </ul>
-      <ul>
-        <li>
-
-          <a href="" >
-
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </a>    
-        </li>
-        <li>
-
-          <a  href="indexcach.html" >
-
-            Início
-          </a>
-        </li>
-        <li>
- <a href="series.html">
-
-            Séries
-          </a>
-        </li>
-        <li>
-
-          <a href="filmes.html">
-
-            Filmes
-          </a>
-        </li>
-        <li>
-
-          <a href="docs.html">
-
-            Documentários
-          </a>
-        </li>
-       
-        <li>
-          <a href="home.html">
-            <i class="fa-regular fa-user"></i>
-          </a>
-        </li>
-      </ul>
-    </div>
-
-
-
-<script src="JS/java.js"></script>
-  </nav>  
-
-  <main class="docs-main">
-    <h1 class="title">Filmes para Cães</h1>
+  <main class="movies-main">
+    <h1 class="title">Filmes para Dogs</h1>
     
-    <div class="movies-container" id="youtubeDocsContainer">
+    <div class="movies-container" id="youtubeSeriesContainer">
         <div class="loading-spinner">
             <i class="fas fa-paw"></i>
             <p>Carregando Filmes...</p>
@@ -124,26 +155,30 @@
 </main>
 
 <script>
-    const DOGS_MOVIES = [
-        { id: 'dZL7qvyDc1I', title: 'A Vida Secreta dos Cães' },
-        { id: '3I-6y9E8u5c', title: 'Cães Incríveis' },
-        { id: '9Y31YSPo2i0', title: 'Super Cães' },
-        { id: '5dsGWM5XGdg', title: 'Raças Caninas' },
-        { id: '2X0v1g5q4xE', title: 'Cães e Seus Donos' },
-        { id: '7Q3k6Y8Z5aA', title: 'Cães em Ação' }
+    // Chave da API do YouTube (a mesma)
+    const YOUTUBE_API_KEY = 'AIzaSyDqcfzDeik9b6A7CF6bYVpVg9tjw0pCEmY';
+    
+    // IDs de playlists ou vídeos sobre gatos (exemplos)
+    const DOG_MOVIES = [
+        { id: '8nQF3zVotOg', title: 'Vídeos para Gatos - Pássaros' },
+        { id: '5dsGWM5XGdg', title: 'Desenhos para Gatos' },
+        { id: 'QH2-TGUlwu4', title: 'Sons de Pássaros' },
+        { id: 'ByXuk9QqQkk', title: 'Peixes para Gatos' }
     ];
 
+    // Função para carregar os vídeos (similar à versão para cachorros)
     function loadYouTubeVideos() {
-        const container = document.getElementById('youtubeDocsContainer');
+        const container = document.getElementById('youtubeSeriesContainer');
         container.innerHTML = '';
         
-        DOGS_MOVIES.forEach(video => {
+        DOG_MOVIES.forEach(video => {
             const videoElement = document.createElement('div');
             videoElement.className = 'movie';
             videoElement.innerHTML = `
                 <div class="youtube-player">
                     <iframe src="https://www.youtube.com/embed/${video.id}?rel=0&enablejsapi=1" 
                             frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                             allowfullscreen></iframe>
                 </div>
                 <div class="movie-name">${video.title}</div>
@@ -152,14 +187,25 @@
         });
     }
 
+    // Inicialização igual à versão para cachorros
     document.addEventListener('DOMContentLoaded', function() {
-        loadYouTubeVideos();
+        if (typeof YT !== 'undefined' && YT.loaded) {
+            loadYouTubeVideos();
+        } else {
+            setTimeout(loadYouTubeVideos, 1500);
+        }
+        
         if (!sessionStorage.getItem('isLoggedIn')) {
             window.location.href = 'index.html';
         }
     });
+
+    function onYouTubeIframeAPIReady() {
+        loadYouTubeVideos();
+    }
 </script>
 
+<!-- API do YouTube -->
 <script src="https://www.youtube.com/iframe_api"></script>
 <script src="JS/java.js"></script>
 <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
