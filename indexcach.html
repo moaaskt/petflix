@@ -17,221 +17,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
     
     <!-- CSS Personalizado -->
-    <style>
-        :root {
-            --netflix-red: #e50914;
-            --netflix-dark: #141414;
-            --netflix-gray: #303030;
-            --netflix-light: #f5f5f1;
-        }
-        
-        body {
-            background-color: var(--netflix-dark);
-            color: white;
-            font-family: 'Open Sans', sans-serif;
-            padding-top: 70px;
-        }
-        
-        /* Navbar estilo Netflix */
-        .navbar-petflix {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
-            padding: 20px 50px;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            transition: background-color 0.4s;
-        }
-        
-        .navbar-petflix.scrolled {
-            background-color: var(--netflix-dark);
-        }
-        
-        .navbar-brand img {
-            height: 40px;
-        }
-        
-        .nav-link {
-            color: var(--netflix-light) !important;
-            margin: 0 10px;
-            font-size: 14px;
-            transition: opacity 0.3s;
-        }
-        
-        .nav-link:hover {
-            opacity: 0.8;
-            color: var(--netflix-light) !important;
-        }
-        
-        .navbar-nav {
-            align-items: center;
-        }
-        
-        /* Hero Section */
-        .hero-section {
-            height: 80vh;
-            position: relative;
-            display: flex;
-            align-items: center;
-            padding: 0 50px;
-            margin-bottom: 30px;
-        }
-        
-        .hero-video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-        
-        .hero-video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, var(--netflix-dark) 0%, transparent 50%),
-                        linear-gradient(to left, var(--netflix-dark) 0%, transparent 30%);
-            z-index: 1;
-        }
-        
-        .hero-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .hero-content {
-            max-width: 600px;
-            z-index: 2;
-        }
-        
-        .hero-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .hero-description {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .hero-buttons .btn {
-            padding: 8px 25px;
-            margin-right: 10px;
-            font-weight: 600;
-            border-radius: 4px;
-        }
-        
-        .btn-play {
-            background-color: var(--netflix-light);
-            color: var(--netflix-dark);
-        }
-        
-        .btn-play:hover {
-            background-color: rgba(255,255,255,0.8);
-        }
-        
-        .btn-info {
-            background-color: rgba(109, 109, 110, 0.7);
-            color: var(--netflix-light);
-        }
-        
-        .btn-info:hover {
-            background-color: rgba(109, 109, 110, 0.5);
-        }
-        
-        /* Carrossel de conteúdo */
-        .content-row {
-            padding: 0 50px;
-            margin-bottom: 40px;
-        }
-        
-        .row-title {
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        
-        .content-carousel {
-            display: flex;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            padding: 10px 0;
-            gap: 10px;
-        }
-        
-        .content-carousel::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .content-item {
-            flex: 0 0 auto;
-            width: 300px;
-            transition: transform 0.3s;
-            position: relative;
-            cursor: pointer;
-        }
-        
-        .content-item:hover {
-            transform: scale(1.05);
-            z-index: 10;
-        }
-        
-        .content-item img {
-            width: 100%;
-            border-radius: 4px;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-        }
-        
-        .content-item .play-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            color: white;
-            opacity: 0;
-            transition: opacity 0.3s;
-            text-shadow: 0 0 10px rgba(0,0,0,0.7);
-        }
-        
-        .content-item:hover .play-icon {
-            opacity: 1;
-        }
-        
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .navbar-petflix {
-                padding: 15px 20px;
-            }
-            
-            .hero-section {
-                height: 60vh;
-                padding: 0 20px;
-            }
-            
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .content-row {
-                padding: 0 20px;
-            }
-            
-            .content-item {
-                width: 200px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/indexcach.css">
+      
 </head>
 <body>
     <!-- Navbar Netflix -->
@@ -296,16 +83,26 @@
     <!-- Conteúdo em Destaque - YouTube API -->
     <div class="content-row">
         <h2 class="row-title">Em Destaque</h2>
-        <div class="content-carousel" id="featuredContent">
-            <!-- Carregado via JavaScript -->
+        <!-- MODIFICAÇÃO 5: Adicionado container e botões de navegação -->
+        <div class="content-carousel-container">
+            <button class="carousel-btn prev" onclick="scrollCarousel('featuredContent', -300)"><i class="fas fa-chevron-left"></i></button>
+            <div class="content-carousel" id="featuredContent">
+                <!-- Carregado via JavaScript -->
+            </div>
+            <button class="carousel-btn next" onclick="scrollCarousel('featuredContent', 300)"><i class="fas fa-chevron-right"></i></button>
         </div>
     </div>
 
     <!-- Mais Conteúdo - YouTube API -->
     <div class="content-row">
         <h2 class="row-title">Recomendados para seu Cão</h2>
-        <div class="content-carousel" id="recommendedContent">
-            <!-- Carregado via JavaScript -->
+        <!-- MODIFICAÇÃO 6: Adicionado container e botões de navegação -->
+        <div class="content-carousel-container">
+            <button class="carousel-btn prev" onclick="scrollCarousel('recommendedContent', -300)"><i class="fas fa-chevron-left"></i></button>
+            <div class="content-carousel" id="recommendedContent">
+                <!-- Carregado via JavaScript -->
+            </div>
+            <button class="carousel-btn next" onclick="scrollCarousel('recommendedContent', 300)"><i class="fas fa-chevron-right"></i></button>
         </div>
     </div>
 
@@ -336,8 +133,6 @@
         // Dados dos vídeos (pode ser substituído por API real)
         const videoData = {
             featured: [
-
-                
                 { id: 'AYHaXXViER8', title: 'Marley & Eu', thumb: 'https://i.ytimg.com/vi/AYHaXXViER8/hq720.jpg?sqp=-…BACGAY4AUAB&rs=AOn4CLACuclKUhi3obqEEJqn0NQ2xSorkA' },
                 { id: 'tEPNTIhVXGI', title: '101 Dálmatas', thumb: 'https://i.ytimg.com/vi/tEPNTIhVXGI/hqdefault.jpg?s…BACGAY4AUAB&rs=AOn4CLDWznv0z_lTdR0qJ3F2LSVDj415KQ' },
                 { id: 'gO9KVopLsE0', title: 'Beethoven', thumb: 'https://i.ytimg.com/vi/gO9KVopLsE0/hqdefault.jpg?s…EIYAXABwAEG&rs=AOn4CLDLvGckxRRyywydEVQzpo4kLMcuFg' },
@@ -409,6 +204,15 @@
                 `;
                 videoElement.addEventListener('click', () => playVideo(video.id));
                 container.appendChild(videoElement);
+            });
+        }
+
+        /* MODIFICAÇÃO 7: Função para rolar o carrossel */
+        function scrollCarousel(containerId, scrollAmount) {
+            const container = document.getElementById(containerId);
+            container.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
             });
         }
 

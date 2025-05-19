@@ -1,4 +1,5 @@
-  .movies-main {
+
+        .docs-main {
             padding: 20px 50px;
         }
         
@@ -53,8 +54,8 @@
             max-width: 600px;
         }
         
-        /* Carrossel de Filmes */
-        .movies-carousel-container {
+        /* Carrossel de Documentários */
+        .docs-carousel-container {
             margin: 40px 0;
         }
         
@@ -64,7 +65,7 @@
             font-weight: 600;
         }
         
-        .movies-carousel {
+        .docs-carousel {
             display: flex;
             overflow-x: auto;
             scroll-behavior: smooth;
@@ -73,29 +74,29 @@
             scrollbar-width: none;
         }
         
-        .movies-carousel::-webkit-scrollbar {
+        .docs-carousel::-webkit-scrollbar {
             display: none;
         }
         
-        .movie-item {
+        .doc-item {
             flex: 0 0 auto;
             width: 250px;
             transition: transform 0.3s;
             cursor: pointer;
         }
         
-        .movie-item:hover {
+        .doc-item:hover {
             transform: scale(1.05);
         }
         
-        .movie-item img {
+        .doc-item img {
             width: 100%;
             border-radius: 4px;
             aspect-ratio: 16/9;
             object-fit: cover;
         }
         
-        .movie-item .movie-name {
+        .doc-item .doc-name {
             margin-top: 8px;
             font-size: 0.9rem;
             text-align: center;
@@ -122,7 +123,7 @@
             transition: opacity 0.3s;
         }
         
-        .movies-carousel-container:hover .carousel-btn {
+        .docs-carousel-container:hover .carousel-btn {
             opacity: 1;
         }
         
@@ -139,7 +140,7 @@
         }
         
         /* Modal */
-        .movies-modal {
+        .docs-modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -187,13 +188,30 @@
             z-index: 10;
         }
         
+        /* Loading Spinner */
+        .loading-spinner {
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+            color: var(--netflix-red);
+        }
+        
+        .fa-paw {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         /* Responsividade */
         @media (max-width: 768px) {
             .navbar-petflix {
                 padding: 15px 20px;
             }
             
-            .movies-main {
+            .docs-main {
                 padding: 20px;
             }
             
@@ -205,7 +223,7 @@
                 font-size: 1.5rem;
             }
             
-            .movie-item {
+            .doc-item {
                 width: 180px;
             }
             
@@ -213,3 +231,4 @@
                 display: none;
             }
         }
+    
