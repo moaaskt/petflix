@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../assets/petflix-logo_prev_ui.png"/>
+  <title>Política de Privacidade - Petflix</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+  <!-- CSS Personalizado -->
+  <link rel="stylesheet" href="../css/sobre.css" />
+  <link rel="stylesheet" href="../css/style-filmes.css" />
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-petflix">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="indexcach.html">
+      <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="Petflix" />
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="../indexcach.html">Início</a></li>
+        <li class="nav-item"><a class="nav-link" href="../series.html">Séries</a></li>
+        <li class="nav-item"><a class="nav-link" href="../filmes.html">Filmes</a></li>
+        <li class="nav-item"><a class="nav-link" href="../docs.html">Documentários</a></li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-search"></i></a></li>
+        <li class="nav-item"><a class="nav-link" href="home.html"><i class="fa-regular fa-user"></i></a></li>
+        <li class="nav-item"><a class="nav-link" id="logoutBtn" href="#"><i class="fas fa-right-from-bracket"></i></a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="py-4 text-center bg-dark text-light">
+  <h1>Política de Privacidade</h1>
+</header>
+
+<div class="container my-5">
+  <p>Na <strong>Petflix</strong>, a sua privacidade é muito importante para nós. Esta política explica como coletamos, usamos, armazenamos e protegemos as informações pessoais dos nossos usuários.</p>
+
+  <h3>Quais dados coletamos?</h3>
+  <ul>
+    <li>Informações pessoais fornecidas no cadastro (nome, e-mail, etc).</li>
+    <li>Dados de navegação e uso do site para melhorar a experiência.</li>
+  </ul>
+
+  <h3>Como usamos seus dados?</h3>
+  <ul>
+    <li>Para personalizar seu conteúdo e recomendações.</li>
+    <li>Para manter a segurança da plataforma.</li>
+    <li>Para enviar comunicados e atualizações, com seu consentimento.</li>
+  </ul>
+
+  <h3>Compartilhamento de dados</h3>
+  <p>Não vendemos ou compartilhamos seus dados pessoais com terceiros sem sua autorização, exceto quando exigido por lei.</p>
+
+  <h3>Segurança</h3>
+  <p>Utilizamos medidas técnicas e administrativas para proteger suas informações contra acessos não autorizados.</p>
+
+  <h3>Seus direitos</h3>
+  <p>Você pode solicitar a qualquer momento a correção, exclusão ou acesso aos seus dados pessoais.</p>
+
+  <h3>Contato</h3>
+  <p>Se tiver dúvidas sobre esta política, entre em contato conosco através da página <a href="contato.html">Contato</a>.</p>
+</div>
+
+<script>
+  // Navbar scroll effect
+  window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar-petflix');
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
+
+<footer class="text-center text-muted py-4 bg-black">
+  &copy; 2025 Petflix. Todos os direitos reservados.
+</footer>
+
+</body>
+</html>

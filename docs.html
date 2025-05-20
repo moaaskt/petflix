@@ -17,6 +17,47 @@
 <body>
 
     <!-- Navbar -->
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark navbar-petflix">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="indexcach.html">
+                <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="Petflix">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="indexcach.html">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="series.html">Séries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="filmes.html">Filmes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="docs.html">Documentários</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html"><i class="fa-regular fa-user"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="logoutBtn" href="#"><i class="fas fa-right-from-bracket"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav> -->
+ 
     <nav class="navbar navbar-expand-lg navbar-dark navbar-petflix">
         <div class="container-fluid">
             <a class="navbar-brand" href="indexcach.html">
@@ -57,17 +98,16 @@
             </div>
         </div>
     </nav>
-
     <main class="docs-main">
         <h1 class="title">Documentários para Dogs</h1>
         
         <!-- Hero Video Section -->
         <div class="hero-video-section">
             <div class="hero-video-container">
-                <iframe id="heroVideo" src="https://www.youtube.com/embed/QH2-TGUlwu4?rel=0&modestbranding=1" frameborder="0" allowfullscreen></iframe>
+                <iframe id="heroVideo" src="https://www.youtube.com/embed/talBvZ5x8sY?rel=0&modestbranding=1" frameborder="0" allowfullscreen></iframe>
                 <div class="hero-video-info">
-                    <h2 class="hero-video-title">A Vida Secreta dos Cães</h2>
-                    <p class="hero-video-description">Descubra o incrível mundo canino através deste documentário fascinante.</p>
+                    <h2 class="hero-video-title">O primeiro amigo do homem</h2>
+                    <p class="hero-video-description">Ele tem sido parte integrante de nossa existência por mais de 20.000 anos. Ao longo da história, suas contribuições foram diversas e inestimáveis.</p>
                 </div>
             </div>
         </div>
@@ -119,33 +159,108 @@
     <!-- API do YouTube -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+
+    
+
         // Dados dos documentários
-        const docsData = {
-            breeds: [
-                { id: 'ByXuk9QqQkk', title: 'Guia de Raças Caninas', thumb: 'https://i.ytimg.com/vi/ByXuk9QqQkk/maxresdefault.jpg' },
-                { id: '8nQF3zVotOg', title: 'Cães de Trabalho', thumb: 'https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg' },
-                { id: '5dsGWM5XGdg', title: 'Raças Raras', thumb: 'https://i.ytimg.com/vi/5dsGWM5XGdg/maxresdefault.jpg' },
-                { id: 'kA244gAQhns', title: 'História das Raças', thumb: 'https://i.ytimg.com/vi/kA244gAQhns/maxresdefault.jpg' },
-                { id: 'dZL7qvyDc1I', title: 'Cães de Guarda', thumb: 'https://i.ytimg.com/vi/dZL7qvyDc1I/maxresdefault.jpg' },
-                { id: '3I-6y9E8u5c', title: 'Raças para Família', thumb: 'https://i.ytimg.com/vi/3I-6y9E8u5c/maxresdefault.jpg' }
-            ],
-            behavior: [
-                { id: 'QH2-TGUlwu4', title: 'Compreendendo Seu Cão', thumb: 'https://i.ytimg.com/vi/QH2-TGUlwu4/maxresdefault.jpg' },
-                { id: '9Y31YSPo2i0', title: 'Linguagem Canina', thumb: 'https://i.ytimg.com/vi/9Y31YSPo2i0/maxresdefault.jpg' },
-                { id: 'jNQXAC9IVRw', title: 'Adestramento Positivo', thumb: 'https://i.ytimg.com/vi/jNQXAC9IVRw/maxresdefault.jpg' },
-                { id: 'AYHaXXViER8', title: 'Solução de Problemas', thumb: 'https://i.ytimg.com/vi/AYHaXXViER8/hq720.jpg' },
-                { id: 'tEPNTIhVXGI', title: 'Cães e Crianças', thumb: 'https://i.ytimg.com/vi/tEPNTIhVXGI/hqdefault.jpg' },
-                { id: 'gO9KVopLsE0', title: 'Socialização Canina', thumb: 'https://i.ytimg.com/vi/gO9KVopLsE0/hqdefault.jpg' }
-            ],
-            health: [
-                { id: '6gNBe9gRziA', title: 'Nutrição Canina', thumb: 'https://i.ytimg.com/vi/6gNBe9gRziA/hqdefault.jpg' },
-                { id: 'QEU-ZO6hUqE', title: 'Exercícios para Cães', thumb: 'https://i.ytimg.com/vi/QEU-ZO6hUqE/hq720.jpg' },
-                { id: 'irhQxrrl7cg', title: 'Saúde Preventiva', thumb: 'https://i.ytimg.com/vi/W2SMgD5cAuE/hqdefault.jpg' },
-                { id: 'oHg5SJYRHA0', title: 'Primeiros Socorros', thumb: 'https://i.ytimg.com/vi/oHg5SJYRHA0/maxresdefault.jpg' },
-                { id: '8nQF3zVotOg', title: 'Cuidados com Filhotes', thumb: 'https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg' },
-                { id: '5dsGWM5XGdg', title: 'Cães Idosos', thumb: 'https://i.ytimg.com/vi/5dsGWM5XGdg/maxresdefault.jpg' }
-            ]
-        };
+     const docsData = {
+  breeds: [
+    {
+      id: 'HyhgyYFAcUQ',
+      title: 'As estranhas raças de cães que desapareceram',
+      thumb: 'https://i.ytimg.com/vi/HyhgyYFAcUQ/maxresdefault.jpg'
+    },
+    {
+      id: 'bhgpmtBrrt8',
+      title: 'O Pit Bull - documentário (completo em português)',
+      thumb: 'https://i.ytimg.com/vi/bhgpmtBrrt8/hqdefault.jpg'
+    },
+    {
+      id: 'LskBbyFVLgE',
+      title: 'A raça de cachorro Terra-Nova - Raças de cachorros GIGANTES',
+      thumb: 'https://i.ytimg.com/vi/LskBbyFVLgE/maxresdefault.jpg'
+    },
+    {
+      id: '7mREib3HVKM',
+      title: 'SÃO BERNARDO: CONHEÇA A RAÇA DO FILME BEETHOVEN!',
+      thumb: 'https://i.ytimg.com/vi/7mREib3HVKM/maxresdefault.jpg'
+    },
+    {
+      id: 'P1vhHNLCUFw',
+      title: 'Shih Tzu: revelamos absolutamente TUDO sobre essa raça',
+      thumb: 'https://i.ytimg.com/vi/P1vhHNLCUFw/maxresdefault.jpg'
+    },
+    {
+      id: '0L9humGg9jY',
+      title: 'Conheça as raças de cães mais populares no Brasil',
+      thumb: 'https://i.ytimg.com/vi/0L9humGg9jY/maxresdefault.jpg'
+    }
+  ],
+  behavior: [
+    {
+      id: '7Z8kQkXiaJ0',
+      title: 'Comportamento canino: emoções, estresse e ansiedade - Lu Baldan',
+      thumb: 'https://i.ytimg.com/vi/7Z8kQkXiaJ0/maxresdefault.jpg'
+    },
+    {
+      id: 'KJAKjaTeBM0',
+      title: 'Aula #1 - Curso Psicologia Canina - Apresentação Jean Cloude',
+      thumb: 'https://i.ytimg.com/vi/KJAKjaTeBM0/hqdefault.jpg'
+    },
+    {
+      id: 'PDE2sWM9yXo',
+      title: '10 COMPORTAMENTOS de CÃES explicados',
+      thumb: 'https://i.ytimg.com/vi/PDE2sWM9yXo/maxresdefault.jpg'
+    },
+    {
+      id: 'aShkGTQio5M',
+      title: 'Manhãs na TV | Dra Anabela Torres - Comportamento Canino',
+      thumb: 'https://i.ytimg.com/vi/aShkGTQio5M/maxresdefault.jpg'
+    },
+    {
+      id: 'GzTfOfXx4-s',
+      title: 'A importância do Cão de Guarda para o Sobrevivencialista',
+      thumb: 'https://i.ytimg.com/vi/GzTfOfXx4-s/maxresdefault.jpg'
+    },
+    {
+      id: 'hfpx76MG8YA',
+      title: 'TEORIA NO ADESTRAMENTO DE CÃES',
+      thumb: 'https://i.ytimg.com/vi/hfpx76MG8YA/maxresdefault.jpg'
+    }
+  ],
+  health: [
+    {
+      id: 'mrH22_Rvlj8',
+      title: 'Zoonoses e Saúde Única',
+      thumb: 'https://i.ytimg.com/vi/mrH22_Rvlj8/maxresdefault.jpg'
+    },
+    {
+      id: '-mtMBPB0nYQ',
+      title: 'Leishmaniose visceral - conhecer para controlar',
+      thumb: 'https://i.ytimg.com/vi/-mtMBPB0nYQ/hqdefault.jpg'
+    },
+    {
+      id: 'UkU8TRZrPxs',
+      title: 'Principais Zoonoses em Cães e Gatos! - Telessaúde Goiás',
+      thumb: 'https://i.ytimg.com/vi/UkU8TRZrPxs/maxresdefault.jpg'
+    },
+    {
+      id: 'pv-2P8F9O34',
+      title: 'Cuidados com a saúde bucal canina',
+      thumb: 'https://i.ytimg.com/vi/pv-2P8F9O34/maxresdefault.jpg'
+    },
+    {
+      id: 'Pw0O2CFRNrk',
+      title: 'Tópicos de importância na saúde do cão geriatra',
+      thumb: 'https://i.ytimg.com/vi/Pw0O2CFRNrk/maxresdefault.jpg'
+    },
+    {
+      id: 'JUg-xYUhsG8',
+      title: 'Tratamento de cães com leishmaniose através do protocolo quimioterápico associado à acupuntura',
+      thumb: 'https://i.ytimg.com/vi/JUg-xYUhsG8/maxresdefault.jpg'
+    }
+  ]
+};
 
         // Funções JavaScript
         document.addEventListener('DOMContentLoaded', function() {
@@ -220,5 +335,6 @@
         }
     </script>
     <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
