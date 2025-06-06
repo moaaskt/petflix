@@ -18,13 +18,13 @@ const addCatLoadingStyles = () => {
     }
     
     .cat-loading-icon {
-      color: #f39c12 !important;
+      color: #e50914 !important;
       animation: catBounce 1s infinite ease-in-out;
       position: relative;
     }
     
     .cat-loading-icon::after {
-      content: "\\f6be"; /* Código do ícone de coração (ou outro opcional) */
+      content: "\\f6be"; /*
       font-family: "Font Awesome 6 Free";
       position: absolute;
       right: -20px;
@@ -35,7 +35,7 @@ const addCatLoadingStyles = () => {
     }
     
     .cat-loading-text {
-      color: #f39c12;
+      color: #e50914;
       font-weight: 600;
       margin-top: 10px;
       text-shadow: 0 0 5px rgba(243, 156, 18, 0.3);
