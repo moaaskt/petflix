@@ -1,292 +1,310 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/caramelo.jpg"/>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/style-filmes.css">
-    <link rel="stylesheet" href="css/films.css">
-    <title>PetFlix - Filmes</title>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/caramelo.jpg" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style-filmes.css">
+  <link rel="stylesheet" href="css/films.css">
+  <title>PetFlix - Filmes</title>
 </head>
+
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-petflix">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="indexcach.html">
-                <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="Petflix">
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="indexcach.html">Início</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="series.html">Séries</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="filmes.html">Filmes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="docs.html">Documentários</a>
-                    </li>
-                </ul>
-                
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="home.html"><i class="fa-regular fa-user"></i></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="logoutBtn" href="#"><i class="fas fa-right-from-bracket"></i></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-petflix">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="indexcach.html">
+        <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="Petflix">
+      </a>
 
-    <main class="movies-main">
-        <h1 class="title">Filmes</h1>
-        
-        <!-- Hero Video Section -->
-        <div class="hero-video-section">
-            <div class="hero-video-container">
-                <iframe id="heroVideo" src="https://www.youtube.com/embed/-AbhVCKviQY?rel=0&modestbranding=1" frameborder="0" allowfullscreen></iframe>
-                <div class="hero-video-info">
-                    <h2 class="hero-video-title">Marley & Eu - O Filme</h2>
-                    <p class="hero-video-description">A emocionante história de Marley, o labrador mais travesso do mundo, e sua família.</p>
-                </div>
-            </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="indexcach.html">Início</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="series.html">Séries</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="filmes.html">Filmes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="docs.html">Documentários</a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="home.html"><i class="fa-regular fa-user"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="logoutBtn" href="#"><i class="fas fa-right-from-bracket"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="movies-main">
+    <h1 class="title">Filmes</h1>
+
+    <!-- Hero Video Section -->
+    <div class="hero-video-section">
+      <div class="hero-video-container">
+        <iframe id="heroVideo" src="https://www.youtube.com/embed/-AbhVCKviQY?rel=0&modestbranding=1" frameborder="0"
+          allowfullscreen></iframe>
+        <div class="hero-video-info">
+          <h2 class="hero-video-title">Marley & Eu - O Filme</h2>
+          <p class="hero-video-description">A emocionante história de Marley, o labrador mais travesso do mundo, e sua
+            família.</p>
         </div>
-        
-        <!-- Carrossel de Filmes -->
-        <div class="movies-carousel-container">
-            <h3 class="carousel-title">Filmes Clássicos</h3>
-            <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('classicMovies', -300)"><i class="fas fa-chevron-left"></i></button>
-                <div class="movies-carousel" id="classicMovies"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('classicMovies', 300)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        </div>
-        
-        <div class="movies-carousel-container">
-            <h3 class="carousel-title">Aventuras Caninas</h3>
-            <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('adventureMovies', -300)"><i class="fas fa-chevron-left"></i></button>
-                <div class="movies-carousel" id="adventureMovies"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('adventureMovies', 300)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        </div>
-        
-        <div class="movies-carousel-container">
-            <h3 class="carousel-title">Comédias</h3>
-            <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('comedyMovies', -300)"><i class="fas fa-chevron-left"></i></button>
-                <div class="movies-carousel" id="comedyMovies"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('comedyMovies', 300)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        </div>
-    </main>
-    
-    <!-- Modal -->
-    <div class="movies-modal" id="moviesModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
-            <div class="modal-video-container">
-                <iframe id="modalVideo" src="" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <!-- API do YouTube -->
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-        // Dados dos filmes
-        const moviesData = {
-      
-  classic: [
-    {
-      id: 'Ws-9ra38AlI',
-      title: 'Marley & Eu',
-      thumb: 'https://i.ytimg.com/vi/Ws-9ra38AlI/maxresdefault.jpg'
-    },
-    {
-      id: 'VApVpvcGW1A',
-      title: '101 Dálmatas',
-      thumb: 'https://i.ytimg.com/vi/VApVpvcGW1A/maxresdefault.jpg'
-    },
-    {
-      id: 'ki8wHMR-yOI',
-      title: 'Beethoven',
-      thumb: 'https://i.ytimg.com/vi/ki8wHMR-yOI/maxresdefault.jpg'
-    },
-    {
-      id: 'UFY8vW5IedY',
-      title: 'Sempre ao Seu Lado',
-      thumb: 'https://i.ytimg.com/vi/UFY8vW5IedY/maxresdefault.jpg'
-    },
-    {
-      id: 'N-nzEPmjM1c',
-      title: 'Dog - A Aventura',
-      thumb: 'https://i.ytimg.com/vi/N-nzEPmjM1c/maxresdefault.jpg'
-    },
-    {
-      id: 'UqtFvSKhKmA',
-      title: 'Benji - O Cão Herói',
-      thumb: 'https://i.ytimg.com/vi/UqtFvSKhKmA/maxresdefault.jpg'
-    }
-  ],
-  adventure: [
-    {
-      id: 'MjbKt2bVFec',
-      title: 'Aventuras Caninas',
-      thumb: 'https://i.ytimg.com/vi/MjbKt2bVFec/maxresdefault.jpg'
-    },
-    {
-      id: '1jLOOCADTGs',
-      title: 'A Dog\'s Purpose',
-      thumb: 'https://i.ytimg.com/vi/1jLOOCADTGs/maxresdefault.jpg'
-    },
-    {
-      id: 'fEPkp0iFMTI',
-      title: 'Resgate Animal',
-      thumb: 'https://i.ytimg.com/vi/fEPkp0iFMTI/maxresdefault.jpg'
-    },
-    {
-      id: 'lAKXRYTb6B8',
-      title: 'Raças Aventureiras',
-      thumb: 'https://i.ytimg.com/vi/lAKXRYTb6B8/maxresdefault.jpg'
-    },
-    {
-      id: '3kMHTbr5g68',
-      title: 'Exploradores Caninos',
-      thumb: 'https://i.ytimg.com/vi/3kMHTbr5g68/maxresdefault.jpg'
-    },
-    {
-      id: 'Euu-eCK6w6I',
-      title: 'Cães na Natureza',
-      thumb: 'https://i.ytimg.com/vi/Euu-eCK6w6I/maxresdefault.jpg'
-    }
-  ],
-  comedy: [
-    {
-      id: 'vGdsDsqcPoE',
-      title: 'Cachorros Engraçados',
-      thumb: 'https://i.ytimg.com/vi/vGdsDsqcPoE/maxresdefault.jpg'
-    },
-    {
-      id: 'AyiobvQMOaE',
-      title: 'Travessuras Caninas',
-      thumb: 'https://i.ytimg.com/vi/AyiobvQMOaE/hqdefault.jpg'
-    },
-    {
-      id: 'QH2-TGUlwu4',
-      title: 'Piadas de Cães',
-      thumb: 'https://i.ytimg.com/vi/QH2-TGUlwu4/hqdefault.jpg'
-    },
-    {
-      id: '9Y31YSPo2i0',
-      title: 'Beethoven - As Trapalhadas',
-      thumb: 'https://i.ytimg.com/vi/9Y31YSPo2i0/maxresdefault.jpg'
-    },
-    {
-      id: 'oHg5SJYRHA0',
-      title: 'Marley - Os Melhores Momentos',
-      thumb: 'https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg'
-    },
-    {
-      id: '5dsGWM5XGdg',
-      title: 'Dálmatas Trapalhões',
-      thumb: 'https://i.ytimg.com/vi/5dsGWM5XGdg/hqdefault.jpg'
-    }
-  ]
-};
-        // Funções JavaScript
-        document.addEventListener('DOMContentLoaded', function() {
-            // Carrega os carrosseis
-            loadCarousel('classicMovies', moviesData.classic);
-            loadCarousel('adventureMovies', moviesData.adventure);
-            loadCarousel('comedyMovies', moviesData.comedy);
-            
-            // Verifica login
-            if (!sessionStorage.getItem('isLoggedIn')) {
-                window.location.href = 'index.html';
-            }
-            
-            // Logout
-            document.getElementById('logoutBtn').addEventListener('click', function() {
-                sessionStorage.removeItem('isLoggedIn');
-                window.location.href = 'index.html';
-            });
-            
-            // Navbar scroll effect
-            window.addEventListener('scroll', function() {
-                const navbar = document.querySelector('.navbar-petflix');
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
-        });
+    <!-- Carrossel de Filmes -->
+    <div class="movies-carousel-container">
+      <h3 class="carousel-title">Filmes Clássicos</h3>
+      <div class="position-relative">
+        <button class="carousel-btn prev" onclick="scrollCarousel('classicMovies', -300)"><i
+            class="fas fa-chevron-left"></i></button>
+        <div class="movies-carousel" id="classicMovies"></div>
+        <button class="carousel-btn next" onclick="scrollCarousel('classicMovies', 300)"><i
+            class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
 
-        // Função para carregar carrossel
-        function loadCarousel(containerId, movies) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            
-            movies.forEach(movie => {
-                const item = document.createElement('div');
-                item.className = 'movie-item';
-                item.innerHTML = `
+    <div class="movies-carousel-container">
+      <h3 class="carousel-title">Aventuras Caninas</h3>
+      <div class="position-relative">
+        <button class="carousel-btn prev" onclick="scrollCarousel('adventureMovies', -300)"><i
+            class="fas fa-chevron-left"></i></button>
+        <div class="movies-carousel" id="adventureMovies"></div>
+        <button class="carousel-btn next" onclick="scrollCarousel('adventureMovies', 300)"><i
+            class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+    <div class="movies-carousel-container">
+      <h3 class="carousel-title">Comédias</h3>
+      <div class="position-relative">
+        <button class="carousel-btn prev" onclick="scrollCarousel('comedyMovies', -300)"><i
+            class="fas fa-chevron-left"></i></button>
+        <div class="movies-carousel" id="comedyMovies"></div>
+        <button class="carousel-btn next" onclick="scrollCarousel('comedyMovies', 300)"><i
+            class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div class="movies-modal" id="moviesModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      <div class="modal-video-container">
+        <iframe id="modalVideo" src="" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    // Dados dos filmes
+    const moviesData = {
+
+      classic: [
+        {
+          id: 'Ws-9ra38AlI',
+          title: 'Marley & Eu',
+          thumb: 'https://i.ytimg.com/vi/Ws-9ra38AlI/maxresdefault.jpg'
+        },
+        {
+          id: 'VApVpvcGW1A',
+          title: '101 Dálmatas',
+          thumb: 'https://i.ytimg.com/vi/VApVpvcGW1A/maxresdefault.jpg'
+        },
+        {
+          id: 'ki8wHMR-yOI',
+          title: 'Beethoven',
+          thumb: 'https://i.ytimg.com/vi/ki8wHMR-yOI/maxresdefault.jpg'
+        },
+        {
+          id: 'UFY8vW5IedY',
+          title: 'Sempre ao Seu Lado',
+          thumb: 'https://i.ytimg.com/vi/UFY8vW5IedY/maxresdefault.jpg'
+        },
+        {
+          id: 'N-nzEPmjM1c',
+          title: 'Dog - A Aventura',
+          thumb: 'https://i.ytimg.com/vi/N-nzEPmjM1c/maxresdefault.jpg'
+        },
+        {
+          id: 'UqtFvSKhKmA',
+          title: 'Benji - O Cão Herói',
+          thumb: 'https://i.ytimg.com/vi/UqtFvSKhKmA/maxresdefault.jpg'
+        }
+      ],
+      adventure: [
+        {
+          id: 'MjbKt2bVFec',
+          title: 'Aventuras Caninas',
+          thumb: 'https://i.ytimg.com/vi/MjbKt2bVFec/maxresdefault.jpg'
+        },
+        {
+          id: '1jLOOCADTGs',
+          title: 'A Dog\'s Purpose',
+          thumb: 'https://i.ytimg.com/vi/1jLOOCADTGs/maxresdefault.jpg'
+        },
+        {
+          id: 'fEPkp0iFMTI',
+          title: 'Resgate Animal',
+          thumb: 'https://i.ytimg.com/vi/fEPkp0iFMTI/maxresdefault.jpg'
+        },
+        {
+          id: 'lAKXRYTb6B8',
+          title: 'Raças Aventureiras',
+          thumb: 'https://i.ytimg.com/vi/lAKXRYTb6B8/maxresdefault.jpg'
+        },
+        {
+          id: '3kMHTbr5g68',
+          title: 'Exploradores Caninos',
+          thumb: 'https://i.ytimg.com/vi/3kMHTbr5g68/maxresdefault.jpg'
+        },
+        {
+          id: 'Euu-eCK6w6I',
+          title: 'Cães na Natureza',
+          thumb: 'https://i.ytimg.com/vi/Euu-eCK6w6I/maxresdefault.jpg'
+        }
+      ],
+      comedy: [
+        {
+          id: 'vGdsDsqcPoE',
+          title: 'Cachorros Engraçados',
+          thumb: 'https://i.ytimg.com/vi/vGdsDsqcPoE/maxresdefault.jpg'
+        },
+        {
+          id: 'AyiobvQMOaE',
+          title: 'Travessuras Caninas',
+          thumb: 'https://i.ytimg.com/vi/AyiobvQMOaE/hqdefault.jpg'
+        },
+        {
+          id: 'QH2-TGUlwu4',
+          title: 'Piadas de Cães',
+          thumb: 'https://i.ytimg.com/vi/QH2-TGUlwu4/hqdefault.jpg'
+        },
+        {
+          id: '9Y31YSPo2i0',
+          title: 'Beethoven - As Trapalhadas',
+          thumb: 'https://i.ytimg.com/vi/9Y31YSPo2i0/maxresdefault.jpg'
+        },
+        {
+          id: 'oHg5SJYRHA0',
+          title: 'Marley - Os Melhores Momentos',
+          thumb: 'https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg'
+        },
+        {
+          id: '5dsGWM5XGdg',
+          title: 'Dálmatas Trapalhões',
+          thumb: 'https://i.ytimg.com/vi/5dsGWM5XGdg/hqdefault.jpg'
+        }
+      ]
+    };
+    // Funções JavaScript
+    document.addEventListener('DOMContentLoaded', function () {
+      // Carrega os carrosseis
+      loadCarousel('classicMovies', moviesData.classic);
+      loadCarousel('adventureMovies', moviesData.adventure);
+      loadCarousel('comedyMovies', moviesData.comedy);
+
+      // Verifica login
+      if (!sessionStorage.getItem('isLoggedIn')) {
+        window.location.href = 'index.html';
+      }
+
+      // Logout
+      document.getElementById('logoutBtn').addEventListener('click', function () {
+        sessionStorage.removeItem('isLoggedIn');
+        window.location.href = 'index.html';
+      });
+
+      // Navbar scroll effect
+      window.addEventListener('scroll', function () {
+        const navbar = document.querySelector('.navbar-petflix');
+        if (window.scrollY > 50) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      });
+    });
+
+    // Função para carregar carrossel
+    function loadCarousel(containerId, movies) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      movies.forEach(movie => {
+        const item = document.createElement('div');
+        item.className = 'movie-item';
+        item.innerHTML = `
                     <img src="${movie.thumb}" alt="${movie.title}" onclick="openModal('${movie.id}')">
                     <div class="movie-name">${movie.title}</div>
                 `;
-                container.appendChild(item);
-            });
-        }
+        container.appendChild(item);
+      });
+    }
 
-        // Função para rolar o carrossel
-        function scrollCarousel(containerId, scrollAmount) {
-            const container = document.getElementById(containerId);
-            container.scrollBy({
-                left: scrollAmount,
-                behavior: 'smooth'
-            });
-        }
+    // Função para rolar o carrossel
+    function scrollCarousel(containerId, scrollAmount) {
+      const container = document.getElementById(containerId);
+      container.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+    }
 
-        // Função para abrir o modal
-        function openModal(videoId) {
-            const modal = document.getElementById('moviesModal');
-            const iframe = document.getElementById('modalVideo');
-            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
+    // Função para abrir o modal
+    function openModal(videoId) {
+      const modal = document.getElementById('moviesModal');
+      const iframe = document.getElementById('modalVideo');
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
 
-        // Função para fechar o modal
-        function closeModal() {
-            const modal = document.getElementById('moviesModal');
-            const iframe = document.getElementById('modalVideo');
-            iframe.src = '';
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-    </script>
-    <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    // Função para fechar o modal
+    function closeModal() {
+      const modal = document.getElementById('moviesModal');
+      const iframe = document.getElementById('modalVideo');
+      iframe.src = '';
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  </script>
+
+
+  <script src="JS/loadingDog.js"></script>
+    <!-- API do YouTube -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+
+  <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
