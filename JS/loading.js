@@ -88,7 +88,7 @@ function initPageLoading() {
   // Esconde o loading quando tudo estiver pronto
   window.addEventListener('load', function() {
     // Tempo mínimo de exibição (1.5 segundos)
-    setTimeout(hideLoading, 1000);
+    setTimeout(hideLoading, 700);
   });
   
   // Fallback: esconde após 10 segundos mesmo se não carregar

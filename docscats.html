@@ -16,13 +16,7 @@
 </head>
 <body>
     <!-- Sessão de carregamento -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner">
-            <i class="fas fa-paw"></i>
-            <p>Carregando Docs...</p>
-        </div>
-    </div>
-
+  
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-petflix">
         <div class="container-fluid">
@@ -115,8 +109,7 @@
         </div>
     </div>
 
-    <!-- API do YouTube -->
-    <script src="https://www.youtube.com/iframe_api"></script>
+  
 
     <script>
         // Dados dos documentários sobre gatos
@@ -174,16 +167,6 @@
                 window.location.href = 'index.html';
             });
 
-            const elapsedTime = Date.now() - startTime;
-            const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
-
-            setTimeout(function () {
-                const loadingOverlay = document.getElementById('loadingOverlay');
-                loadingOverlay.classList.add('fade-out');
-                setTimeout(function () {
-                    loadingOverlay.style.display = 'none';
-                }, 500);
-            }, remainingTime);
         }
 
         function loadCarousel(containerId, items) {
@@ -221,7 +204,10 @@
 
         document.addEventListener('DOMContentLoaded', simulateLoading);
     </script>
+<script src="JS/loading.js"></script>
 
+      <!-- API do YouTube -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
