@@ -1,117 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/gato-siames-1.jpg"/>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/reponsive.css">
-    <link rel="stylesheet" href="css/style-filmes.css">
-    <link rel="stylesheet" href="css/desktop.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/gato-siames-1.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-     <!-- Bootstrap 5 CSS -->
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style-filmes.css">
+    <link rel="stylesheet" href="css/series.css">
     <title>PetFlix - Séries para Gatos</title>
-    <style>
-        :root {
-            --netflix-red: #e50914;
-            --netflix-dark: #141414;
-            --netflix-gray: #303030;
-            --netflix-light: #f5f5f1;
-        }
-        
-        body {
-            background-color: var(--netflix-dark);
-            color: white;
-            font-family: 'Open Sans', sans-serif;
-            padding-top: 70px;
-        }
-        
-        .youtube-player {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* Proporção 16:9 */
-            margin-bottom: 15px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .youtube-player iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .loading-spinner {
-            text-align: center;
-            padding: 20px;
-            font-size: 24px;
-            color: #e50914;
-        }
-        
-        .fa-paw {
-            animation: spin 1s linear infinite;
-        }
-/* Navbar estilo Netflix */
-        .navbar-petflix {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
-            padding: 20px 50px;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            transition: background-color 0.4s;
-        }
-        
-        .navbar-petflix.scrolled {
-            background-color: var(--netflix-dark);
-        }
-        
-        .navbar-brand img {
-            height: 40px;
-        }
-        
-        .nav-link {
-            color: var(--netflix-light) !important;
-            margin: 0 10px;
-            font-size: 14px;
-            transition: opacity 0.3s;
-        }
-        
-        .nav-link:hover {
-            opacity: 0.8;
-            color: var(--netflix-light) !important;
-        }
-        
-        .navbar-nav {
-            align-items: center;
-        }
-        
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
 </head>
-<body>
 
-  <!-- sessão navbar  -->
-   <nav class="navbar navbar-expand-lg navbar-dark navbar-petflix">
+<body>
+    <!-- Sessão de carregamento -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-paw"></i>
+            <p>Carregando Séries...</p>
+        </div>
+    </div>
+
+    <!-- sessão navbar  -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-petflix">
         <div class="container-fluid">
             <a class="navbar-brand" href="indexgato.html">
                 <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="Petflix">
             </a>
-            
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
@@ -127,7 +51,7 @@
                         <a class="nav-link" href="docscats.html">Documentários</a>
                     </li>
                 </ul>
-                
+
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-search"></i></a>
@@ -143,71 +67,253 @@
         </div>
     </nav>
 
-  <main class="series-main">
-    <h1 class="title">Séries para Gatos</h1>
+    <main class="series-main">
+        <h1 class="title">Séries</h1>
+        
+        <!-- Hero Video Section -->
+        <div class="hero-video-section">
+            <div class="hero-video-container">
+                <iframe id="heroVideo" src="https://www.youtube.com/embed/XyNlqQId-nk?rel=0&modestbranding=1" frameborder="0" allowfullscreen></iframe>
+                <div class="hero-video-info">
+                    <h2 class="hero-video-title">Melhores Séries para Gatos</h2>
+                    <p class="hero-video-description">Coleção especial de vídeos para entreter seu felino quando você não está em casa.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Carrossel de Séries -->
+        <div class="series-carousel-container">
+            <h3 class="carousel-title">Séries Populares</h3>
+            <div class="position-relative">
+                <button class="carousel-btn prev" onclick="scrollCarousel('popularSeries', -300)"><i class="fas fa-chevron-left"></i></button>
+                <div class="series-carousel" id="popularSeries"></div>
+                <button class="carousel-btn next" onclick="scrollCarousel('popularSeries', 300)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        
+        <div class="series-carousel-container">
+            <h3 class="carousel-title">Séries com Pássaros</h3>
+            <div class="position-relative">
+                <button class="carousel-btn prev" onclick="scrollCarousel('birdSeries', -300)"><i class="fas fa-chevron-left"></i></button>
+                <div class="series-carousel" id="birdSeries"></div>
+                <button class="carousel-btn next" onclick="scrollCarousel('birdSeries', 300)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        
+        <div class="series-carousel-container">
+            <h3 class="carousel-title">Séries para Filhotes</h3>
+            <div class="position-relative">
+                <button class="carousel-btn prev" onclick="scrollCarousel('kittenSeries', -300)"><i class="fas fa-chevron-left"></i></button>
+                <div class="series-carousel" id="kittenSeries"></div>
+                <button class="carousel-btn next" onclick="scrollCarousel('kittenSeries', 300)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </main>
     
-    <div class="movies-container" id="youtubeSeriesContainer">
-        <div class="loading-spinner">
-            <i class="fas fa-paw"></i>
-            <p>Carregando séries...</p>
+    <!-- Modal -->
+    <div class="series-modal" id="seriesModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div class="modal-video-container">
+                <iframe id="modalVideo" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
         </div>
     </div>
-</main>
 
-<script>
-    // Chave da API do YouTube (a mesma)
-    const YOUTUBE_API_KEY = 'AIzaSyDqcfzDeik9b6A7CF6bYVpVg9tjw0pCEmY';
-    
-    // IDs de playlists ou vídeos sobre gatos (exemplos)
-    const CAT_SERIES = [
-        { id: '8nQF3zVotOg', title: 'Vídeos para Gatos - Pássaros' },
-        { id: '5dsGWM5XGdg', title: 'Desenhos para Gatos' },
-        { id: 'QH2-TGUlwu4', title: 'Sons de Pássaros' },
-        { id: 'ByXuk9QqQkk', title: 'Peixes para Gatos' }
-    ];
+    <!-- API do YouTube -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        // Dados das séries para gatos
+        const seriesData = {
+          popular: [
+            {
+              id: 'XyNlqQId-nk',
+              title: 'Vídeos para Gatos - 8 Horas',
+              thumb: 'https://i.ytimg.com/vi/XyNlqQId-nk/maxresdefault.jpg'
+            },
+            {
+              id: 'cbSo3GQrr9w',
+              title: 'Gatos vs Pássaros',
+              thumb: 'https://i.ytimg.com/vi/cbSo3GQrr9w/maxresdefault.jpg'
+            },
+            {
+              id: 'LsBrT6vbQa4',
+              title: 'Peixes para Gatos',
+              thumb: 'https://i.ytimg.com/vi/LsBrT6vbQa4/maxresdefault.jpg'
+            },
+            {
+              id: 'WEkSYw3o5is',
+              title: 'Aventuras Felinas',
+              thumb: 'https://i.ytimg.com/vi/WEkSYw3o5is/maxresdefault.jpg'
+            },
+            {
+              id: 'nKQbqXAGY6k',
+              title: 'Gatos na Natureza',
+              thumb: 'https://i.ytimg.com/vi/nKQbqXAGY6k/maxresdefault.jpg'
+            },
+            {
+              id: '5dsGWM5XGdg',
+              title: 'Desenhos para Gatos',
+              thumb: 'https://i.ytimg.com/vi/5dsGWM5XGdg/maxresdefault.jpg'
+            }
+          ],
+          bird: [
+            {
+              id: '8nQF3zVotOg',
+              title: 'Pássaros para Gatos 1',
+              thumb: 'https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg'
+            },
+            {
+              id: 'QH2-TGUlwu4',
+              title: 'Pássaros para Gatos 2',
+              thumb: 'https://i.ytimg.com/vi/QH2-TGUlwu4/maxresdefault.jpg'
+            },
+            {
+              id: 'ByXuk9QqQkk',
+              title: 'Pássaros Coloridos',
+              thumb: 'https://i.ytimg.com/vi/ByXuk9QqQkk/maxresdefault.jpg'
+            },
+            {
+              id: 'kA244gAQhns',
+              title: 'Aves Exóticas',
+              thumb: 'https://i.ytimg.com/vi/kA244gAQhns/maxresdefault.jpg'
+            },
+            {
+              id: 'dZL7qvyDc1I',
+              title: 'Pássaros Cantando',
+              thumb: 'https://i.ytimg.com/vi/dZL7qvyDc1I/maxresdefault.jpg'
+            },
+            {
+              id: '3I-6y9E8u5c',
+              title: 'Beija-flores',
+              thumb: 'https://i.ytimg.com/vi/3I-6y9E8u5c/maxresdefault.jpg'
+            }
+          ],
+          kitten: [
+            {
+              id: '9Y31YSPo2i0',
+              title: 'Para Gatinhos 1',
+              thumb: 'https://i.ytimg.com/vi/9Y31YSPo2i0/maxresdefault.jpg'
+            },
+            {
+              id: 'jNQXAC9IVRw',
+              title: 'Para Gatinhos 2',
+              thumb: 'https://i.ytimg.com/vi/jNQXAC9IVRw/maxresdefault.jpg'
+            },
+            {
+              id: 'AYHaXXViER8',
+              title: 'Para Gatinhos 3',
+              thumb: 'https://i.ytimg.com/vi/AYHaXXViER8/maxresdefault.jpg'
+            },
+            {
+              id: 'tEPNTIhVXGI',
+              title: 'Para Gatinhos 4',
+              thumb: 'https://i.ytimg.com/vi/tEPNTIhVXGI/maxresdefault.jpg'
+            },
+            {
+              id: 'gO9KVopLsE0',
+              title: 'Para Gatinhos 5',
+              thumb: 'https://i.ytimg.com/vi/gO9KVopLsE0/maxresdefault.jpg'
+            },
+            {
+              id: '6gNBe9gRziA',
+              title: 'Para Gatinhos 6',
+              thumb: 'https://i.ytimg.com/vi/6gNBe9gRziA/maxresdefault.jpg'
+            }
+          ]
+        };
 
-    // Função para carregar os vídeos (similar à versão para cachorros)
-    function loadYouTubeVideos() {
-        const container = document.getElementById('youtubeSeriesContainer');
-        container.innerHTML = '';
-        
-        CAT_SERIES.forEach(video => {
-            const videoElement = document.createElement('div');
-            videoElement.className = 'movie';
-            videoElement.innerHTML = `
-                <div class="youtube-player">
-                    <iframe src="https://www.youtube.com/embed/${video.id}?rel=0&enablejsapi=1" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen></iframe>
-                </div>
-                <div class="movie-name">${video.title}</div>
-            `;
-            container.appendChild(videoElement);
-        });
-    }
+        // Função para simular o carregamento
+        function simulateLoading() {
+            // Tempo mínimo de exibição do loading (em milissegundos)
+            const minLoadingTime = 1500;
+            
+            // Tempo inicial
+            const startTime = Date.now();
+            
+            // Verifica login primeiro
+            if (!sessionStorage.getItem('isLoggedIn')) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Carrega os carrosseis
+            loadCarousel('popularSeries', seriesData.popular);
+            loadCarousel('birdSeries', seriesData.bird);
+            loadCarousel('kittenSeries', seriesData.kitten);
+            
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar-petflix');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
 
-    // Inicialização igual à versão para cachorros
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof YT !== 'undefined' && YT.loaded) {
-            loadYouTubeVideos();
-        } else {
-            setTimeout(loadYouTubeVideos, 1500);
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                sessionStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            });
+            
+            // Calcula o tempo restante para completar o minLoadingTime
+            const elapsedTime = Date.now() - startTime;
+            const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
+            
+            // Esconde o loading após o tempo mínimo
+            setTimeout(function() {
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                loadingOverlay.classList.add('fade-out');
+                
+                // Remove completamente o overlay após a animação
+                setTimeout(function() {
+                    loadingOverlay.style.display = 'none';
+                }, 500); // Tempo da animação de fade
+            }, remainingTime);
         }
-        
-        if (!sessionStorage.getItem('isLoggedIn')) {
-            window.location.href = 'index.html';
+
+        // Função para carregar carrossel
+        function loadCarousel(containerId, series) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            series.forEach(serie => {
+                const item = document.createElement('div');
+                item.className = 'series-item';
+                item.innerHTML = `
+                    <img src="${serie.thumb}" alt="${serie.title}" onclick="openModal('${serie.id}')">
+                    <div class="series-name">${serie.title}</div>
+                `;
+                container.appendChild(item);
+            });
         }
-    });
 
-    function onYouTubeIframeAPIReady() {
-        loadYouTubeVideos();
-    }
-</script>
+        // Função para rolar o carrossel
+        function scrollCarousel(containerId, scrollAmount) {
+            const container = document.getElementById(containerId);
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
 
-<!-- API do YouTube -->
-<script src="https://www.youtube.com/iframe_api"></script>
-<script src="JS/java.js"></script>
-<script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
+        function openModal(videoId) {
+            const modal = document.getElementById('seriesModal');
+            const iframe = document.getElementById('modalVideo');
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('seriesModal');
+            const iframe = document.getElementById('modalVideo');
+            iframe.src = '';
+            modal.style.display = 'none';
+        }
+
+        // Inicia o carregamento quando o DOM estiver pronto
+        document.addEventListener('DOMContentLoaded', simulateLoading);
+    </script>
+    <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
