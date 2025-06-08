@@ -88,14 +88,13 @@
             </div>
         </div>
 
-        <!-- NOVA SEÇÃO: Filmes de Caça e Ação -->
         <div class="series-carousel-container">
-            <h3 class="carousel-title">Filmes de Caça e Ação</h3>
+            <h3 class="carousel-title">Filmes Relaxantes</h3>
             <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('huntMovies', -300)"><i
+                <button class="carousel-btn prev" onclick="scrollCarousel('relaxMovies', -300)"><i
                         class="fas fa-paw"></i></button>
-                <div class="series-carousel" id="huntMovies"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('huntMovies', 300)"><i
+                <div class="series-carousel" id="relaxMovies"></div>
+                <button class="carousel-btn next" onclick="scrollCarousel('relaxMovies', 300)"><i
                         class="fas fa-paw"></i></button>
             </div>
         </div>
@@ -158,36 +157,36 @@
                     thumb: 'https://i.ytimg.com/vi/5GME4r_1Vsc/hqdefault.jpg?s…RUAAIhCGAE=&rs=AOn4CLBjgFLL5o1MUHgFY3ZsUZEZGGMmFA'
                 }
             ],
-            hunt: [
+            relax: [
                 {
-                    id: 'u_XMFu9LtxM',
-                    title: 'Caçada Noturna',
-                    thumb: 'https://i.ytimg.com/vi/u_XMFu9LtxM/maxresdefault.jpg'
+                    id: 'q2j2S1JD9Xk',
+                    title: 'Aquário Relaxante para Gatos',
+                    thumb: 'https://i.ytimg.com/vi/q2j2S1JD9Xk/maxresdefault.jpg'
                 },
                 {
-                    id: '_LKPHj1eUUs',
-                    title: 'Perseguição à Presa',
-                    thumb: 'https://i.ytimg.com/vi/_LKPHj1eUUs/maxresdefault.jpg'
+                    id: 'yW0aJS2dbkA',
+                    title: 'Lareira Aconchegante',
+                    thumb: 'https://i.ytimg.com/vi/yW0aJS2dbkA/maxresdefault.jpg'
                 },
                 {
-                    id: 'UCqedzwekuw',
-                    title: 'Missão: Capturar o Rato',
-                    thumb: 'https://i.ytimg.com/vi/UCqedzwekuw/maxresdefault.jpg'
+                    id: 'x2PaclaQq1Q',
+                    title: 'Chuva e Trovões Calmos',
+                    thumb: 'https://i.ytimg.com/vi/x2PaclaQq1Q/maxresdefault.jpg'
                 },
                 {
-                    id: 'zKhNRKvOD6U',
-                    title: 'A Arte da Caça',
-                    thumb: 'https://i.ytimg.com/vi/zKhNRKvOD6U/maxresdefault.jpg'
+                    id: '8xJwW6yFq3k',
+                    title: 'Floresta Serena',
+                    thumb: 'https://i.ytimg.com/vi/8xJwW6yFq3k/hqdefault.jpg'
                 },
                 {
-                    id: 'LUB37xAxK38',
-                    title: 'Bolas de Lã Assassinas',
-                    thumb: 'https://i.ytimg.com/vi/LUB37xAxK38/maxresdefault.jpg'
+                    id: '3JZ_D3ELgOc',
+                    title: 'Sons de Natureza',
+                    thumb: 'https://i.ytimg.com/vi/3JZ_D3ELgOc/hqdefault.jpg'
                 },
                 {
-                    id: '5CGdIhhAthI',
-                    title: 'O Peixe Elusivo',
-                    thumb: 'https://i.ytimg.com/vi/5CGdIhhAthI/maxresdefault.jpg'
+                    id: 'E8gmARGvPlI',
+                    title: 'Pássaros Cantando Suavemente',
+                    thumb: 'https://i.ytimg.com/vi/E8gmARGvPlI/hqdefault.jpg'
                 }
             ],
             adventure: [
@@ -240,7 +239,7 @@
 
             // Carrega os carrosseis
             loadCarousel('popularMovies', moviesData.popular);
-            loadCarousel('huntMovies', moviesData.hunt);
+            loadCarousel('relaxMovies', moviesData.relax);
             loadCarousel('adventureMovies', moviesData.adventure);
 
             // Navbar scroll effect
