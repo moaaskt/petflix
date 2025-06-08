@@ -5,20 +5,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="assets/caramelo.jpg" />
+    <link rel="icon" type="image/png" href="assets/gato-siames-1.jpg" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="css/style-filmes.css">
-    <link rel="stylesheet" href="css/films.css">
-    <title>PetFlix - Filmes</title>
+    <link rel="stylesheet" href="css/series.css">
+    <title>PetFlix - Filmes para Gatos</title>
 </head>
 
 <body>
-  
+
     <!-- sessão navbar  -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-petflix">
         <div class="container-fluid">
@@ -61,58 +60,51 @@
         </div>
     </nav>
 
-    <main class="movies-main">
+    <main class="series-main">
         <h1 class="title">Filmes</h1>
         
         <!-- Hero Video Section -->
         <div class="hero-video-section">
             <div class="hero-video-container">
-                <iframe id="heroVideo" src="https://www.youtube.com/embed/fR7opVeGcBY?si=4uo1g46Uni_aX7Hi"
-                    frameborder="0" allowfullscreen></iframe>
-                    <div class="hero-video-info">
-                    <h2 class="hero-video-title">Garfield: Fora de Casa</h2>
-                    <p class="hero-video-description">Garfield, o gato caseiro que odeia segundas-feiras e ama lasanha, se vê em uma aventura selvagem ao ar livre quando seu pai há muito perdido o envolve em um assalto de alto risco.</p>
+                <iframe id="heroVideo" src="https://www.youtube.com/embed/1RkZbw02lgY?rel=0&modestbranding=1" frameborder="0" allowfullscreen></iframe>
+                <div class="hero-video-info">
+                    <h2 class="hero-video-title">Melhores Filmes para Gatos</h2>
+                    <p class="hero-video-description">Coleção especial de filmes para entreter seu felino quando você não está em casa.</p>
                 </div>
             </div>
         </div>
         
         <!-- Carrossel de Filmes -->
-        <div class="movies-carousel-container">
-            <h3 class="carousel-title">Filmes Clássicos</h3>
+        <div class="series-carousel-container">
+            <h3 class="carousel-title">Filmes Populares</h3>
             <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('classicMovies', -300)"><i
-                        class="fas fa-chevron-left"></i></button>
-                <div class="movies-carousel" id="classicMovies"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('classicMovies', 300)"><i
-                        class="fas fa-chevron-right"></i></button>
+                <button class="carousel-btn prev" onclick="scrollCarousel('popularMovies', -300)"><i class="fas fa-paw"></i></button>
+                <div class="series-carousel" id="popularMovies"></div>
+                <button class="carousel-btn next" onclick="scrollCarousel('popularMovies', 300)"><i class="fas fa-paw"></i></button>
             </div>
         </div>
-
-        <div class="movies-carousel-container">
-            <h3 class="carousel-title">Aventuras </h3>
+        
+        <div class="series-carousel-container">
+            <h3 class="carousel-title">Filmes com Pássaros</h3>
             <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('adventureMovies', -300)"><i
-                        class="fas fa-chevron-left"></i></button>
-                <div class="movies-carousel" id="adventureMovies"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('adventureMovies', 300)"><i
-                        class="fas fa-chevron-right"></i></button>
+                <button class="carousel-btn prev" onclick="scrollCarousel('birdMovies', -300)"><i class="fas fa-paw"></i></button>
+                <div class="series-carousel" id="birdMovies"></div>
+                <button class="carousel-btn next" onclick="scrollCarousel('birdMovies', 300)"><i class="fas fa-paw"></i></button>
             </div>
         </div>
-
-        <div class="movies-carousel-container">
-            <h3 class="carousel-title">Comédias</h3>
+        
+        <div class="series-carousel-container">
+            <h3 class="carousel-title">Filmes de Aventura</h3>
             <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('comedyMovies', -300)"><i
-                        class="fas fa-chevron-left"></i></button>
-                <div class="movies-carousel" id="comedyMovies"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('comedyMovies', 300)"><i
-                        class="fas fa-chevron-right"></i></button>
+                <button class="carousel-btn prev" onclick="scrollCarousel('adventureMovies', -300)"><i class="fas fa-paw"></i></button>
+                <div class="series-carousel" id="adventureMovies"></div>
+                <button class="carousel-btn next" onclick="scrollCarousel('adventureMovies', 300)"><i class="fas fa-paw"></i></button>
             </div>
         </div>
     </main>
-
+    
     <!-- Modal -->
-    <div class="movies-modal" id="moviesModal">
+    <div class="series-modal" id="seriesModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
             <div class="modal-video-container">
@@ -122,127 +114,128 @@
     </div>
 
 
-    
     <script>
-        // Dados dos filmes
+        // Dados dos filmes para gatos
         const moviesData = {
-            classic: [
-                {
-                    id: 'PbjaJwPjWmA',
-                    title: 'Bird Watching for Cats - 8 Hours',
-                    thumb: 'https://i.ytimg.com/vi/PbjaJwPjWmA/maxresdefault.jpg'
-                },
-                {
-                    id: 'W86cTIoMv2U',
-                    title: 'Cat Games: Mice in the Jerry Hole',
-                    thumb: 'https://i.ytimg.com/vi/W86cTIoMv2U/maxresdefault.jpg'
-                },
-                {
-                    id: 'kP3VQwRKgFQ',
-                    title: 'Tom & Jerry Classic Compilation',
-                    thumb: 'https://i.ytimg.com/vi/kP3VQwRKgFQ/maxresdefault.jpg'
-                },
-                {
-                    id: '9H1XjqZ5D1g',
-                    title: 'BBC Earth: Birds Life - Cat TV',
-                    thumb: 'https://i.ytimg.com/vi/9H1XjqZ5D1g/maxresdefault.jpg'
-                },
-                {
-                    id: '4sj1MT05lAA',
-                    title: 'Finding Nemo - Fish Scene for Cats',
-                    thumb: 'https://i.ytimg.com/vi/4sj1MT05lAA/maxresdefault.jpg'
-                },
-                {
-                    id: 'L9I0LQ1d2zM',
-                    title: 'Squirrel & Bird Videos for Cats',
-                    thumb: 'https://i.ytimg.com/vi/L9I0LQ1d2zM/maxresdefault.jpg'
-                }
-            ],
-            adventure: [
-                {
-                    id: 'z3U0udLH974',
-                    title: 'Jungle Birds - Cat Adventure Video',
-                    thumb: 'https://i.ytimg.com/vi/z3U0udLH974/maxresdefault.jpg'
-                },
-                {
-                    id: 'bP9YtW8Z5no',
-                    title: 'Underwater Fish - Cat Exploration',
-                    thumb: 'https://i.ytimg.com/vi/bP9YtW8Z5no/maxresdefault.jpg'
-                },
-                {
-                    id: 'DqU5yFpl1Dg',
-                    title: 'Cat TV: Mice Chase Adventure',
-                    thumb: 'https://i.ytimg.com/vi/DqU5yFpl1Dg/maxresdefault.jpg'
-                },
-                {
-                    id: 'RJT6LtQZl7k',
-                    title: '4K Birds - Cat Wildlife Adventure',
-                    thumb: 'https://i.ytimg.com/vi/RJT6LtQZl7k/maxresdefault.jpg'
-                },
-                {
-                    id: 'nAChB5LndqY',
-                    title: 'Butterflies & Dragonflies for Cats',
-                    thumb: 'https://i.ytimg.com/vi/nAChB5LndqY/maxresdefault.jpg'
-                },
-                {
-                    id: '2XID_W4neJo',
-                    title: 'Cat Safari: African Wildlife',
-                    thumb: 'https://i.ytimg.com/vi/2XID_W4neJo/maxresdefault.jpg'
-                }
-            ],
-            comedy: [
-                {
-                    id: 'QH2-TGUlwu4',
-                    title: 'Funny Cats vs Robots - Comedy',
-                    thumb: 'https://i.ytimg.com/vi/QH2-TGUlwu4/maxresdefault.jpg'
-                },
-                {
-                    id: 'ByH9LD0-mCI',
-                    title: 'Kitten Chaos - Funny Cat Compilation',
-                    thumb: 'https://i.ytimg.com/vi/ByH9LD0-mCI/maxresdefault.jpg'
-                },
-                {
-                    id: 'J---aiyznGQ',
-                    title: 'Classic Cat Fails - Funny Moments',
-                    thumb: 'https://i.ytimg.com/vi/J---aiyznGQ/maxresdefault.jpg'
-                },
-                {
-                    id: 'dQw4w9WgXcQ',
-                    title: 'Cats & Cucumbers - Hilarious Reactions',
-                    thumb: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg'
-                },
-                {
-                    id: 'XqZsoesa55w',
-                    title: 'Baby Shark - Cat Reaction (Parody)',
-                    thumb: 'https://i.ytimg.com/vi/XqZsoesa55w/maxresdefault.jpg'
-                },
-                {
-                    id: '9Y31YSPo2i0',
-                    title: 'Cats vs Laser Pointers - Comedy Gold',
-                    thumb: 'https://i.ytimg.com/vi/9Y31YSPo2i0/maxresdefault.jpg'
-                }
-            ]
+          popular: [
+            {
+              id: '1RkZbw02lgY',
+              title: 'O Rei Leão - Clássico para Gatos',
+              thumb: 'https://i.ytimg.com/vi/1RkZbw02lgY/maxresdefault.jpg'
+            },
+            {
+              id: 'FUgIDd3j9Dk',
+              title: 'Como Cães e Gatos',
+              thumb: 'https://i.ytimg.com/vi/FUgIDd3j9Dk/hq720.jpg?sqp=-…BACGAY4AUAB&rs=AOn4CLCQCNJl52hbPdq3BcdpKUpkg2QSOg'
+            },
+            {
+              id: 'kRXES1kjLb4',
+              title: 'Oliver e Sua Turma',
+              thumb: 'https://i.ytimg.com/vi/kRXES1kjLb4/maxresdefault.jpg'
+            },
+            {
+              id: 'ByXuk9QqQkk',
+              title: 'Gatos em Ação',
+              thumb: 'https://i.ytimg.com/vi/ByXuk9QqQkk/maxresdefault.jpg'
+            },
+            {
+              id: 'nKQbqXAGY6k',
+              title: 'Gatos na Natureza',
+              thumb: 'https://i.ytimg.com/vi/nKQbqXAGY6k/maxresdefault.jpg'
+            },
+            {
+              id: '5dsGWM5XGdg',
+              title: 'A Vida Secreta dos Gatos',
+              thumb: 'https://i.ytimg.com/vi/5dsGWM5XGdg/maxresdefault.jpg'
+            }
+          ],
+          bird: [
+            {
+              id: '8nQF3zVotOg',
+              title: 'Pássaros para Gatos - Filme 1',
+              thumb: 'https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg'
+            },
+            {
+              id: 'QH2-TGUlwu4',
+              title: 'Pássaros para Gatos - Filme 2',
+              thumb: 'https://i.ytimg.com/vi/QH2-TGUlwu4/maxresdefault.jpg'
+            },
+            {
+              id: 'ByXuk9QqQkk',
+              title: 'Pássaros Coloridos',
+              thumb: 'https://i.ytimg.com/vi/ByXuk9QqQkk/maxresdefault.jpg'
+            },
+            {
+              id: 'kA244gAQhns',
+              title: 'Aves Exóticas - O Filme',
+              thumb: 'https://i.ytimg.com/vi/kA244gAQhns/maxresdefault.jpg'
+            },
+            {
+              id: 'dZL7qvyDc1I',
+              title: 'Pássaros Cantando - Filme',
+              thumb: 'https://i.ytimg.com/vi/dZL7qvyDc1I/maxresdefault.jpg'
+            },
+            {
+              id: '3I-6y9E8u5c',
+              title: 'Beija-flores - O Documentário',
+              thumb: 'https://i.ytimg.com/vi/3I-6y9E8u5c/maxresdefault.jpg'
+            }
+          ],
+          adventure: [
+            {
+              id: '9Y31YSPo2i0',
+              title: 'Aventuras Felinas 1',
+              thumb: 'https://i.ytimg.com/vi/9Y31YSPo2i0/maxresdefault.jpg'
+            },
+            {
+              id: 'jNQXAC9IVRw',
+              title: 'Aventuras Felinas 2',
+              thumb: 'https://i.ytimg.com/vi/jNQXAC9IVRw/maxresdefault.jpg'
+            },
+            {
+              id: 'AYHaXXViER8',
+              title: 'Caçada Noturna',
+              thumb: 'https://i.ytimg.com/vi/AYHaXXViER8/maxresdefault.jpg'
+            },
+            {
+              id: 'tEPNTIhVXGI',
+              title: 'O Gato Explorador',
+              thumb: 'https://i.ytimg.com/vi/tEPNTIhVXGI/maxresdefault.jpg'
+            },
+            {
+              id: 'gO9KVopLsE0',
+              title: 'Missão: Capturar o Rato',
+              thumb: 'https://i.ytimg.com/vi/gO9KVopLsE0/maxresdefault.jpg'
+            },
+            {
+              id: '6gNBe9gRziA',
+              title: 'A Grande Jornada',
+              thumb: 'https://i.ytimg.com/vi/6gNBe9gRziA/maxresdefault.jpg'
+            }
+          ]
         };
-        // Funções JavaScript
-        document.addEventListener('DOMContentLoaded', function () {
-            // Carrega os carrosseis
-            loadCarousel('classicMovies', moviesData.classic);
-            loadCarousel('adventureMovies', moviesData.adventure);
-            loadCarousel('comedyMovies', moviesData.comedy);
 
-            // Verifica login
+        // Função para simular o carregamento
+        function simulateLoading() {
+            // Tempo mínimo de exibição do loading (em milissegundos)
+            const minLoadingTime = 1500;
+            
+            // Tempo inicial
+            const startTime = Date.now();
+            
+            // Verifica login primeiro
             if (!sessionStorage.getItem('isLoggedIn')) {
                 window.location.href = 'index.html';
+                return;
             }
-
-            // Logout
-            document.getElementById('logoutBtn').addEventListener('click', function () {
-                sessionStorage.removeItem('isLoggedIn');
-                window.location.href = 'index.html';
-            });
-
+            
+            // Carrega os carrosseis
+            loadCarousel('popularMovies', moviesData.popular);
+            loadCarousel('birdMovies', moviesData.bird);
+            loadCarousel('adventureMovies', moviesData.adventure);
+            
             // Navbar scroll effect
-            window.addEventListener('scroll', function () {
+            window.addEventListener('scroll', function() {
                 const navbar = document.querySelector('.navbar-petflix');
                 if (window.scrollY > 50) {
                     navbar.classList.add('scrolled');
@@ -250,41 +243,42 @@
                     navbar.classList.remove('scrolled');
                 }
             });
-        });
-  function initPageSpecific() {
-        // Carrega os carrosseis
-        loadCarousel('classicMovies', moviesData.classic);
-        loadCarousel('adventureMovies', moviesData.adventure);
-        loadCarousel('comedyMovies', moviesData.comedy);
 
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar-petflix');
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
-        });
-
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            sessionStorage.removeItem('isLoggedIn');
-            window.location.href = 'index.html';
-        });
-    }
-
-    // Inicia quando o DOM estiver pronto
-    document.addEventListener('DOMContentLoaded', initPageSpecific);
-
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                sessionStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            });
+            
+            // Calcula o tempo restante para completar o minLoadingTime
+            const elapsedTime = Date.now() - startTime;
+            const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
+            
+            // Esconde o loading após o tempo mínimo
+            setTimeout(function() {
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                if (loadingOverlay) {
+                    loadingOverlay.classList.add('fade-out');
+                    
+                    // Remove completamente o overlay após a animação
+                    setTimeout(function() {
+                        loadingOverlay.style.display = 'none';
+                    }, 500); // Tempo da animação de fade
+                }
+            }, remainingTime);
+        }
 
         // Função para carregar carrossel
         function loadCarousel(containerId, movies) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
-
+            
             movies.forEach(movie => {
                 const item = document.createElement('div');
-                item.className = 'movie-item';
+                item.className = 'series-item';
                 item.innerHTML = `
                     <img src="${movie.thumb}" alt="${movie.title}" onclick="openModal('${movie.id}')">
-                    <div class="movie-name">${movie.title}</div>
+                    <div class="series-name">${movie.title}</div>
                 `;
                 container.appendChild(item);
             });
@@ -293,38 +287,30 @@
         // Função para rolar o carrossel
         function scrollCarousel(containerId, scrollAmount) {
             const container = document.getElementById(containerId);
-            container.scrollBy({
-                left: scrollAmount,
-                behavior: 'smooth'
-            });
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
 
-        // Função para abrir o modal
         function openModal(videoId) {
-            const modal = document.getElementById('moviesModal');
+            const modal = document.getElementById('seriesModal');
             const iframe = document.getElementById('modalVideo');
             iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
             modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
         }
 
-        // Função para fechar o modal
         function closeModal() {
-            const modal = document.getElementById('moviesModal');
+            const modal = document.getElementById('seriesModal');
             const iframe = document.getElementById('modalVideo');
             iframe.src = '';
             modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
         }
 
-     
+        // Inicia o carregamento quando o DOM estiver pronto
+        document.addEventListener('DOMContentLoaded', simulateLoading);
     </script>
-    
-    <script src="js/loading.js"></script>
+
     <!-- API do YouTube -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
