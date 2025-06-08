@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,16 +15,17 @@
     <link rel="stylesheet" href="css/series.css">
     <title>PetFlix - Documentários</title>
 </head>
+
 <body>
     <!-- Sessão de carregamento -->
-  
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-petflix">
         <div class="container-fluid">
             <a class="navbar-brand" href="indexgato.html">
                 <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="Petflix">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"> 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -62,10 +64,12 @@
         <!-- Hero Video Section -->
         <div class="hero-video-section">
             <div class="hero-video-container">
-                <iframe id="heroVideo" src="https://www.youtube.com/embed/rKHLiPJQrqA?rel=0&modestbranding=1" frameborder="0" allowfullscreen></iframe>
+                <iframe id="heroVideo" src="https://www.youtube.com/embed/rKHLiPJQrqA?rel=0&modestbranding=1"
+                    frameborder="0" allowfullscreen></iframe>
                 <div class="hero-video-info">
                     <h2 class="hero-video-title">Gatos: A História Secreta</h2>
-                    <p class="hero-video-description">Um mergulho fascinante na história e comportamento dos felinos domésticos.</p>
+                    <p class="hero-video-description">Um mergulho fascinante na história e comportamento dos felinos
+                        domésticos.</p>
                 </div>
             </div>
         </div>
@@ -74,27 +78,33 @@
         <div class="series-carousel-container">
             <h3 class="carousel-title">Documentários Populares</h3>
             <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('popularDocs', -300)"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-btn prev" onclick="scrollCarousel('popularDocs', -300)"><i
+                        class="fas fa-chevron-left"></i></button>
                 <div class="series-carousel" id="popularDocs"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('popularDocs', 300)"><i class="fas fa-chevron-right"></i></button>
+                <button class="carousel-btn next" onclick="scrollCarousel('popularDocs', 300)"><i
+                        class="fas fa-chevron-right"></i></button>
             </div>
         </div>
 
         <div class="series-carousel-container">
             <h3 class="carousel-title">Natureza e Gatos</h3>
             <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('natureDocs', -300)"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-btn prev" onclick="scrollCarousel('natureDocs', -300)"><i
+                        class="fas fa-chevron-left"></i></button>
                 <div class="series-carousel" id="natureDocs"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('natureDocs', 300)"><i class="fas fa-chevron-right"></i></button>
+                <button class="carousel-btn next" onclick="scrollCarousel('natureDocs', 300)"><i
+                        class="fas fa-chevron-right"></i></button>
             </div>
         </div>
 
         <div class="series-carousel-container">
             <h3 class="carousel-title">Curiosidades Felinas</h3>
             <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('funnyDocs', -300)"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-btn prev" onclick="scrollCarousel('funnyDocs', -300)"><i
+                        class="fas fa-chevron-left"></i></button>
                 <div class="series-carousel" id="funnyDocs"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('funnyDocs', 300)"><i class="fas fa-chevron-right"></i></button>
+                <button class="carousel-btn next" onclick="scrollCarousel('funnyDocs', 300)"><i
+                        class="fas fa-chevron-right"></i></button>
             </div>
         </div>
     </main>
@@ -109,35 +119,146 @@
         </div>
     </div>
 
-  
+
 
     <script>
         // Dados dos documentários sobre gatos
         const docsData = {
             popular: [
-                { id: 'rKHLiPJQrqA', title: 'Gatos: A História Secreta', thumb: 'https://i.ytimg.com/vi/rKHLiPJQrqA/maxresdefault.jpg' },
-                { id: 'jNQXAC9IVRw', title: 'Como Se Comunica um Gato?', thumb: 'https://i.ytimg.com/vi/jNQXAC9IVRw/maxresdefault.jpg' },
-                { id: 'LsBrT6vbQa4', title: 'Vida Selvagem dos Gatos', thumb: 'https://i.ytimg.com/vi/LsBrT6vbQa4/maxresdefault.jpg' },
-                { id: 'WEkSYw3o5is', title: 'O Cérebro dos Gatos', thumb: 'https://i.ytimg.com/vi/WEkSYw3o5is/maxresdefault.jpg' },
-                { id: 'nKQbqXAGY6k', title: 'Gatos e Humanos', thumb: 'https://i.ytimg.com/vi/nKQbqXAGY6k/maxresdefault.jpg' },
-                { id: '5dsGWM5XGdg', title: 'Gatos em Casa', thumb: 'https://i.ytimg.com/vi/5dsGWM5XGdg/maxresdefault.jpg' }
+                {
+                    "id": "cjWPotYk7x0",
+                    "title": "Uma Breve História Dos Gatos (Documentário Original)",
+                    "thumb": "https://img.youtube.com/vi/cjWPotYk7x0/maxresdefault.jpg"
+                },
+                {
+                    "id": "nnWgIz6UHN4",
+                    "title": "Discovery Channel - Documentário sobre Gatos 1/5",
+                    "thumb": "https://i.ytimg.com/vi/p2volUiJOi4/hqdefault.jpg?sqp=-oaymwEnCOADEI4CSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCJdI4MX-c3gl6tPtBCYzr-GmdQew"
+                },
+                {
+                    "id": "p2volUiJOi4",
+                    "title": "Tudo Sobre os Gatos: Discovery Channel | Documentário Dublado",
+                    "thumb": "	https://i.ytimg.com/vi/DQskpw46pLg/hqdefault.jpg?s…BACGAY4AUAB&rs=AOn4CLDU6-c7S6ApWF8W8Pj-a4vi8y_2xQ"
+                },
+                {
+                    "id": "eP_Z2De3rXY",
+                    "title": "Kedi – Gatos de Istambul",
+                    "thumb": "https://i.ytimg.com/vi/eP_Z2De3rXY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB7Tak_z_ms1UUrylOk-isv7ZtWFw"
+                },
+                {
+                    "id": "LionInYourLivingRoom",
+                    "title": "O Leão na Sua Sala",
+                    "thumb": "	https://i.ytimg.com/vi/ZFk6mO4In9w/hq720.jpg?sqp=-…AFwAcABBg==&rs=AOn4CLDlTTa2OkxSOSrZ5dJKi0IDkZ68Mg"
+                },
+                {
+                    "id": "CatPeopleNetflix",
+                    "title": "Cat People – Série Documental",
+                    "thumb": "https://img.youtube.com/vi/CatPeopleNetflix/maxresdefault.jpg"
+                }
+             
             ],
             nature: [
-                { id: 'cbSo3GQrr9w', title: 'Gatos no Mundo Selvagem', thumb: 'https://i.ytimg.com/vi/cbSo3GQrr9w/maxresdefault.jpg' },
-                { id: 'dZL7qvyDc1I', title: 'Felinos Livres', thumb: 'https://i.ytimg.com/vi/dZL7qvyDc1I/maxresdefault.jpg' },
-                { id: 'ByXuk9QqQkk', title: 'Leões e Gatos Domésticos', thumb: 'https://i.ytimg.com/vi/ByXuk9QqQkk/maxresdefault.jpg' },
-                { id: 'kA244gAQhns', title: 'A Evolução dos Felinos', thumb: 'https://i.ytimg.com/vi/kA244gAQhns/maxresdefault.jpg' },
-                { id: '3I-6y9E8u5c', title: 'Gatos nas Montanhas', thumb: 'https://i.ytimg.com/vi/3I-6y9E8u5c/maxresdefault.jpg' },
-                { id: '8nQF3zVotOg', title: 'Gatos em Ambientes Extremos', thumb: 'https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg' }
-            ],
+                {
+                    "id": "EQE-M_q-G1g",
+                    "title": "Documentário sobre os GATOS | Filme Completo Dublado",
+                    "thumb": "https://img.youtube.com/vi/EQE-M_q-G1g/maxresdefault.jpg"
+                },
+                {
+                    "id": "cjWPotYk7x0",
+                    "title": "Uma Breve História Dos Gatos (Documentário Original)",
+                    "thumb": "https://img.youtube.com/vi/cjWPotYk7x0/maxresdefault.jpg"
+                },
+                {
+                    "id": "nnWgIz6UHN4",
+                    "title": "Discovery Channel - Documentário sobre Gatos 1/5",
+                    "thumb": "https://img.youtube.com/vi/nnWgIz6UHN4/maxresdefault.jpg"
+                },
+                {
+                    "id": "p2volUiJOi4",
+                    "title": "Tudo Sobre os Gatos: Discovery Channel | Documentário Dublado",
+                    "thumb": "https://img.youtube.com/vi/p2volUiJOi4/maxresdefault.jpg"
+                },
+                {
+                    "id": "KediMovie",
+                    "title": "Kedi – Gatos de Istambul",
+                    "thumb": "https://img.youtube.com/vi/KediMovie/maxresdefault.jpg"
+                },
+                {
+                    "id": "LionInYourLivingRoom",
+                    "title": "O Leão na Sua Sala",
+                    "thumb": "https://img.youtube.com/vi/LionInYourLivingRoom/maxresdefault.jpg"
+                },
+                {
+                    "id": "CatPeopleNetflix",
+                    "title": "Cat People – Série Documental",
+                    "thumb": "https://img.youtube.com/vi/CatPeopleNetflix/maxresdefault.jpg"
+                },
+                {
+                    "id": "PrivateLifeOfACat",
+                    "title": "A Vida Privada de um Gato",
+                    "thumb": "https://img.youtube.com/vi/PrivateLifeOfACat/maxresdefault.jpg"
+                },
+                {
+                    "id": "CatsUncovered",
+                    "title": "Cats Uncovered – BBC Documentary",
+                    "thumb": "https://img.youtube.com/vi/CatsUncovered/maxresdefault.jpg"
+                },
+                {
+                    "id": "SecretLifeOfCats",
+                    "title": "The Secret Life of Cats – National Geographic",
+                    "thumb": "https://img.youtube.com/vi/SecretLifeOfCats/maxresdefault.jpg"
+                }],
             funny: [
-                { id: '9Y31YSPo2i0', title: 'Comportamentos Engraçados', thumb: 'https://i.ytimg.com/vi/9Y31YSPo2i0/maxresdefault.jpg' },
-                { id: 'gO9KVopLsE0', title: 'Por Que Gatos Fazem Isso?', thumb: 'https://i.ytimg.com/vi/gO9KVopLsE0/maxresdefault.jpg' },
-                { id: '6gNBe9gRziA', title: 'Reações Inesperadas', thumb: 'https://i.ytimg.com/vi/6gNBe9gRziA/maxresdefault.jpg' },
-                { id: 'tEPNTIhVXGI', title: 'Gatos e Tecnologia', thumb: 'https://i.ytimg.com/vi/tEPNTIhVXGI/maxresdefault.jpg' },
-                { id: 'AYHaXXViER8', title: 'Gatos no Dia a Dia', thumb: 'https://i.ytimg.com/vi/AYHaXXViER8/maxresdefault.jpg' },
-                { id: 'QH2-TGUlwu4', title: 'As Traquinagens dos Gatos', thumb: 'https://i.ytimg.com/vi/QH2-TGUlwu4/maxresdefault.jpg' }
-            ]
+      {
+      "id": "XyZ123abc",
+      "title": "Gatos Selvagens: A Vida dos Felinos",
+      "thumb": "https://img.youtube.com/vi/XyZ123abc/maxresdefault.jpg"
+    },
+    {
+      "id": "Abc456def",
+      "title": "Mistérios Felinos: O Comportamento dos Gatos",
+      "thumb": "https://img.youtube.com/vi/Abc456def/maxresdefault.jpg"
+    },
+    {
+      "id": "Ghi789jkl",
+      "title": "Gatos e Humanos: Uma Relação Milenar",
+      "thumb": "https://img.youtube.com/vi/Ghi789jkl/maxresdefault.jpg"
+    },
+    {
+      "id": "Mno321pqr",
+      "title": "Felinos Urbanos: A Vida dos Gatos de Rua",
+      "thumb": "https://img.youtube.com/vi/Mno321pqr/maxresdefault.jpg"
+    },
+    {
+      "id": "Stu654vwx",
+      "title": "O Instinto dos Gatos: Caçadores Natos",
+      "thumb": "https://img.youtube.com/vi/Stu654vwx/maxresdefault.jpg"
+    },
+    {
+      "id": "Yza987bcd",
+      "title": "Gatos no Mundo Antigo: História e Cultura",
+      "thumb": "https://img.youtube.com/vi/Yza987bcd/maxresdefault.jpg"
+    },
+    {
+      "id": "Efg210hij",
+      "title": "A Ciência dos Gatos: O Que os Torna Únicos?",
+      "thumb": "https://img.youtube.com/vi/Efg210hij/maxresdefault.jpg"
+    },
+    {
+      "id": "Lmn543opq",
+      "title": "Gatos Gigantes: Felinos Selvagens ao Redor do Mundo",
+      "thumb": "https://img.youtube.com/vi/Lmn543opq/maxresdefault.jpg"
+    },
+    {
+      "id": "Rst876uvw",
+      "title": "Gatos e Suas Personalidades: O Que Diz a Ciência?",
+      "thumb": "https://img.youtube.com/vi/Rst876uvw/maxresdefault.jpg"
+    },
+    {
+      "id": "Vwx109yzA",
+      "title": "Gatos e a Arte: Como Inspiraram a Humanidade",
+      "thumb": "https://img.youtube.com/vi/Vwx109yzA/maxresdefault.jpg"
+    }   ]
         };
 
         function simulateLoading() {
@@ -204,11 +325,12 @@
 
         document.addEventListener('DOMContentLoaded', simulateLoading);
     </script>
-<script src="JS/loading.js"></script>
+    <script src="JS/loading.js"></script>
 
-      <!-- API do YouTube -->
+    <!-- API do YouTube -->
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
