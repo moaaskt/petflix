@@ -62,47 +62,55 @@
 
     <main class="series-main">
         <h1 class="title">Filmes</h1>
-        
+
         <!-- Hero Video Section -->
         <div class="hero-video-section">
             <div class="hero-video-container">
-                <iframe id="heroVideo" src="https://www.youtube.com/embed/1RkZbw02lgY?rel=0&modestbranding=1" frameborder="0" allowfullscreen></iframe>
+                <iframe id="heroVideo" src="https://www.youtube.com/embed/k0Spx_ggh0M?si=tYUUcz2kHjwKMUUg"
+                    frameborder="0" allowfullscreen></iframe>
                 <div class="hero-video-info">
                     <h2 class="hero-video-title">Melhores Filmes para Gatos</h2>
-                    <p class="hero-video-description">Coleção especial de filmes para entreter seu felino quando você não está em casa.</p>
+                    <p class="hero-video-description">Coleção especial de filmes para entreter seu felino quando você
+                        não está em casa.</p>
                 </div>
             </div>
         </div>
-        
+
         <!-- Carrossel de Filmes -->
         <div class="series-carousel-container">
             <h3 class="carousel-title">Filmes Populares</h3>
             <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('popularMovies', -300)"><i class="fas fa-paw"></i></button>
+                <button class="carousel-btn prev" onclick="scrollCarousel('popularMovies', -300)"><i
+                        class="fas fa-paw"></i></button>
                 <div class="series-carousel" id="popularMovies"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('popularMovies', 300)"><i class="fas fa-paw"></i></button>
+                <button class="carousel-btn next" onclick="scrollCarousel('popularMovies', 300)"><i
+                        class="fas fa-paw"></i></button>
             </div>
         </div>
-        
+
         <div class="series-carousel-container">
             <h3 class="carousel-title">Filmes com Pássaros</h3>
             <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('birdMovies', -300)"><i class="fas fa-paw"></i></button>
+                <button class="carousel-btn prev" onclick="scrollCarousel('birdMovies', -300)"><i
+                        class="fas fa-paw"></i></button>
                 <div class="series-carousel" id="birdMovies"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('birdMovies', 300)"><i class="fas fa-paw"></i></button>
+                <button class="carousel-btn next" onclick="scrollCarousel('birdMovies', 300)"><i
+                        class="fas fa-paw"></i></button>
             </div>
         </div>
-        
+
         <div class="series-carousel-container">
             <h3 class="carousel-title">Filmes de Aventura</h3>
             <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('adventureMovies', -300)"><i class="fas fa-paw"></i></button>
+                <button class="carousel-btn prev" onclick="scrollCarousel('adventureMovies', -300)"><i
+                        class="fas fa-paw"></i></button>
                 <div class="series-carousel" id="adventureMovies"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('adventureMovies', 300)"><i class="fas fa-paw"></i></button>
+                <button class="carousel-btn next" onclick="scrollCarousel('adventureMovies', 300)"><i
+                        class="fas fa-paw"></i></button>
             </div>
         </div>
     </main>
-    
+
     <!-- Modal -->
     <div class="series-modal" id="seriesModal">
         <div class="modal-content">
@@ -117,125 +125,125 @@
     <script>
         // Dados dos filmes para gatos
         const moviesData = {
-          popular: [
-            {
-              id: 'TjrrKBEjcTg',
-              title: 'O Rei Leão 3 - Clássico para Gatos',
-              thumb: 'https://i.ytimg.com/vi/p_6gMsjyzXY/hqdefault.jpg?s…RUAAIhCGAE=&rs=AOn4CLA-IKe5h0xoX2qzs_-hkn8Y9VJ6WA'
-            },
-            {
-              id: 'FUgIDd3j9Dk',
-              title: 'Como Cães e Gatos',
-              thumb: 'https://i.ytimg.com/vi/FUgIDd3j9Dk/hq720.jpg?sqp=-…BACGAY4AUAB&rs=AOn4CLCQCNJl52hbPdq3BcdpKUpkg2QSOg'
-            },
-            {
-              id: 'rt69DjH_erY',
-              title: 'Oliver e Sua Turma',
-              thumb: 'https://i.ytimg.com/vi/eZ3DZCcy54M/hq720.jpg?sqp=-…RUAAIhCGAE=&rs=AOn4CLAfVCUr_3_Nzaq6zcFPKVdsdzGeKg'
-            },
-            {
-              id: 'ByXuk9QqQkk',
-              title: 'Gatos em Ação',
-              thumb: 'https://i.ytimg.com/vi/ByXuk9QqQkk/maxresdefault.jpg'
-            },
-            {
-              id: 'nKQbqXAGY6k',
-              title: 'Gatos na Natureza',
-              thumb: 'https://i.ytimg.com/vi/nKQbqXAGY6k/maxresdefault.jpg'
-            },
-            {
-              id: '5dsGWM5XGdg',
-              title: 'A Vida Secreta dos Gatos',
-              thumb: 'https://i.ytimg.com/vi/5dsGWM5XGdg/maxresdefault.jpg'
-            }
-          ],
-          bird: [
-            {
-              id: '8nQF3zVotOg',
-              title: 'Pássaros para Gatos - Filme 1',
-              thumb: 'https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg'
-            },
-            {
-              id: 'QH2-TGUlwu4',
-              title: 'Pássaros para Gatos - Filme 2',
-              thumb: 'https://i.ytimg.com/vi/QH2-TGUlwu4/maxresdefault.jpg'
-            },
-            {
-              id: 'ByXuk9QqQkk',
-              title: 'Pássaros Coloridos',
-              thumb: 'https://i.ytimg.com/vi/ByXuk9QqQkk/maxresdefault.jpg'
-            },
-            {
-              id: 'kA244gAQhns',
-              title: 'Aves Exóticas - O Filme',
-              thumb: 'https://i.ytimg.com/vi/kA244gAQhns/maxresdefault.jpg'
-            },
-            {
-              id: 'dZL7qvyDc1I',
-              title: 'Pássaros Cantando - Filme',
-              thumb: 'https://i.ytimg.com/vi/dZL7qvyDc1I/maxresdefault.jpg'
-            },
-            {
-              id: '3I-6y9E8u5c',
-              title: 'Beija-flores - O Documentário',
-              thumb: 'https://i.ytimg.com/vi/3I-6y9E8u5c/maxresdefault.jpg'
-            }
-          ],
-          adventure: [
-            {
-              id: '9Y31YSPo2i0',
-              title: 'Aventuras Felinas 1',
-              thumb: 'https://i.ytimg.com/vi/9Y31YSPo2i0/maxresdefault.jpg'
-            },
-            {
-              id: 'jNQXAC9IVRw',
-              title: 'Aventuras Felinas 2',
-              thumb: 'https://i.ytimg.com/vi/jNQXAC9IVRw/maxresdefault.jpg'
-            },
-            {
-              id: 'AYHaXXViER8',
-              title: 'Caçada Noturna',
-              thumb: 'https://i.ytimg.com/vi/AYHaXXViER8/maxresdefault.jpg'
-            },
-            {
-              id: 'tEPNTIhVXGI',
-              title: 'O Gato Explorador',
-              thumb: 'https://i.ytimg.com/vi/tEPNTIhVXGI/maxresdefault.jpg'
-            },
-            {
-              id: 'gO9KVopLsE0',
-              title: 'Missão: Capturar o Rato',
-              thumb: 'https://i.ytimg.com/vi/gO9KVopLsE0/maxresdefault.jpg'
-            },
-            {
-              id: '6gNBe9gRziA',
-              title: 'A Grande Jornada',
-              thumb: 'https://i.ytimg.com/vi/6gNBe9gRziA/maxresdefault.jpg'
-            }
-          ]
+            popular: [
+                {
+                    id: 'TjrrKBEjcTg',
+                    title: 'O Rei Leão 3 - Clássico para Gatos',
+                    thumb: 'https://i.ytimg.com/vi/p_6gMsjyzXY/hqdefault.jpg?s…RUAAIhCGAE=&rs=AOn4CLA-IKe5h0xoX2qzs_-hkn8Y9VJ6WA'
+                },
+                {
+                    id: 'FUgIDd3j9Dk',
+                    title: 'Como Cães e Gatos',
+                    thumb: 'https://i.ytimg.com/vi/FUgIDd3j9Dk/hq720.jpg?sqp=-…BACGAY4AUAB&rs=AOn4CLCQCNJl52hbPdq3BcdpKUpkg2QSOg'
+                },
+                {
+                    id: 'rt69DjH_erY',
+                    title: 'Oliver e Sua Turma',
+                    thumb: 'https://i.ytimg.com/vi/eZ3DZCcy54M/hq720.jpg?sqp=-…RUAAIhCGAE=&rs=AOn4CLAfVCUr_3_Nzaq6zcFPKVdsdzGeKg'
+                },
+                {
+                    id: 'Fv6rb2udLtk',
+                    title: ' The Garfield - A pizza é minha 🍕 ',
+                    thumb: 'https://i.ytimg.com/vi/Fv6rb2udLtk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBhGdDFV0RHf0eJVgL3clQyKRyJnQ'
+                },
+                {
+                    id: 'kizMi_xe_Gc',
+                    title: 'Gato de Botas',
+                    thumb: 'https://i.ytimg.com/vi/kizMi_xe_Gc/hq720.jpg?sqp=-…AFwAcABBg==&rs=AOn4CLDIkcSrEuX7zOuBlQyiW0fNu-LIDQ'
+                },
+                {
+                    id: 'mQjvFD_NOGA',
+                    title: 'Os Aristogatas',
+                    thumb: 'https://i.ytimg.com/vi/5GME4r_1Vsc/hqdefault.jpg?s…RUAAIhCGAE=&rs=AOn4CLBjgFLL5o1MUHgFY3ZsUZEZGGMmFA'
+                }
+            ],
+            bird: [
+                {
+                    id: '8nQF3zVotOg',
+                    title: 'Pássaros para Gatos - Filme 1',
+                    thumb: 'https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg'
+                },
+                {
+                    id: 'QH2-TGUlwu4',
+                    title: 'Pássaros para Gatos - Filme 2',
+                    thumb: 'https://i.ytimg.com/vi/QH2-TGUlwu4/maxresdefault.jpg'
+                },
+                {
+                    id: 'ByXuk9QqQkk',
+                    title: 'Pássaros Coloridos',
+                    thumb: 'https://i.ytimg.com/vi/ByXuk9QqQkk/maxresdefault.jpg'
+                },
+                {
+                    id: 'kA244gAQhns',
+                    title: 'Aves Exóticas - O Filme',
+                    thumb: 'https://i.ytimg.com/vi/kA244gAQhns/maxresdefault.jpg'
+                },
+                {
+                    id: 'dZL7qvyDc1I',
+                    title: 'Pássaros Cantando - Filme',
+                    thumb: 'https://i.ytimg.com/vi/dZL7qvyDc1I/maxresdefault.jpg'
+                },
+                {
+                    id: '3I-6y9E8u5c',
+                    title: 'Beija-flores - O Documentário',
+                    thumb: 'https://i.ytimg.com/vi/3I-6y9E8u5c/maxresdefault.jpg'
+                }
+            ],
+            adventure: [
+                {
+                    id: '9Y31YSPo2i0',
+                    title: 'Aventuras Felinas 1',
+                    thumb: 'https://i.ytimg.com/vi/9Y31YSPo2i0/maxresdefault.jpg'
+                },
+                {
+                    id: 'jNQXAC9IVRw',
+                    title: 'Aventuras Felinas 2',
+                    thumb: 'https://i.ytimg.com/vi/jNQXAC9IVRw/maxresdefault.jpg'
+                },
+                {
+                    id: 'AYHaXXViER8',
+                    title: 'Caçada Noturna',
+                    thumb: 'https://i.ytimg.com/vi/AYHaXXViER8/maxresdefault.jpg'
+                },
+                {
+                    id: 'tEPNTIhVXGI',
+                    title: 'O Gato Explorador',
+                    thumb: 'https://i.ytimg.com/vi/tEPNTIhVXGI/maxresdefault.jpg'
+                },
+                {
+                    id: 'gO9KVopLsE0',
+                    title: 'Missão: Capturar o Rato',
+                    thumb: 'https://i.ytimg.com/vi/gO9KVopLsE0/maxresdefault.jpg'
+                },
+                {
+                    id: '6gNBe9gRziA',
+                    title: 'A Grande Jornada',
+                    thumb: 'https://i.ytimg.com/vi/6gNBe9gRziA/maxresdefault.jpg'
+                }
+            ]
         };
 
         // Função para simular o carregamento
         function simulateLoading() {
             // Tempo mínimo de exibição do loading (em milissegundos)
             const minLoadingTime = 1500;
-            
+
             // Tempo inicial
             const startTime = Date.now();
-            
+
             // Verifica login primeiro
             if (!sessionStorage.getItem('isLoggedIn')) {
                 window.location.href = 'index.html';
                 return;
             }
-            
+
             // Carrega os carrosseis
             loadCarousel('popularMovies', moviesData.popular);
             loadCarousel('birdMovies', moviesData.bird);
             loadCarousel('adventureMovies', moviesData.adventure);
-            
+
             // Navbar scroll effect
-            window.addEventListener('scroll', function() {
+            window.addEventListener('scroll', function () {
                 const navbar = document.querySelector('.navbar-petflix');
                 if (window.scrollY > 50) {
                     navbar.classList.add('scrolled');
@@ -245,23 +253,23 @@
             });
 
             // Logout
-            document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.getElementById('logoutBtn').addEventListener('click', function () {
                 sessionStorage.removeItem('isLoggedIn');
                 window.location.href = 'index.html';
             });
-            
+
             // Calcula o tempo restante para completar o minLoadingTime
             const elapsedTime = Date.now() - startTime;
             const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
-            
+
             // Esconde o loading após o tempo mínimo
-            setTimeout(function() {
+            setTimeout(function () {
                 const loadingOverlay = document.getElementById('loadingOverlay');
                 if (loadingOverlay) {
                     loadingOverlay.classList.add('fade-out');
-                    
+
                     // Remove completamente o overlay após a animação
-                    setTimeout(function() {
+                    setTimeout(function () {
                         loadingOverlay.style.display = 'none';
                     }, 500); // Tempo da animação de fade
                 }
@@ -272,7 +280,7 @@
         function loadCarousel(containerId, movies) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
-            
+
             movies.forEach(movie => {
                 const item = document.createElement('div');
                 item.className = 'series-item';
@@ -313,4 +321,5 @@
     <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
