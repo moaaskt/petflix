@@ -88,13 +88,14 @@
             </div>
         </div>
 
+        <!-- NOVA SEÇÃO: Filmes de Caça e Ação -->
         <div class="series-carousel-container">
-            <h3 class="carousel-title">Filmes com Pássaros</h3>
+            <h3 class="carousel-title">Filmes de Caça e Ação</h3>
             <div class="position-relative">
-                <button class="carousel-btn prev" onclick="scrollCarousel('birdMovies', -300)"><i
+                <button class="carousel-btn prev" onclick="scrollCarousel('huntMovies', -300)"><i
                         class="fas fa-paw"></i></button>
-                <div class="series-carousel" id="birdMovies"></div>
-                <button class="carousel-btn next" onclick="scrollCarousel('birdMovies', 300)"><i
+                <div class="series-carousel" id="huntMovies"></div>
+                <button class="carousel-btn next" onclick="scrollCarousel('huntMovies', 300)"><i
                         class="fas fa-paw"></i></button>
             </div>
         </div>
@@ -157,36 +158,36 @@
                     thumb: 'https://i.ytimg.com/vi/5GME4r_1Vsc/hqdefault.jpg?s…RUAAIhCGAE=&rs=AOn4CLBjgFLL5o1MUHgFY3ZsUZEZGGMmFA'
                 }
             ],
-            bird: [
+            hunt: [
                 {
-                    id: '8nQF3zVotOg',
-                    title: 'Pássaros para Gatos - Filme 1',
-                    thumb: 'https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg'
+                    id: 'u_XMFu9LtxM',
+                    title: 'Caçada Noturna',
+                    thumb: 'https://i.ytimg.com/vi/u_XMFu9LtxM/maxresdefault.jpg'
                 },
                 {
-                    id: 'QH2-TGUlwu4',
-                    title: 'Pássaros para Gatos - Filme 2',
-                    thumb: 'https://i.ytimg.com/vi/QH2-TGUlwu4/maxresdefault.jpg'
+                    id: '_LKPHj1eUUs',
+                    title: 'Perseguição à Presa',
+                    thumb: 'https://i.ytimg.com/vi/_LKPHj1eUUs/maxresdefault.jpg'
                 },
                 {
-                    id: 'ByXuk9QqQkk',
-                    title: 'Pássaros Coloridos',
-                    thumb: 'https://i.ytimg.com/vi/ByXuk9QqQkk/maxresdefault.jpg'
+                    id: 'UCqedzwekuw',
+                    title: 'Missão: Capturar o Rato',
+                    thumb: 'https://i.ytimg.com/vi/UCqedzwekuw/maxresdefault.jpg'
                 },
                 {
-                    id: 'kA244gAQhns',
-                    title: 'Aves Exóticas - O Filme',
-                    thumb: 'https://i.ytimg.com/vi/kA244gAQhns/maxresdefault.jpg'
+                    id: 'zKhNRKvOD6U',
+                    title: 'A Arte da Caça',
+                    thumb: 'https://i.ytimg.com/vi/zKhNRKvOD6U/maxresdefault.jpg'
                 },
                 {
-                    id: 'dZL7qvyDc1I',
-                    title: 'Pássaros Cantando - Filme',
-                    thumb: 'https://i.ytimg.com/vi/dZL7qvyDc1I/maxresdefault.jpg'
+                    id: 'LUB37xAxK38',
+                    title: 'Bolas de Lã Assassinas',
+                    thumb: 'https://i.ytimg.com/vi/LUB37xAxK38/maxresdefault.jpg'
                 },
                 {
-                    id: '3I-6y9E8u5c',
-                    title: 'Beija-flores - O Documentário',
-                    thumb: 'https://i.ytimg.com/vi/3I-6y9E8u5c/maxresdefault.jpg'
+                    id: '5CGdIhhAthI',
+                    title: 'O Peixe Elusivo',
+                    thumb: 'https://i.ytimg.com/vi/5CGdIhhAthI/maxresdefault.jpg'
                 }
             ],
             adventure: [
@@ -239,7 +240,7 @@
 
             // Carrega os carrosseis
             loadCarousel('popularMovies', moviesData.popular);
-            loadCarousel('birdMovies', moviesData.bird);
+            loadCarousel('huntMovies', moviesData.hunt);
             loadCarousel('adventureMovies', moviesData.adventure);
 
             // Navbar scroll effect
