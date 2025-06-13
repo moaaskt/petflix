@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetFlix - Cadastro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="css/register.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="logo">
+            <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="PetFlix">
+        </div>
+        
+        <h2 class="text-center mb-4">Crie sua conta</h2>
+        
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+        
+        <form id="registerForm">
+            <div class="mb-3">
+                <input type="text" class="form-control" id="name" placeholder="Nome completo" required>
+            </div>
+            <div class="mb-3">
+                <input type="email" class="form-control" id="email" placeholder="E-mail" required>
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" id="password" placeholder="Senha (mínimo 6 caracteres)" required minlength="6">
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirme sua senha" required minlength="6">
+            </div>
+            <button type="submit" class="btn btn-petflix w-100">Cadastrar</button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Já tem uma conta? <a href="index.html">Faça login</a></p>
+            <p><a href="index.html">Voltar para a página inicial</a></p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    
+    <script>
+        // Configuração do Firebase (substitua com suas credenciais)
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_PROJETO.firebaseapp.com",
+            databaseURL: "https://SEU_PROJETO.firebaseio.com",
+            projectId: "SEU_PROJETO",
+            storageBucket: "SEU_PROJETO.appspot.com",
+            messagingSenderId: "SEU_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
+        
+        // Inicializa o Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // Referência para o banco de dados
+        const database = firebase.database();
+        
+        // Manipulação do formulário de cadastro
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Esconde mensagens anteriores
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            // Validações básicas
+            if (password !== confirmPassword) {
+                showError('As senhas não coincidem. Por favor, tente novamente.');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('A senha deve ter pelo menos 6 caracteres.');
+                return;
+            }
+            
+            // Cadastro com Firebase Auth
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Envia e-mail de verificação
+                    userCredential.user.sendEmailVerification()
+                        .then(() => {
+                            // Salva informações adicionais no banco de dados
+                            const user = userCredential.user;
+                            const userData = {
+                                name: name,
+                                email: email,
+                                createdAt: firebase.database.ServerValue.TIMESTAMP
+                            };
+                            
+                            return database.ref('users/' + user.uid).set(userData);
+                        })
+                        .then(() => {
+                            showSuccess('Cadastro realizado com sucesso! Enviamos um e-mail de verificação. Por favor, verifique sua caixa de entrada.');
+                            document.getElementById('registerForm').reset();
+                        })
+                        .catch((error) => {
+                            showError('Ocorreu um erro ao enviar o e-mail de verificação: ' + error.message);
+                        });
+                })
+                .catch((error) => {
+                    let errorMsg = '';
+                    switch(error.code) {
+                        case 'auth/email-already-in-use':
+                            errorMsg = 'Este e-mail já está em uso. Por favor, use outro e-mail ou faça login.';
+                            break;
+                        case 'auth/invalid-email':
+                            errorMsg = 'O e-mail fornecido é inválido. Por favor, insira um e-mail válido.';
+                            break;
+                        case 'auth/weak-password':
+                            errorMsg = 'A senha é muito fraca. Por favor, escolha uma senha mais forte.';
+                            break;
+                        default:
+                            errorMsg = 'Ocorreu um erro durante o cadastro: ' + error.message;
+                    }
+                    showError(errorMsg);
+                });
+        });
+        
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+        
+        function showSuccess(message) {
+            const successMessage = document.getElementById('successMessage');
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
