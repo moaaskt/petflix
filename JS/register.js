@@ -1,59 +1,5 @@
-<!DOCTYPE html>
-<html lang="pt-br">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetFlix - Cadastro</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="css/register.css">
-</head>
-
-<body>
-    <div class="auth-container">
-        <div class="logo">
-            <img src="https://i.ibb.co/yyP7070/petflix-logo-prev-ui.png" alt="PetFlix">
-        </div>
-
-        <h2 class="text-center mb-4">Crie sua conta</h2>
-
-        <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
-        <div id="successMessage" class="alert alert-success" style="display: none;"></div>
-
-        <form id="registerForm">
-            <div class="mb-3">
-                <input type="text" class="form-control" id="name" placeholder="Nome completo" required>
-            </div>
-            <div class="mb-3">
-                <input type="email" class="form-control" id="email" placeholder="E-mail" required>
-            </div>
-            <div class="mb-3">
-                <input type="password" class="form-control" id="password" placeholder="Senha (mínimo 6 caracteres)"
-                    required minlength="6">
-            </div>
-            <div class="mb-3">
-                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirme sua senha"
-                    required minlength="6">
-            </div>
-          <button type="submit" class="btn btn-danger w-100 py-3 fw-bold" id="registerButton">
-  Cadastrar
-</button>
-        </form>
-
-        <div class="auth-footer">
-            <p>Já tem uma conta? <a href="index.html">Faça login</a></p>
-            <p><a href="index.html">Voltar para a página inicial</a></p>
-        </div>
-    </div>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
-
-<script>
- // Configuração do Firebase
+    // Configuração do Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyAb_0r54B3fL3CmLukhuXYgtxfIpj9IgvU",
         authDomain: "petflix-de1c3.firebaseapp.com",
@@ -199,8 +145,3 @@
         document.getElementById('errorMessage').style.display = 'none';
         document.getElementById('successMessage').style.display = 'none';
     }
-
-</script>
-</body>
-
-</html>

@@ -178,15 +178,7 @@
                 playVideo('9Y31YSPo2i0');
             });
             
-            // Logout
-            if (!sessionStorage.getItem('isLoggedIn')) {
-                window.location.href = 'index.html';
-            }
-            
-            document.getElementById('logoutBtn').addEventListener('click', function() {
-                sessionStorage.removeItem('isLoggedIn');
-                window.location.href = 'index.html';
-            });
+          
         });
 
         // Função para carregar conteúdo
