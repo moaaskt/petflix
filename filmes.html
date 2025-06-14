@@ -122,7 +122,11 @@
     </div>
   </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
 
+<script src="JS/firebase-auth.js"></script>
   <script>
     // Dados dos filmes
     const moviesData = {
@@ -231,16 +235,6 @@
       loadCarousel('adventureMovies', moviesData.adventure);
       loadCarousel('comedyMovies', moviesData.comedy);
 
-      // Verifica login
-      if (!sessionStorage.getItem('isLoggedIn')) {
-        window.location.href = 'index.html';
-      }
-
-      // Logout
-      document.getElementById('logoutBtn').addEventListener('click', function () {
-        sessionStorage.removeItem('isLoggedIn');
-        window.location.href = 'index.html';
-      });
 
       // Navbar scroll effect
       window.addEventListener('scroll', function () {

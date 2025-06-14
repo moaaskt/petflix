@@ -99,10 +99,6 @@ function initPageLoading() {
 // Inicia automaticamente quando o script é carregado
 document.addEventListener('DOMContentLoaded', function() {
   // Verifica se já está logado
-  if (!sessionStorage.getItem('isLoggedIn')) {
-    window.location.href = 'index.html';
-    return;
-  }
   
   initPageLoading();
 });

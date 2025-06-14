@@ -123,6 +123,16 @@
     </div>
   </div>
 
+
+
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+
+<script src="JS/firebase-auth.js"></script>
+
   <!-- API do YouTube -->
   <script>
     // Dados das séries
@@ -232,11 +242,7 @@
       loadCarousel('educationalSeries', seriesData.educational);
       loadCarousel('puppySeries', seriesData.puppy);
 
-      // Verifica login
-      if (!sessionStorage.getItem('isLoggedIn')) {
-        window.location.href = 'index.html';
-      }
-
+    
       // Navbar scroll effect
       window.addEventListener('scroll', function () {
         const navbar = document.querySelector('.navbar-petflix');
@@ -247,11 +253,7 @@
         }
       });
       // Logout
-      document.getElementById('logoutBtn').addEventListener('click', function () {
-        sessionStorage.removeItem('isLoggedIn');
-        window.location.href = 'index.html';
-      });
-
+  
     });
 
     // Função para carregar carrossel
@@ -291,6 +293,9 @@
     }
     
 
+
+
+    
   </script>
   <script src="JS/loadingDog.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
