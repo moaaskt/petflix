@@ -1,0 +1,7 @@
+# Local Firebase config (do not commit)
+JS/firebase-config.local.js
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.log
