@@ -1,19 +1,7 @@
 
-    // Configuração do Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyAb_0r54B3fL3CmLukhuXYgtxfIpj9IgvU",
-        authDomain: "petflix-de1c3.firebaseapp.com",
-        projectId: "petflix-de1c3",
-        storageBucket: "petflix-de1c3.firebasestorage.app",
-        messagingSenderId: "863177295284",
-        appId: "1:863177295284:web:df1e4a77f827f57ef31ee1",
-        measurementId: "G-CB4B5KB2Z0",
-    };
-
-    // Inicializa o Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const database = firebase.database();
+// Inicializa o Firebase
+    const auth = window.auth;
+const database = window.db;
 
     // Manipulação do formulário de cadastro
     document.getElementById('registerForm').addEventListener('submit', function(e) {

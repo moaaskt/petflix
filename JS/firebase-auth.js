@@ -1,21 +1,10 @@
 // firebase-auth.js
 
-// Configuração do Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyAb_0r54B3fL3CmLukhuXYgtxfIpj9IgvU",
-    authDomain: "petflix-de1c3.firebaseapp.com",
-    databaseURL: "https://petflix-de1c3-default-rtdb.firebaseio.com",
-    projectId: "petflix-de1c3",
-    storageBucket: "petflix-de1c3.firebasestorage.app",
-    messagingSenderId: "863177295284",
-    appId: "1:863177295284:web:df1e4a77f827f57ef31ee1",
-    measurementId: "G-CB4B5KB2Z0"
-};
+
 
 // Inicializa o Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const database = firebase.database();
+const auth = window.auth;
+const database = window.db;
 
 // Função para verificar autenticação
 function checkAuth(requireAuth = true, requireEmailVerified = true) {
@@ -27,7 +16,7 @@ function checkAuth(requireAuth = true, requireEmailVerified = true) {
                 reject('Usuário não autenticado');
             } else if (requireEmailVerified && user && !user.emailVerified) {
                 // Redireciona para verificação de e-mail
-                window.location.href = 'verify-email.html';
+                window.location.href = 'home.html'; // TODO: criar verify-email.html futuramente
                 reject('E-mail não verificado');
             } else {
                 resolve(user);

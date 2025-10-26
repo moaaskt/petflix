@@ -13,18 +13,10 @@ function showInfo(message) {
 }
 
         // Configuração do Firebase (substitua com suas credenciais)
-        const firebaseConfig = {
-            apiKey: "AIzaSyAb_0r54B3fL3CmLukhuXYgtxfIpj9IgvU",
-            authDomain: "petflix-de1c3.firebaseapp.com",
-            projectId: "petflix-de1c3",
-            storageBucket: "petflix-de1c3.firebasestorage.app",
-            messagingSenderId: "863177295284",
-            appId: "1:863177295284:web:df1e4a77f827f57ef31ee1",
-            measurementId: "G-CB4B5KB2Z0",
-        };
+
 
         // Inicializa o Firebase
-        firebase.initializeApp(firebaseConfig);
+        
 
         // Efeito de toggle para senha
         document.querySelector('.password-toggle').addEventListener('click', function () {
@@ -84,13 +76,13 @@ function showInfo(message) {
             loginButton.disabled = true;
 
             // Login com Firebase Auth
-            firebase.auth().signInWithEmailAndPassword(email, password)
+            window.auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
 
                     // Verifica se o e-mail foi confirmado
                     if (!user.emailVerified) {
-                        firebase.auth().signOut();
+                        window.auth.signOut();
                         showError('Por favor, verifique seu e-mail antes de fazer login. Enviamos um link de confirmação para seu e-mail.');
                         loginButton.innerHTML = 'Entrar';
                         loginButton.disabled = false;
@@ -141,7 +133,7 @@ function showInfo(message) {
                 return;
             }
 
-            firebase.auth().sendPasswordResetEmail(email)
+            window.auth.sendPasswordResetEmail(email)
                 .then(() => {
                     showSuccess('Enviamos um e-mail para redefinir sua senha. Por favor, verifique sua caixa de entrada.');
                 })
