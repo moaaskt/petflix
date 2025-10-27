@@ -75,14 +75,23 @@ function showInfo(message) {
             loginButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Entrando...';
             loginButton.disabled = true;
 
+            // Guard: valida inicialização do Firebase
+            const auth = window.auth;
+            if (!auth || typeof auth.signInWithEmailAndPassword !== 'function') {
+                showError('Falha ao inicializar a autenticação. Por favor, recarregue a página.');
+                loginButton.innerHTML = 'Entrar';
+                loginButton.disabled = false;
+                return;
+            }
+
             // Login com Firebase Auth
-            window.auth.signInWithEmailAndPassword(email, password)
+            auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
 
                     // Verifica se o e-mail foi confirmado
                     if (!user.emailVerified) {
-                        window.auth.signOut();
+                        auth.signOut();
                         showError('Por favor, verifique seu e-mail antes de fazer login. Enviamos um link de confirmação para seu e-mail.');
                         loginButton.innerHTML = 'Entrar';
                         loginButton.disabled = false;
