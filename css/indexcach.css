@@ -353,3 +353,97 @@ footer .footer-bottom {
     text-align: center;
   }
 }
+
+/* YouTube Dogs section (Petflix theme) */
+.yt-section {
+  padding: 2rem 4%;
+  background: #0e0e10;
+  margin-top: 2rem;
+  border-top: 1px solid #1e1e20;
+}
+.yt-section h2 {
+  font-size: 1.6rem;
+  color: #fff;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+.yt-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.yt-header input {
+  flex: 1;
+  min-width: 200px;
+  background: #1b1b1f;
+  color: #eee;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.yt-header button {
+  background: #e50914;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.yt-header button:hover { background: #f6121d; }
+
+.yt-player {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 12px #000;
+}
+
+.yt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.yt-card {
+  background: #18181c;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.yt-card:hover { transform: translateY(-4px); box-shadow: 0 2px 12px rgba(0,0,0,0.6); }
+.yt-card img { width: 100%; display: block; }
+.yt-card .meta { padding: 10px; }
+.yt-card .title { font-size: 0.95rem; color: #fff; line-height: 1.3; height: 2.6em; overflow: hidden; }
+.yt-card .channel { font-size: 0.8rem; color: #999; margin-top: 4px; }
+
+.yt-pager {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.yt-pager button {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #1c1c20;
+  color: #eee;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.yt-pager button:hover { background: #2a2a30; }
+.yt-pager button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.yt-msg {
+  color: #ff7777;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
