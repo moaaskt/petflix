@@ -126,6 +126,11 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
     <script src="JS/firebase-config.local.js"></script>
+    <script>
+      if (location.hostname.endsWith('netlify.app')) {
+        document.write('<script src="JS/firebase-config.netlify.js"><\\/script>');
+      }
+    </script>
     <script src="JS/firebase-config.js"></script>
     <script src="JS/firebase-auth.js"></script>
   <script>
