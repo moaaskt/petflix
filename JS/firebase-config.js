@@ -12,7 +12,7 @@
     appId: "1:XXXX:web:YYYY"
   };
 
-  const app = firebase.initializeApp(firebaseConfig);
+  const app = (firebase.apps && firebase.apps.length) ? firebase.app() : firebase.initializeApp(firebaseConfig);
   window.firebaseApp = app;
   window.auth = firebase.auth();
   window.db = firebase.database ? firebase.database() : null;

@@ -67,14 +67,14 @@
     </div>
   </nav>
 <!-- Hero Section com Vídeo -->
-  <section class="hero-section">
+  <!-- <section class="hero-section">
     <div class="hero-video-container">
       <iframe class="hero-video"
         src="https://www.youtube.com/embed/8nQF3zVotOg?autoplay=1&mute=1&loop=1&playlist=8nQF3zVotOg&controls=0&modestbranding=1&rel=0"
         frameborder="0" allow="autoplay"></iframe>
       <div class="hero-video-overlay"></div>
-    </div>
-
+    </div> -->
+<!-- 
     <div class="hero-content">
       <h1 class="hero-title">Diversão para seu Gato</h1>
       <p class="hero-description">Vídeos especialmente selecionados para entreter e relaxar seu felino.</p>
@@ -83,31 +83,31 @@
         <button class="btn btn-info"><i class="fas fa-info-circle"></i> Mais Informações</button>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- Conteúdo em Destaque - YouTube API -->
-  <div class="content-row">
+  <!-- <div class="content-row">
     <h2 class="row-title">Em Destaque</h2>
     <div class="content-carousel-container">
       <button class="carousel-btn prev" onclick="scrollCarousel('featuredContent', -300)"><i class="fas fa-paw"></i></button>
-      <div class="content-carousel" id="featuredContent">
+      <div class="content-carousel" id="featuredContent"> -->
         <!-- Carregado via JavaScript -->
-      </div>
+      <!-- </div>
       <button class="carousel-btn next" onclick="scrollCarousel('featuredContent', 300)"><i class="fas fa-paw"></i></button>
     </div>
-  </div>
+  </div> -->
 
   <!-- Mais Conteúdo - YouTube API -->
-  <div class="content-row">
+  <!-- <div class="content-row">
     <h2 class="row-title">Recomendados para seu Gato</h2>
     <div class="content-carousel-container">
       <button class="carousel-btn prev" onclick="scrollCarousel('recommendedContent', -300)"><i class="fas fa-paw"></i></button>
-      <div class="content-carousel" id="recommendedContent">
+      <div class="content-carousel" id="recommendedContent"> -->
         <!-- Carregado via JavaScript -->
-      </div>
+      <!-- </div>
       <button class="carousel-btn next" onclick="scrollCarousel('recommendedContent', 300)"><i class="fas fa-paw"></i></button>
     </div>
-  </div>
+  </div> -->
 
   <!-- Modal do Vídeo -->
   <div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
@@ -173,14 +173,14 @@
         playVideo('8nQF3zVotOg');
       });
 
-      // Logout
-      if (!sessionStorage.getItem('isLoggedIn')) {
-        window.location.href = 'index.html';
-      }
-
-      document.getElementById('logoutBtn').addEventListener('click', function () {
-        sessionStorage.removeItem('isLoggedIn');
-        window.location.href = 'index.html';
+      // Logout via Firebase Auth
+      document.getElementById('logoutBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+        if (window.authFunctions && window.authFunctions.logout) {
+          window.authFunctions.logout();
+        } else {
+          window.location.href = 'index.html';
+        }
       });
     });
 
@@ -231,9 +231,15 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/8f4efb61a3.js" crossorigin="anonymous"></script>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+
   <!-- Config local (chaves) e pública -->
   <script src="JS/firebase-config.local.js"></script>
   <script src="JS/firebase-config.js"></script>
+  <script src="JS/firebase-auth.js"></script>
 
   <!-- Módulos YouTube -->
   <script src="JS/youtube-api.js"></script>
