@@ -1,4 +1,4 @@
- :root {
+:root {
             --netflix-red: #e50914;
             --netflix-dark: #141414;
             --netflix-gray: #303030;
@@ -179,4 +179,24 @@
 .fade-out {
     opacity: 0;
     pointer-events: none;
+}
+/* Petflix theme variables and polish */
+:root{
+  --pf-bg:#0d0d10; --pf-panel:#15151a; --pf-card:#19191f; --pf-line:#24242a;
+  --pf-text:#e7e7ee; --pf-dim:#a0a0ad; --pf-accent:#e50914;
+}
+html{ -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+body{ background:var(--pf-bg); color:var(--pf-text); }
+.section{ padding:2rem 4%; }
+.yt-section{ padding:2rem 4%; background:var(--pf-panel); border-top:1px solid var(--pf-line); border-bottom:1px solid var(--pf-line); border-radius:12px; }
+.yt-header input{ background:#1b1b20; color:var(--pf-text); border:1px solid var(--pf-line); }
+.yt-header button{ background:var(--pf-accent); }
+.yt-player{ box-shadow:0 6px 24px rgba(0,0,0,.35); }
+.yt-grid{ grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; }
+.yt-card{ background:var(--pf-card); border:1px solid var(--pf-line); }
+.yt-card .title{ color:var(--pf-text); }
+.yt-card .channel{ color:var(--pf-dim); }
+@media (max-width: 780px){
+  .section, .yt-section{ padding:1.25rem 4%; }
+  .yt-grid{ grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:12px; }
 }

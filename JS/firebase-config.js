@@ -2,7 +2,7 @@
 (function () {
   if (window._petflixFirebaseReady) return;
 
-  const firebaseConfig = window.__FIREBASE_CONFIG__ || {
+  const firebaseConfig = (window.__PETFLIX_KEYS && window.__PETFLIX_KEYS.firebase) || window.__FIREBASE_CONFIG__ || {
     apiKey: "AIzaSyAb_0r54B3fL3CmLukhuXYgtxfIpj9IgvU",
     authDomain: "petflix-de1c3.firebaseapp.com",
     databaseURL: "https://petflix-de1c3-default-rtdb.firebaseio.com",
