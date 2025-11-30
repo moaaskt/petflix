@@ -1,8 +1,9 @@
 /**
  * Auth Guard - Proteção de rotas
  */
-import { PROTECTED_PAGES, ROUTES } from '../../config/constants.js';
+import { PROTECTED_PAGES } from '../../config/constants.js';
 import { authService } from './auth.service.js';
+import { navigateTo } from '../../router/navigator.js';
 
 class AuthGuard {
   constructor() {
@@ -18,7 +19,7 @@ class AuthGuard {
       const currentPage = this.getCurrentPage();
       
       if (!user && this.isProtectedPage(currentPage)) {
-        window.location.href = ROUTES.LOGIN;
+        navigateTo('/login');
       }
     });
   }
@@ -52,14 +53,14 @@ class AuthGuard {
         if (requireAuth && !user) {
           const currentPage = this.getCurrentPage();
           if (this.isProtectedPage(currentPage)) {
-            window.location.href = ROUTES.LOGIN;
+            navigateTo('/login');
           }
           reject(new Error('Usuário não autenticado'));
           return;
         }
 
         if (requireEmailVerified && user && !user.emailVerified) {
-          window.location.href = ROUTES.HOME;
+          navigateTo('/home');
           reject(new Error('E-mail não verificado'));
           return;
         }
@@ -71,4 +72,3 @@ class AuthGuard {
 }
 
 export const authGuard = new AuthGuard();
-
