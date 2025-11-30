@@ -1,0 +1,87 @@
+/* HomePage Styles - Seleção de Perfil */
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.login-wrapper {
+  text-align: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
+}
+
+.logo h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 3rem;
+  color: #fff;
+}
+
+.users {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.user {
+  text-align: center;
+  cursor: pointer;
+  transition: transform var(--transition-base);
+}
+
+.user:hover {
+  transform: scale(1.05);
+}
+
+.user img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 4px solid transparent;
+  transition: border-color var(--transition-base);
+}
+
+.user:hover img {
+  border-color: var(--color-primary);
+}
+
+.username {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .logo h1 {
+    font-size: 2rem;
+  }
+
+  .users {
+    gap: 2rem;
+  }
+
+  .user img {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,157 @@
+{
+  "dogs": {
+    "classic": [
+      {
+        "id": "Ws-9ra38AlI",
+        "title": "Marley & Eu",
+        "thumb": "https://i.ytimg.com/vi/Ws-9ra38AlI/maxresdefault.jpg"
+      },
+      {
+        "id": "VApVpvcGW1A",
+        "title": "101 Dálmatas",
+        "thumb": "https://i.ytimg.com/vi/VApVpvcGW1A/maxresdefault.jpg"
+      },
+      {
+        "id": "ki8wHMR-yOI",
+        "title": "Beethoven",
+        "thumb": "https://i.ytimg.com/vi/ki8wHMR-yOI/maxresdefault.jpg"
+      },
+      {
+        "id": "UFY8vW5IedY",
+        "title": "Sempre ao Seu Lado",
+        "thumb": "https://i.ytimg.com/vi/UFY8vW5IedY/maxresdefault.jpg"
+      },
+      {
+        "id": "N-nzEPmjM1c",
+        "title": "Dog - A Aventura",
+        "thumb": "https://i.ytimg.com/vi/N-nzEPmjM1c/maxresdefault.jpg"
+      },
+      {
+        "id": "UqtFvSKhKmA",
+        "title": "Benji - O Cão Herói",
+        "thumb": "https://i.ytimg.com/vi/UqtFvSKhKmA/maxresdefault.jpg"
+      }
+    ],
+    "adventure": [
+      {
+        "id": "MjbKt2bVFec",
+        "title": "Aventuras Caninas",
+        "thumb": "https://i.ytimg.com/vi/MjbKt2bVFec/maxresdefault.jpg"
+      },
+      {
+        "id": "1jLOOCADTGs",
+        "title": "A Dog's Purpose",
+        "thumb": "https://i.ytimg.com/vi/1jLOOCADTGs/maxresdefault.jpg"
+      },
+      {
+        "id": "fEPkp0iFMTI",
+        "title": "Resgate Animal",
+        "thumb": "https://i.ytimg.com/vi/fEPkp0iFMTI/maxresdefault.jpg"
+      },
+      {
+        "id": "lAKXRYTb6B8",
+        "title": "Raças Aventureiras",
+        "thumb": "https://i.ytimg.com/vi/lAKXRYTb6B8/maxresdefault.jpg"
+      },
+      {
+        "id": "3kMHTbr5g68",
+        "title": "Exploradores Caninos",
+        "thumb": "https://i.ytimg.com/vi/3kMHTbr5g68/maxresdefault.jpg"
+      },
+      {
+        "id": "Euu-eCK6w6I",
+        "title": "Cães na Natureza",
+        "thumb": "https://i.ytimg.com/vi/Euu-eCK6w6I/maxresdefault.jpg"
+      }
+    ],
+    "comedy": [
+      {
+        "id": "vGdsDsqcPoE",
+        "title": "Cachorros Engraçados",
+        "thumb": "https://i.ytimg.com/vi/vGdsDsqcPoE/maxresdefault.jpg"
+      },
+      {
+        "id": "AyiobvQMOaE",
+        "title": "Travessuras Caninas",
+        "thumb": "https://i.ytimg.com/vi/AyiobvQMOaE/hqdefault.jpg"
+      },
+      {
+        "id": "QH2-TGUlwu4",
+        "title": "Piadas de Cães",
+        "thumb": "https://i.ytimg.com/vi/QH2-TGUlwu4/hqdefault.jpg"
+      },
+      {
+        "id": "9Y31YSPo2i0",
+        "title": "Beethoven - As Trapalhadas",
+        "thumb": "https://i.ytimg.com/vi/9Y31YSPo2i0/maxresdefault.jpg"
+      },
+      {
+        "id": "oHg5SJYRHA0",
+        "title": "Marley - Os Melhores Momentos",
+        "thumb": "https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg"
+      },
+      {
+        "id": "5dsGWM5XGdg",
+        "title": "Dálmatas Trapalhões",
+        "thumb": "https://i.ytimg.com/vi/5dsGWM5XGdg/hqdefault.jpg"
+      }
+    ]
+  },
+  "cats": {
+    "classic": [
+      {
+        "id": "6pbreU5ChmA",
+        "title": "Gato de Botas",
+        "thumb": "https://i.ytimg.com/vi/6pbreU5ChmA/hq720.jpg"
+      },
+      {
+        "id": "8nQF3zVotOg",
+        "title": "Aristogatas",
+        "thumb": "https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg"
+      },
+      {
+        "id": "B-FR23hswfQ",
+        "title": "O Gato",
+        "thumb": "https://i.ytimg.com/vi/B-FR23hswfQ/hq720.jpg"
+      },
+      {
+        "id": "JxS5E-kZc2s",
+        "title": "Oliver & Companhia",
+        "thumb": "https://i.ytimg.com/vi/JxS5E-kZc2s/hq720.jpg"
+      },
+      {
+        "id": "u_XMFu9LtxM",
+        "title": "Gatos - O Filme",
+        "thumb": "https://i.ytimg.com/vi/u_XMFu9LtxM/hq720.jpg"
+      }
+    ],
+    "adventure": [
+      {
+        "id": "QadUonunflw",
+        "title": "Gato de Botas - Aventuras",
+        "thumb": "https://i.ytimg.com/vi/QadUonunflw/hq720.jpg"
+      },
+      {
+        "id": "iMMd4018RBQ",
+        "title": "Gato de Botas 2",
+        "thumb": "https://i.ytimg.com/vi/iMMd4018RBQ/hq720.jpg"
+      }
+    ],
+    "comedy": [
+      {
+        "id": "pqgo9bW7cmk",
+        "title": "Gatos Engraçados",
+        "thumb": "https://i.ytimg.com/vi/pqgo9bW7cmk/hq720.jpg"
+      }
+    ]
+  }
+}
+
+
+
+
+
+
+
+
+

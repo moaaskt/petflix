@@ -1,0 +1,49 @@
+/* Navbar Styles */
+.navbar-petflix {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+  padding: 20px 50px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: var(--z-fixed);
+  transition: background-color 0.4s;
+}
+
+.navbar-petflix.scrolled {
+  background-color: var(--color-bg-primary);
+}
+
+.navbar-brand img {
+  height: 40px;
+}
+
+.nav-link {
+  color: var(--color-text-secondary) !important;
+  margin: 0 10px;
+  font-size: var(--font-size-sm);
+  transition: opacity var(--transition-base);
+}
+
+.nav-link:hover {
+  opacity: 0.8;
+  color: var(--color-text-secondary) !important;
+}
+
+.navbar-nav {
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .navbar-petflix {
+    padding: 15px 20px;
+  }
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,114 @@
+{
+  "dogs": {
+    "breeds": [
+      {
+        "id": "HyhgyYFAcUQ",
+        "title": "As estranhas raças de cães que desapareceram",
+        "thumb": "https://i.ytimg.com/vi/HyhgyYFAcUQ/maxresdefault.jpg"
+      },
+      {
+        "id": "bhgpmtBrrt8",
+        "title": "O Pit Bull - documentário (completo em português)",
+        "thumb": "https://i.ytimg.com/vi/bhgpmtBrrt8/hqdefault.jpg"
+      },
+      {
+        "id": "LskBbyFVLgE",
+        "title": "A raça de cachorro Terra-Nova - Raças de cachorros GIGANTES",
+        "thumb": "https://i.ytimg.com/vi/LskBbyFVLgE/maxresdefault.jpg"
+      },
+      {
+        "id": "7mREib3HVKM",
+        "title": "SÃO BERNARDO: CONHEÇA A RAÇA DO FILME BEETHOVEN!",
+        "thumb": "https://i.ytimg.com/vi/7mREib3HVKM/maxresdefault.jpg"
+      },
+      {
+        "id": "P1vhHNLCUFw",
+        "title": "Shih Tzu: revelamos absolutamente TUDO sobre essa raça",
+        "thumb": "https://i.ytimg.com/vi/P1vhHNLCUFw/maxresdefault.jpg"
+      },
+      {
+        "id": "0L9humGg9jY",
+        "title": "Conheça as raças de cães mais populares no Brasil",
+        "thumb": "https://i.ytimg.com/vi/0L9humGg9jY/maxresdefault.jpg"
+      }
+    ],
+    "behavior": [
+      {
+        "id": "7Z8kQkXiaJ0",
+        "title": "Comportamento canino: emoções, estresse e ansiedade - Lu Baldan",
+        "thumb": "https://i.ytimg.com/vi/7Z8kQkXiaJ0/maxresdefault.jpg"
+      },
+      {
+        "id": "KJAKjaTeBM0",
+        "title": "Aula #1 - Curso Psicologia Canina - Apresentação Jean Cloude",
+        "thumb": "https://i.ytimg.com/vi/KJAKjaTeBM0/hqdefault.jpg"
+      },
+      {
+        "id": "PDE2sWM9yXo",
+        "title": "10 COMPORTAMENTOS de CÃES explicados",
+        "thumb": "https://i.ytimg.com/vi/PDE2sWM9yXo/maxresdefault.jpg"
+      },
+      {
+        "id": "aShkGTQio5M",
+        "title": "Manhãs na TV | Dra Anabela Torres - Comportamento Canino",
+        "thumb": "https://i.ytimg.com/vi/aShkGTQio5M/maxresdefault.jpg"
+      },
+      {
+        "id": "GzTfOfXx4-s",
+        "title": "A importância do Cão de Guarda para o Sobrevivencialista",
+        "thumb": "https://i.ytimg.com/vi/GzTfOfXx4-s/maxresdefault.jpg"
+      },
+      {
+        "id": "hfpx76MG8YA",
+        "title": "TEORIA NO ADESTRAMENTO DE CÃES",
+        "thumb": "https://i.ytimg.com/vi/hfpx76MG8YA/maxresdefault.jpg"
+      }
+    ],
+    "health": [
+      {
+        "id": "mrH22_Rvlj8",
+        "title": "Zoonoses e Saúde Única",
+        "thumb": "https://i.ytimg.com/vi/mrH22_Rvlj8/maxresdefault.jpg"
+      },
+      {
+        "id": "-mtMBPB0nYQ",
+        "title": "Leishmaniose visceral - conhecer para controlar",
+        "thumb": "https://i.ytimg.com/vi/-mtMBPB0nYQ/hqdefault.jpg"
+      },
+      {
+        "id": "UkU8TRZrPxs",
+        "title": "Principais Zoonoses em Cães e Gatos! - Telessaúde Goiás",
+        "thumb": "https://i.ytimg.com/vi/UkU8TRZrPxs/maxresdefault.jpg"
+      },
+      {
+        "id": "pv-2P8F9O34",
+        "title": "Cuidados com a saúde bucal canina",
+        "thumb": "https://i.ytimg.com/vi/pv-2P8F9O34/maxresdefault.jpg"
+      },
+      {
+        "id": "Pw0O2CFRNrk",
+        "title": "Tópicos de importância na saúde do cão geriatra",
+        "thumb": "https://i.ytimg.com/vi/Pw0O2CFRNrk/maxresdefault.jpg"
+      },
+      {
+        "id": "JUg-xYUhsG8",
+        "title": "Tratamento de cães com leishmaniose através do protocolo quimioterápico associado à acupuntura",
+        "thumb": "https://i.ytimg.com/vi/JUg-xYUhsG8/maxresdefault.jpg"
+      }
+    ]
+  },
+  "cats": {
+    "breeds": [],
+    "behavior": [],
+    "health": []
+  }
+}
+
+
+
+
+
+
+
+
+

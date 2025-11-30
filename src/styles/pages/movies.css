@@ -1,0 +1,39 @@
+.page.page--movies {
+  padding-top: 72px;
+  background:
+    linear-gradient(180deg, rgba(20,20,20,0.4), rgba(20,20,20,0.8)),
+    var(--color-dark);
+}
+
+.page--movies .page-header {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-5);
+}
+
+.page--movies .section-title {
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  font-weight: 700;
+}
+
+.page--movies .section { margin: var(--space-7) 0; }
+
+.page--movies .carousel-viewport { padding: 0 var(--space-4); }
+
+.page--movies .carousel-track {
+  scroll-snap-type: x mandatory;
+}
+
+.page--movies .movie-card {
+  scroll-snap-align: start;
+  transform-origin: center left;
+}
+
+.page--movies .movie-card:hover {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+}
+
+@media (max-width: var(--mobile)) {
+  .page--movies .carousel-btn { display: none; }
+  .page--movies .movie-card { width: 150px; }
+}
+

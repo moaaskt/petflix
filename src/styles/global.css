@@ -1,0 +1,73 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-dark);
+  color: var(--color-text);
+  font-family: var(--font-main);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a, button, input, textarea, select {
+  transition: all var(--transition-medium);
+}
+
+a:hover {
+  opacity: 0.9;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+#app > * {
+  animation: fade-in var(--transition-medium);
+}
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 0 var(--space-4);
+}
+
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--color-dark-light);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #303030;
+  border-radius: 6px;
+  border: 2px solid var(--color-dark-light);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-dark-light);
+}
+
+.shadow-hover {
+  transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+}
+
+.shadow-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.glow-primary:hover {
+  box-shadow: 0 0 12px rgba(229, 9, 20, 0.35);
+}
+

@@ -1,0 +1,16 @@
+.page.page--dashboard {
+  padding-top: 72px;
+  background:
+    linear-gradient(180deg, rgba(20,20,20,0.3), rgba(20,20,20,0.8)),
+    var(--color-dark);
+}
+
+.page--dashboard .section { margin: var(--space-7) 0; }
+.page--dashboard .section-title {
+  font-size: clamp(1.25rem, 2vw, 1.8rem);
+  font-weight: 700;
+  margin-left: var(--space-4);
+}
+
+.page--dashboard .carousel-viewport { padding: 0 var(--space-4); }
+

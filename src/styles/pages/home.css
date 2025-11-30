@@ -1,0 +1,117 @@
+/* Home Page - Seleção de Perfil */
+.page--home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #141414; /* Netflix Black */
+  color: #fff;
+  text-align: center;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.profile-selection-container {
+  max-width: 800px;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-title {
+  font-size: 3.5rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
+.profiles-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.profile-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  group: profile-group;
+  transition: transform 0.2s ease;
+}
+
+.profile-item:hover {
+  transform: scale(1.05);
+}
+
+.profile-item:hover .profile-name {
+  color: #fff;
+  font-weight: bold;
+}
+
+.profile-avatar {
+  width: 10vw;
+  height: 10vw;
+  min-width: 84px;
+  min-height: 84px;
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 4px; /* Netflix uses square with slight radius, or sometimes circle? User asked for circular */
+  border-radius: 50%; /* User asked for circular */
+  background-color: #333;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid transparent;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s;
+  object-fit: cover;
+}
+
+.profile-item:hover .profile-avatar {
+  border-color: #e5e5e5;
+}
+
+.profile-name {
+  font-size: 1.3rem;
+  color: #808080;
+  transition: color 0.2s;
+  margin-top: 0.5rem;
+}
+
+.manage-profiles-btn {
+  background-color: transparent;
+  border: 1px solid #808080;
+  color: #808080;
+  padding: 0.5rem 1.5rem;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 1rem;
+}
+
+.manage-profiles-btn:hover {
+  color: #fff;
+  border-color: #fff;
+}
+
+@media (max-width: 768px) {
+  .profile-title {
+    font-size: 2.5rem;
+  }
+  
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -1,0 +1,30 @@
+.page.page--series {
+  padding-top: 72px;
+  background:
+    linear-gradient(180deg, rgba(20,20,20,0.4), rgba(20,20,20,0.8)),
+    var(--color-dark);
+}
+
+.page--series .page-header {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-5);
+}
+
+.page--series .section-title {
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  font-weight: 700;
+}
+
+.page--series .section { margin: var(--space-7) 0; }
+
+.page--series .carousel-viewport { padding: 0 var(--space-4); }
+
+.page--series .carousel-track { scroll-snap-type: x mandatory; }
+.page--series .movie-card { scroll-snap-align: start; transform-origin: center left; }
+.page--series .movie-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
+
+@media (max-width: var(--mobile)) {
+  .page--series .carousel-btn { display: none; }
+  .page--series .movie-card { width: 150px; }
+}
+

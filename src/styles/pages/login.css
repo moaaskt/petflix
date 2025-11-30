@@ -1,0 +1,117 @@
+.login-page {
+  background-color: #000;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08737b/US-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+}
+
+.login-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 450px;
+  padding: 60px 68px 40px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  min-height: 500px;
+}
+
+.login-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 28px;
+  color: #fff;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-input {
+  background: #333;
+  color: #fff;
+  padding: 16px 20px;
+  border-radius: 4px;
+  border: 0;
+  width: 100%;
+  font-size: 16px;
+  height: 50px;
+  box-sizing: border-box;
+}
+
+.login-input:focus {
+  background: #454545;
+  outline: none;
+}
+
+.login-input::placeholder {
+  color: #8c8c8c;
+}
+
+.login-button {
+  background-color: #E50914;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 16px;
+  border-radius: 4px;
+  border: none;
+  width: 100%;
+  margin-top: 24px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.login-button:hover {
+  background-color: #f40612;
+}
+
+.login-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.login-error {
+  background-color: #e87c03;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  display: none;
+}
+
+.login-link {
+  margin-top: 16px;
+  color: #737373;
+  font-size: 16px;
+}
+
+.login-link a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
