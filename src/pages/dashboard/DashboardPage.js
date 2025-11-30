@@ -159,14 +159,18 @@ class DashboardPage {
   async loadVideos(query) {
     try {
       const { youtubeService } = await import('../../services/api/youtube.service.js');
-      const result = await youtubeService.searchVideos({ q: query });
+      const found = await youtubeService.search(query);
+      const items = found.map(v => ({
+        id: v.videoId || v.id,
+        title: v.title,
+        thumb: v.thumbnail || v.thumb,
+        channelTitle: v.channelTitle
+      }));
       
-      if (result.items && result.items.length > 0) {
-        this.videoGrid.render(result.items);
-        
-        // Reproduz primeiro vídeo
-        if (this.videoPlayer && result.items[0]) {
-          this.videoPlayer.load(result.items[0].id);
+      if (items.length > 0) {
+        this.videoGrid.render(items);
+        if (this.videoPlayer) {
+          this.videoPlayer.load(items[0].id);
         }
       }
     } catch (error) {
