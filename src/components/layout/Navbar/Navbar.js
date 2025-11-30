@@ -2,7 +2,6 @@
  * Navbar Component - Barra de navegação
  */
 import { authService } from '../../../services/auth/auth.service';
-import { ROUTES } from '../../../config/constants';
 import { navigateTo } from '../../../router/navigator.js';
 
 export class Navbar {
