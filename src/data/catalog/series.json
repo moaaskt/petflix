@@ -1,0 +1,114 @@
+{
+  "dogs": {
+    "popular": [
+      {
+        "id": "8nQF3zVotOg",
+        "title": "Aventuras Caninas",
+        "thumb": "https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg"
+      },
+      {
+        "id": "5dsGWM5XGdg",
+        "title": "Cães em Ação",
+        "thumb": "https://i.ytimg.com/vi/5dsGWM5XGdg/maxresdefault.jpg"
+      },
+      {
+        "id": "QH2-TGUlwu4",
+        "title": "Treinamento Divertido",
+        "thumb": "https://i.ytimg.com/vi/QH2-TGUlwu4/maxresdefault.jpg"
+      },
+      {
+        "id": "ByXuk9QqQkk",
+        "title": "Raças Inteligentes",
+        "thumb": "https://i.ytimg.com/vi/ByXuk9QqQkk/maxresdefault.jpg"
+      },
+      {
+        "id": "kA244gAQhns",
+        "title": "Cuidados Diários",
+        "thumb": "https://i.ytimg.com/vi/kA244gAQhns/maxresdefault.jpg"
+      },
+      {
+        "id": "dZL7qvyDc1I",
+        "title": "Marley & Eu",
+        "thumb": "https://i.ytimg.com/vi/dZL7qvyDc1I/maxresdefault.jpg"
+      }
+    ],
+    "educational": [
+      {
+        "id": "3I-6y9E8u5c",
+        "title": "Adestramento 101",
+        "thumb": "https://i.ytimg.com/vi/3I-6y9E8u5c/maxresdefault.jpg"
+      },
+      {
+        "id": "9Y31YSPo2i0",
+        "title": "Comandos Básicos",
+        "thumb": "https://i.ytimg.com/vi/9Y31YSPo2i0/maxresdefault.jpg"
+      },
+      {
+        "id": "jNQXAC9IVRw",
+        "title": "Socialização",
+        "thumb": "https://i.ytimg.com/vi/jNQXAC9IVRw/maxresdefault.jpg"
+      },
+      {
+        "id": "AYHaXXViER8",
+        "title": "Saúde Canina",
+        "thumb": "https://i.ytimg.com/vi/AYHaXXViER8/maxresdefault.jpg"
+      },
+      {
+        "id": "tEPNTIhVXGI",
+        "title": "Alimentação Saudável",
+        "thumb": "https://i.ytimg.com/vi/tEPNTIhVXGI/maxresdefault.jpg"
+      },
+      {
+        "id": "gO9KVopLsE0",
+        "title": "Exercícios",
+        "thumb": "https://i.ytimg.com/vi/gO9KVopLsE0/maxresdefault.jpg"
+      }
+    ],
+    "puppy": [
+      {
+        "id": "6gNBe9gRziA",
+        "title": "Para Filhotes 1",
+        "thumb": "https://i.ytimg.com/vi/6gNBe9gRziA/maxresdefault.jpg"
+      },
+      {
+        "id": "QEU-ZO6hUqE",
+        "title": "Para Filhotes 2",
+        "thumb": "https://i.ytimg.com/vi/QEU-ZO6hUqE/maxresdefault.jpg"
+      },
+      {
+        "id": "irhQxrrl7cg",
+        "title": "Para Filhotes 3",
+        "thumb": "https://i.ytimg.com/vi/irhQxrrl7cg/maxresdefault.jpg"
+      },
+      {
+        "id": "oHg5SJYRHA0",
+        "title": "Para Filhotes 4",
+        "thumb": "https://i.ytimg.com/vi/oHg5SJYRHA0/maxresdefault.jpg"
+      },
+      {
+        "id": "8nQF3zVotOg",
+        "title": "Para Filhotes 5",
+        "thumb": "https://i.ytimg.com/vi/8nQF3zVotOg/maxresdefault.jpg"
+      },
+      {
+        "id": "5dsGWM5XGdg",
+        "title": "Para Filhotes 6",
+        "thumb": "https://i.ytimg.com/vi/5dsGWM5XGdg/maxresdefault.jpg"
+      }
+    ]
+  },
+  "cats": {
+    "popular": [],
+    "educational": [],
+    "puppy": []
+  }
+}
+
+
+
+
+
+
+
+
+

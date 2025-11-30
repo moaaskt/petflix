@@ -1,0 +1,18 @@
+{
+  "name": "petflix",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Plataforma de streaming para pets",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "firebase": "^9.23.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
+

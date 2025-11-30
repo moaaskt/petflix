@@ -1,0 +1,30 @@
+.page.page--documentaries {
+  padding-top: 72px;
+  background:
+    linear-gradient(180deg, rgba(20,20,20,0.4), rgba(20,20,20,0.8)),
+    var(--color-dark);
+}
+
+.page--documentaries .page-header {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-5);
+}
+
+.page--documentaries .section-title {
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  font-weight: 700;
+}
+
+.page--documentaries .section { margin: var(--space-7) 0; }
+
+.page--documentaries .carousel-viewport { padding: 0 var(--space-4); }
+
+.page--documentaries .carousel-track { scroll-snap-type: x mandatory; }
+.page--documentaries .movie-card { scroll-snap-align: start; transform-origin: center left; }
+.page--documentaries .movie-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
+
+@media (max-width: var(--mobile)) {
+  .page--documentaries .carousel-btn { display: none; }
+  .page--documentaries .movie-card { width: 150px; }
+}
+

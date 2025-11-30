@@ -1,0 +1,74 @@
+/* DocumentariesPage Styles */
+.docs-main {
+  padding: 2rem 4%;
+}
+
+.docs-carousel-container {
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.docs-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 1rem;
+  padding: 1rem 0;
+  scrollbar-width: none;
+}
+
+.docs-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.doc-item {
+  flex: 0 0 300px;
+  cursor: pointer;
+  transition: transform var(--transition-base);
+}
+
+.doc-item:hover {
+  transform: scale(1.05);
+}
+
+.doc-item img {
+  width: 100%;
+  border-radius: 8px;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.doc-name {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.docs-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: var(--z-modal);
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .doc-item {
+    flex: 0 0 200px;
+  }
+}
+
+
+
+
+
+
+
+
+

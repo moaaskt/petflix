@@ -1,88 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/png" href="assets/petflix-logo_prev_ui.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
-    <title>Petflix</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <title>Petflix - Selecione seu Perfil</title>
 </head>
 <body>
-
-<!-- tela login  -->
-
     <div class="login-wrapper">
-      
-      
       <div class="logo">
         <h1>Quem está assistindo?</h1>
-        <!-- <img src="assets/petflix-logo_prev_ui.png" alt="Netflix Logo"> -->
       </div>
       <div class="users">
         <div class="user">
-          <img src="assets/Image_fx (8).jpg" id="user1" title="Bucica Caramelo" alt="Avatar 1">
-          <div class="username" >Cachorro</div>
+          <img src="assets/Image_fx (8).jpg" id="user1" title="Cachorro" alt="Perfil Cachorro">
+          <div class="username">Cachorro</div>
         </div>
         <div class="user">
-            <img src="assets/gato-siames-1.jpg" title="O gato mia" id="user2" alt="Avatar 2">
-            <div class="username" >Gato</div>
+            <img src="assets/gato-siames-1.jpg" title="Gato" id="user2" alt="Perfil Gato">
+            <div class="username">Gato</div>
         </div>
       </div>
     </div>
 
-
-
-<script>
-
-  
-// seleciona as imagens dos usuários
-const user1 = document.querySelector('#user1');
-const user2 = document.querySelector('#user2');
-
-// adiciona um evento de clique em cada imagem do usuário
-user1.addEventListener('click', () => {
-  // redireciona para a página de carregamento após 1 segundo 
-  setTimeout(() => {
-    window.location.href = 'wait.html';
-  }, 1000);
-  
-  // redireciona para a página de cachorro após 3 segundos 
-  setTimeout(() => {
-    window.location.href = 'indexcach.html';
-  }, 1500);
-});
-
-user2.addEventListener('click', () => {
-  // redireciona para a página de carregamento após 1 segundo 
-  setTimeout(() => {
-    window.location.href = 'waitgato.html';
-  }, 1000);
-  
-  // redireciona para a página de gato após 3 segundos 
-  setTimeout(() => {
-    window.location.href = 'indexgato.html';
-  }, 1500);
-});
-
-  auth.onAuthStateChanged((user) => {
-    if (!user || !user.emailVerified) {
-        window.location.href = 'index.html';
-    }
-});
-
-
-</script>
-
-
-
-  </body>
-  
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    
+    <!-- Configuração do Firebase -->
+    <script src="firebase.config.js"></script>
+    
+    <!-- Scripts da aplicação -->
+    <script src="JS/firebase-auth.js"></script>
+    <script>
+    // Seleção de perfil
+    document.addEventListener('DOMContentLoaded', function() {
+      const user1 = document.getElementById('user1');
+      const user2 = document.getElementById('user2');
+      
+      if (user1) {
+        user1.addEventListener('click', function() {
+          localStorage.setItem('petflixPetType', 'dog');
+          window.location.href = 'indexcach.html';
+        });
+      }
+      
+      if (user2) {
+        user2.addEventListener('click', function() {
+          localStorage.setItem('petflixPetType', 'cat');
+          window.location.href = 'indexgato.html';
+        });
+      }
+      
+      // Verifica se usuário está logado
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+          window.location.href = 'index.html';
+        }
+      });
+    });
+    </script>
+</body>
 </html>
-
-
-
