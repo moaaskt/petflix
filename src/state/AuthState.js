@@ -1,7 +1,8 @@
 /**
  * AuthState - Estado global de autenticação
  */
-import { getAuth } from '../config/firebase.js';
+import { auth } from '../config/firebase.js';
+import { onAuthStateChanged } from 'firebase/auth';
 
 let state = {
   user: null,
@@ -77,22 +78,25 @@ function subscribe(callback) {
  * Inicializa AuthState e observa mudanças no Firebase Auth
  */
 export function initAuthState() {
-  const auth = getAuth();
-  
-  // Observa mudanças no estado de autenticação
-  auth.onAuthStateChanged((user) => {
+  onAuthStateChanged(auth, (user) => {
+    const serialized = user ? {
+      uid: user.uid,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      displayName: user.displayName || ''
+    } : null;
+
+    try {
+      localStorage.setItem('currentUser', JSON.stringify(serialized));
+    } catch {}
+
     setState({
-      user: user ? {
-        uid: user.uid,
-        email: user.email,
-        emailVerified: user.emailVerified,
-        displayName: user.displayName
-      } : null,
+      user: serialized,
       loading: false,
       error: null
     });
   });
-  
+
   console.log('✅ AuthState inicializado');
 }
 

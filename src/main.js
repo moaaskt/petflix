@@ -8,16 +8,15 @@ import './styles/layout.css';
 import { initRouter } from './router/index.js';
 import { initAppState } from './state/AppState.js';
 import { initAuthState } from './state/AuthState.js';
-import { initFirebase } from './config/firebase.js';
+import { setupAuthPersistence } from './config/firebase.js';
 
 /**
  * Inicializa a aplicação
  */
 async function init() {
   try {
-    // 1. Inicializa Firebase
-    await initFirebase();
-    
+    // 1. Configura persistência de auth
+    await setupAuthPersistence();
     // 2. Inicializa estados globais
     initAuthState();
     initAppState();
