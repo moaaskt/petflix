@@ -87,23 +87,45 @@ async function renderRoute(route) {
   // Renderiza componente
   try {
     const component = route.component;
-    
-    // Suporte para padrão { render, init }
-    let html;
-    if (component && typeof component.render === 'function') {
-      html = await component.render();
-    } else if (typeof component === 'function') {
-      // Fallback para componentes que são apenas função (se houver)
-      html = await component();
-    } else {
-      throw new Error('Componente inválido: ' + route.path);
-    }
+    const useLayout = route.meta && route.meta.layout === 'app';
 
-    appContainer.innerHTML = html;
-    
-    // Executa init se existir
-    if (component && typeof component.init === 'function') {
-      await component.init();
+    if (useLayout) {
+      const { render: layoutRender, init: layoutInit } = await import('../components/layout/AppLayout/AppLayout.js');
+      appContainer.innerHTML = layoutRender('');
+
+      // Render page inside layout content
+      const contentEl = document.getElementById('layoutContent');
+      if (!contentEl) throw new Error('Elemento #layoutContent não encontrado no AppLayout');
+
+      let pageHtml;
+      if (component && typeof component.render === 'function') {
+        pageHtml = await component.render();
+      } else if (typeof component === 'function') {
+        pageHtml = await component();
+      } else {
+        throw new Error('Componente inválido: ' + route.path);
+      }
+
+      contentEl.innerHTML = pageHtml;
+      await layoutInit();
+
+      if (component && typeof component.init === 'function') {
+        await component.init();
+      }
+    } else {
+      // Sem layout
+      let html;
+      if (component && typeof component.render === 'function') {
+        html = await component.render();
+      } else if (typeof component === 'function') {
+        html = await component();
+      } else {
+        throw new Error('Componente inválido: ' + route.path);
+      }
+      appContainer.innerHTML = html;
+      if (component && typeof component.init === 'function') {
+        await component.init();
+      }
     }
 
     currentRoute = route;

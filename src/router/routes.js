@@ -82,6 +82,7 @@ export const routes = [
     meta: {
       title: 'Selecione seu Perfil - PetFlix',
       requiresAuth: true,
+      layout: 'app',
       middleware: [requireAuth] 
       // Removi requireEmailVerified daqui para evitar loop, 
       // já que a lógica de requireEmailVerified redireciona para /home
@@ -93,6 +94,7 @@ export const routes = [
     meta: {
       title: 'Dashboard - PetFlix',
       requiresAuth: true,
+      layout: 'app',
       middleware: [requireAuth, requireEmailVerified]
     }
   },
@@ -102,6 +104,7 @@ export const routes = [
     meta: {
       title: 'Filmes - PetFlix',
       requiresAuth: true,
+      layout: 'app',
       middleware: [requireAuth, requireEmailVerified]
     }
   },
@@ -111,6 +114,7 @@ export const routes = [
     meta: {
       title: 'Séries - PetFlix',
       requiresAuth: true,
+      layout: 'app',
       middleware: [requireAuth, requireEmailVerified]
     }
   },
@@ -120,6 +124,7 @@ export const routes = [
     meta: {
       title: 'Documentários - PetFlix',
       requiresAuth: true,
+      layout: 'app',
       middleware: [requireAuth, requireEmailVerified]
     }
   },

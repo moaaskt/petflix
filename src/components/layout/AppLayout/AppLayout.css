@@ -1,0 +1,3 @@
+.app-layout { min-height: 100vh; display: flex; flex-direction: column; }
+.app-content { flex: 1 0 auto; padding-top: 72px; }
+/* sticky navbar behavior is handled inside Navbar.css via .scrolled */
