@@ -9,6 +9,7 @@ import * as SeriesPage from '../pages/categories/SeriesPage.js';
 import * as DocumentariesPage from '../pages/categories/DocumentariesPage.js';
 import * as ProfilePage from '../pages/ProfilePage.js';
 import * as DashboardPage from '../pages/dashboard/DashboardPage.js';
+import * as PlayerPage from '../pages/player/PlayerPage.js';
 
 /**
  * Middleware para verificar autenticação
@@ -126,6 +127,16 @@ export const routes = [
       requiresAuth: true,
       layout: 'app',
       middleware: [requireAuth, requireEmailVerified]
+    }
+  },
+  {
+    path: '/player',
+    component: PlayerPage,
+    meta: {
+      title: 'Player - PetFlix',
+      requiresAuth: true,
+      layout: 'app',
+      middleware: [requireAuth]
     }
   },
   {

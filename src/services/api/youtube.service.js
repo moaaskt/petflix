@@ -72,6 +72,16 @@ function normalizeVideo(item) {
   };
 }
 
+function normalizeVideoDetails(item) {
+  const base = normalizeVideo(item);
+  if (!base) return null;
+  const snippet = item.snippet || {};
+  return {
+    ...base,
+    description: snippet.description || '',
+  };
+}
+
 export const youtubeService = {
   /**
    * Busca vídeos por termo
@@ -136,5 +146,37 @@ export const youtubeService = {
       const data = await res.json();
       return data.items.map(normalizeVideo).filter(Boolean);
     }, TTL.VIDEOS);
+  }
+  ,
+  async getVideoDetails(id) {
+    const params = { part: 'snippet,statistics', id };
+    const cacheKey = `video_${id}`;
+    return fetchWithCache(cacheKey, async () => {
+      const res = await fetch(buildUrl('videos', params));
+      if (!res.ok) throw new Error(`YouTube API Error: ${res.statusText}`);
+      const data = await res.json();
+      const item = data.items?.[0];
+      return normalizeVideoDetails(item);
+    }, TTL.VIDEOS);
+  }
+  ,
+  async searchRelated(id, maxResults = YOUTUBE_CONFIG.DEFAULT_MAX_RESULTS) {
+    const params = {
+      part: 'snippet',
+      type: 'video',
+      relatedToVideoId: id,
+      maxResults,
+      safeSearch: YOUTUBE_CONFIG.SAFE_SEARCH,
+      videoEmbeddable: YOUTUBE_CONFIG.VIDEO_EMBEDDABLE ? 'true' : 'false',
+      regionCode: YOUTUBE_CONFIG.REGION_CODE || 'BR',
+      relevanceLanguage: YOUTUBE_CONFIG.RELEVANCE_LANGUAGE || 'pt'
+    };
+    const cacheKey = `related_${id}_${maxResults}`;
+    return fetchWithCache(cacheKey, async () => {
+      const res = await fetch(buildUrl('search', params));
+      if (!res.ok) throw new Error(`YouTube API Error: ${res.statusText}`);
+      const data = await res.json();
+      return data.items.map(normalizeVideo).filter(Boolean);
+    }, TTL.SEARCH);
   }
 };
