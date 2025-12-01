@@ -1,7 +1,7 @@
 /**
  * VideoPlayer Component - Player de vídeo do YouTube
  */
-import { youtubeService } from '../../../services/api/youtube.service';
+ 
 
 export class VideoPlayer {
   constructor(containerId, options = {}) {
@@ -26,11 +26,9 @@ export class VideoPlayer {
     }
 
     this.currentVideoId = videoId;
-    const embedUrl = youtubeService.getEmbedUrl(videoId, {
-      autoplay: this.options.autoplay || options.autoplay,
-      showRelated: this.options.showRelated || options.showRelated,
-      ...options
-    });
+    const autoplay = ((typeof options.autoplay !== 'undefined') ? options.autoplay : this.options.autoplay) ? '1' : '0';
+    const rel = ((typeof options.showRelated !== 'undefined') ? options.showRelated : this.options.showRelated) ? '1' : '0';
+    const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=${autoplay}&rel=${rel}&modestbranding=1`;
 
     this.container.innerHTML = `
       <iframe 

@@ -1,0 +1,22 @@
+.page.page--player { background: #000; color: #fff; padding-top: 72px; }
+.back-btn { margin: var(--space-4) 0; color: #fff; background: transparent; border: 1px solid #444; padding: 8px 14px; border-radius: 6px; }
+.back-btn:hover { border-color: #777; }
+
+.player-wrap { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 var(--space-4); }
+.player-skeleton { width: 100%; aspect-ratio: 16/9; border-radius: 12px; background: linear-gradient(90deg, #222 25%, #2a2a2a 37%, #222 63%); background-size: 400% 100%; animation: shimmer 1.4s ease infinite; }
+.player-frame { width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.6); }
+.player-frame iframe { width: 100%; height: 100%; border: 0; }
+
+.title-skeleton { font-size: clamp(1.8rem, 3vw, 2.4rem); margin: var(--space-4) 0 var(--space-2); }
+.meta { color: #bbb; margin-bottom: var(--space-3); }
+.desc-skeleton { color: #bbb; max-width: 80ch; }
+
+.section { margin: var(--space-6) 0; }
+.section-title { font-size: clamp(1.25rem, 2vw, 1.8rem); font-weight: 700; }
+
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+@media (max-width: 768px) { .desc-skeleton { max-width: 100%; } }
+
+@media (prefers-reduced-motion: reduce) { .player-skeleton { animation: none; } }
+

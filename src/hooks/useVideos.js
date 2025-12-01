@@ -23,17 +23,18 @@ export function useVideos() {
     currentQuery = query;
 
     try {
-      const result = await youtubeService.searchVideos({
-        q: query,
-        pageToken: pageToken
-      });
-
-      videos = result.items;
-      nextPageToken = result.nextPageToken;
-      prevPageToken = result.prevPageToken;
+      const found = await youtubeService.search(query);
+      videos = found.map(v => ({
+        id: v.videoId || v.id,
+        title: v.title,
+        thumb: v.thumbnail || v.thumb,
+        channelTitle: v.channelTitle
+      }));
+      nextPageToken = '';
+      prevPageToken = '';
       loading = false;
 
-      return result;
+      return { items: videos, nextPageToken, prevPageToken };
     } catch (err) {
       error = err;
       loading = false;
@@ -82,4 +83,3 @@ export function useVideos() {
     hasPrev: !!prevPageToken
   };
 }
-

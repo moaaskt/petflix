@@ -9,6 +9,7 @@ import * as SeriesPage from '../pages/categories/SeriesPage.js';
 import * as DocumentariesPage from '../pages/categories/DocumentariesPage.js';
 import * as ProfilePage from '../pages/ProfilePage.js';
 import * as DashboardPage from '../pages/dashboard/DashboardPage.js';
+import * as PlayerPage from '../pages/player/PlayerPage.js';
 
 /**
  * Middleware para verificar autenticação
@@ -82,6 +83,7 @@ export const routes = [
     meta: {
       title: 'Selecione seu Perfil - PetFlix',
       requiresAuth: true,
+      layout: 'app',
       middleware: [requireAuth] 
       // Removi requireEmailVerified daqui para evitar loop, 
       // já que a lógica de requireEmailVerified redireciona para /home
@@ -93,6 +95,7 @@ export const routes = [
     meta: {
       title: 'Dashboard - PetFlix',
       requiresAuth: true,
+      layout: 'app',
       middleware: [requireAuth, requireEmailVerified]
     }
   },
@@ -102,6 +105,7 @@ export const routes = [
     meta: {
       title: 'Filmes - PetFlix',
       requiresAuth: true,
+      layout: 'app',
       middleware: [requireAuth, requireEmailVerified]
     }
   },
@@ -111,6 +115,7 @@ export const routes = [
     meta: {
       title: 'Séries - PetFlix',
       requiresAuth: true,
+      layout: 'app',
       middleware: [requireAuth, requireEmailVerified]
     }
   },
@@ -120,7 +125,18 @@ export const routes = [
     meta: {
       title: 'Documentários - PetFlix',
       requiresAuth: true,
+      layout: 'app',
       middleware: [requireAuth, requireEmailVerified]
+    }
+  },
+  {
+    path: '/player',
+    component: PlayerPage,
+    meta: {
+      title: 'Player - PetFlix',
+      requiresAuth: true,
+      layout: 'app',
+      middleware: [requireAuth]
     }
   },
   {

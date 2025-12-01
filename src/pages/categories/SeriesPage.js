@@ -1,8 +1,9 @@
 /**
  * SeriesPage - Página de séries unificada
  */
-import { Carousel } from '../../components/Carousel.js';
+import { CategoryRow } from '../../components/features/CategoryRow/CategoryRow.js';
 import '../../styles/pages/series.css';
+import { navigateTo } from '../../router/navigator.js';
 
 export function render() {
   const title = 'Séries';
@@ -33,24 +34,15 @@ export function render() {
       </div>
       
       <section class="section">
-        ${Carousel({ 
-          title: 'Populares (Mock)', 
-          items: mockItems 
-        })}
+        ${CategoryRow({ title: 'Populares (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
       </section>
 
       <section class="section">
-        ${Carousel({ 
-          title: 'Séries de Animais (YouTube API)', 
-          query: 'séries animais natgeo' 
-        })}
+        ${CategoryRow({ title: 'Séries de Animais (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
       </section>
 
       <section class="section">
-        ${Carousel({ 
-          title: 'Desenhos de Pets (YouTube API)', 
-          query: 'desenhos animados animais completo' 
-        })}
+        ${CategoryRow({ title: 'Desenhos de Pets (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
       </section>
     </div>
   `;
@@ -82,4 +74,3 @@ window.scrollCarousel = function(containerId, scrollAmount) {
     });
   }
 };
-
