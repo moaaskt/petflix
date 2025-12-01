@@ -1,0 +1,23 @@
+.category-row { margin: var(--space-6) 0; }
+.row-header { display: flex; align-items: center; justify-content: space-between; }
+.row-title { font-size: clamp(1.25rem, 2vw, 1.8rem); font-weight: 700; }
+
+.row-viewport { position: relative; padding: 0 var(--space-4); }
+.row-track { display: flex; gap: 16px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; }
+.row-track::-webkit-scrollbar { display: none; }
+.row-track.grabbing { cursor: grabbing; }
+
+.row-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: #fff; border-radius: 50%; width: 40px; height: 40px; display: grid; place-items: center; }
+.row-btn--prev { left: var(--space-4); }
+.row-btn--next { right: var(--space-4); }
+.row-btn:hover { background: rgba(0,0,0,0.7); }
+
+.skeleton-card { width: 200px; aspect-ratio: 16/9; border-radius: 10px; background: linear-gradient(90deg, #333 25%, #3a3a3a 37%, #333 63%); background-size: 400% 100%; animation: shimmer 1.4s ease infinite; }
+
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .row-track { scroll-behavior: auto; }
+  .skeleton-card { animation: none; }
+}
+
