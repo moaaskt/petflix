@@ -1,8 +1,9 @@
 /**
  * MoviesPage - Página de filmes unificada
  */
-import { Carousel } from '../../components/Carousel.js';
+import { CategoryRow } from '../../components/features/CategoryRow/CategoryRow.js';
 import '../../styles/pages/movies.css';
+import { navigateTo } from '../../router/navigator.js';
 
 export function render() {
   const title = 'Filmes';
@@ -33,24 +34,15 @@ export function render() {
       </div>
       
       <section class="section">
-        ${Carousel({ 
-          title: 'Populares (Mock)', 
-          items: mockItems 
-        })}
+        ${CategoryRow({ title: 'Populares (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
       </section>
 
       <section class="section">
-        ${Carousel({ 
-          title: 'Filmes de Cachorro (YouTube API)', 
-          query: 'filmes de cachorro completo dublado' 
-        })}
+        ${CategoryRow({ title: 'Filmes de Cachorro (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
       </section>
 
       <section class="section">
-        ${Carousel({ 
-          title: 'Animações de Pets (YouTube API)', 
-          query: 'filmes pets animação' 
-        })}
+        ${CategoryRow({ title: 'Animações de Pets (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
       </section>
     </div>
   `;
@@ -83,4 +75,3 @@ window.scrollCarousel = function(containerId, scrollAmount) {
     });
   }
 };
-

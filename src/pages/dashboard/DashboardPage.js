@@ -20,15 +20,15 @@ export function render() {
       </div>
 
       <section class="section">
-        ${CategoryRow({ title: 'Populares', items: mock })}
+        ${CategoryRow({ title: 'Populares', items: mock, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
       </section>
 
       <section class="section">
-        ${CategoryRow({ title: 'Recomendados', items: mock })}
+        ${CategoryRow({ title: 'Recomendados', items: mock, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
       </section>
 
       <section class="section">
-        ${CategoryRow({ title: 'Top', items: mock })}
+        ${CategoryRow({ title: 'Top', items: mock, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
       </section>
     </div>
   `;

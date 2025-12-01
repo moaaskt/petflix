@@ -1,11 +1,17 @@
 import './CategoryRow.css';
 import { ThumbnailCard } from '../ThumbnailCard/ThumbnailCard.js';
 
+const ROW_HANDLERS = new Map();
+
 export function CategoryRow({ title, items = [], loading = false, onCardClick } = {}) {
   const rowId = `row_${Math.random().toString(36).slice(2)}`;
   const cardsHtml = loading
     ? Array.from({ length: 6 }).map(() => '<div class="skeleton-card"></div>').join('')
     : items.map(i => ThumbnailCard({ id: i.videoId || i.id, title: i.title, thumbnail: i.thumbnail || i.thumb })).join('');
+
+  if (typeof onCardClick === 'function') {
+    ROW_HANDLERS.set(rowId, onCardClick);
+  }
 
   return `
     <section class="category-row" data-row-id="${rowId}" aria-label="${title}">
@@ -59,9 +65,12 @@ function initRow(root) {
   track.addEventListener('touchend', endDrag, { passive: true });
   track.addEventListener('touchmove', moveDrag, { passive: false });
 
+  const handler = ROW_HANDLERS.get(root.getAttribute('data-row-id'));
+
   track.querySelectorAll('.thumbnail-card').forEach(card => {
     card.addEventListener('click', () => {
       const id = card.getAttribute('data-id');
+      if (typeof handler === 'function') handler(id);
       const event = new CustomEvent('categoryrow:cardclick', { detail: { id } });
       root.dispatchEvent(event);
     });
@@ -91,4 +100,3 @@ if (typeof window !== 'undefined') {
 
   requestAnimationFrame(() => initCategoryRows());
 }
-

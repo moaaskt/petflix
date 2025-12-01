@@ -1,7 +1,8 @@
 /**
  * DocumentariesPage - Página de documentários unificada
  */
-import { Carousel } from '../../components/Carousel.js';
+import { CategoryRow } from '../../components/features/CategoryRow/CategoryRow.js';
+import { navigateTo } from '../../router/navigator.js';
 import '../../styles/pages/documentaries.css';
 
 export function render() {
@@ -33,24 +34,15 @@ export function render() {
       </div>
       
       <section class="section">
-        ${Carousel({ 
-          title: 'Populares (Mock)', 
-          items: mockItems 
-        })}
+        ${CategoryRow({ title: 'Populares (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
       </section>
 
       <section class="section">
-        ${Carousel({ 
-          title: 'Vida Selvagem (YouTube API)', 
-          query: 'documentários vida selvagem animais' 
-        })}
+        ${CategoryRow({ title: 'Vida Selvagem (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
       </section>
 
       <section class="section">
-        ${Carousel({ 
-          title: 'Cuidados com Pets (YouTube API)', 
-          query: 'dicas cuidados pets veterinário' 
-        })}
+        ${CategoryRow({ title: 'Cuidados com Pets (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
       </section>
     </div>
   `;
@@ -82,4 +74,3 @@ window.scrollCarousel = function(containerId, scrollAmount) {
     });
   }
 };
-
