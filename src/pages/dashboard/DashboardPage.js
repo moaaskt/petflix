@@ -7,6 +7,7 @@ import { CategoryRow, initCategoryRows } from '../../components/features/Categor
 import { render as renderHero, init as initHero } from '../../components/layout/HeroBanner/HeroBanner.js';
 import { localStorageService } from '../../services/storage/localStorage.service.js';
 import { PET_TYPES } from '../../config/constants.js';
+import { LoadingSpinner } from '../../components/ui/Loading/LoadingSpinner.js';
  
 
 export function render() {
@@ -90,6 +91,8 @@ class DashboardPage {
    */
   async loadFeatured() {
     try {
+      const spinner = new LoadingSpinner({ type: this.petType === PET_TYPES.DOG ? 'dog' : 'cat' });
+      spinner.show();
       const { getFeatured } = await import('../../services/banner/featured.service.js');
       this.featured = await getFeatured(this.petType === PET_TYPES.DOG ? 'dog' : 'cat');
       const hero = document.getElementById('hero-container');
@@ -97,6 +100,10 @@ class DashboardPage {
         hero.innerHTML = renderHero({ item: this.featured });
         initHero();
       }
+      setTimeout(() => {
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) overlay.remove();
+      }, 800);
     } catch (e) {
       console.warn('Falha ao carregar destaque:', e);
     }

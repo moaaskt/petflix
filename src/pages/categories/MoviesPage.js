@@ -26,7 +26,12 @@ export function render() {
 }
 
 export function init() {
-  const root = document.getElementById('app');
+  const cards = Array.from(document.querySelectorAll('[data-id]'));
+  cards.forEach(el => {
+    const id = el.getAttribute('data-id');
+    if (!id) return;
+    el.addEventListener('click', () => navigateTo(`/player?videoId=${id}`));
+  });
 }
 
 // Função global para fechar modal (usada no HTML)

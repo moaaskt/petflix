@@ -3,6 +3,7 @@
  * Estilo Netflix
  */
 import { navigateTo } from '../../router/navigator.js';
+import { applyTheme } from '../../state/AuthState.js';
 
 export function render() {
   return `
@@ -20,7 +21,7 @@ export function render() {
         </button>
         <button id="profile-cat" class="group cursor-pointer flex flex-col items-center gap-2" aria-label="Gato">
           <div class="w-24 h-24 md:w-32 md:h-32 rounded-md overflow-hidden border-2 border-transparent group-hover:border-white transition-all">
-            <img src="assets/gato3.jpg" alt="Gato" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
+            <img src="assets/gato-siames-1.jpg" alt="Gato" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
             <div class="hidden w-full h-full items-center justify-center bg-red-600">
               <span class="text-white text-3xl">G</span>
             </div>
@@ -64,8 +65,9 @@ function selectProfile(profileName) {
   
   // Redireciona para a página de filmes (dashboard)
   try {
-    navigateTo('/filmes');
+    applyTheme(profileName === 'cat' ? 'cat' : 'dog');
+    navigateTo('/dashboard');
   } catch {
-    window.location.hash = '#/filmes';
+    window.location.hash = '#/dashboard';
   }
 }

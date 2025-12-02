@@ -8,3 +8,16 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
+
+/* theming */
+:root { --accent-color: #E50914; }
+body.theme-dog { --accent-color: #e67e22; }
+body.theme-cat { --accent-color: #E50914; }
+.icon-play { color: var(--accent-color); }
+.theme-dog .icon-play { color: var(--accent-color); }
+.theme-cat .icon-play { color: var(--accent-color); }
+:root { --primary-color: var(--accent-color); }
+body.theme-dog { --primary-color: #e67e22; }
+body.theme-cat { --primary-color: #9147ff; }
+.player-theme-color { color: var(--primary-color); }
+.player-theme-bg { background: var(--primary-color); }

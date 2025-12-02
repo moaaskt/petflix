@@ -41,80 +41,11 @@ export class LoadingSpinner {
    */
   addStyles() {
     if (document.getElementById('loading-spinner-styles')) return;
-
     const style = document.createElement('style');
     style.id = 'loading-spinner-styles';
-    
-    const iconColor = this.type === 'dog' ? '#e67e22' : '#e50914';
-    const iconClass = this.type === 'dog' ? 'fa-dog' : 'fa-cat';
-    
     style.textContent = `
-      @keyframes bounce {
-        0%, 100% { transform: translateY(0) rotate(0deg); }
-        25% { transform: translateY(-15px) rotate(-5deg); }
-        50% { transform: translateY(0) rotate(0deg); }
-        75% { transform: translateY(-10px) rotate(5deg); }
-      }
-      
-      @keyframes wag {
-        0% { transform: rotate(-10deg); }
-        100% { transform: rotate(10deg); }
-      }
-      
-      .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #000;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        transition: opacity 0.5s ease;
-      }
-      
-      .loading-spinner {
-        text-align: center;
-        color: #fff;
-      }
-      
-      .loading-spinner i {
-        font-size: 50px;
-        margin-bottom: 20px;
-        color: ${iconColor};
-        animation: bounce 1s infinite ease-in-out;
-        position: relative;
-      }
-      
-      .loading-spinner i::after {
-        content: "\\${this.type === 'dog' ? 'f6d6' : 'f6be'}";
-        font-family: "Font Awesome 6 Free";
-        position: absolute;
-        right: -20px;
-        bottom: -5px;
-        font-size: 0.6em;
-        animation: wag 0.3s infinite alternate;
-        opacity: 0.8;
-      }
-      
-      .loading-spinner p {
-        font-size: 18px;
-        font-family: 'Open Sans', sans-serif;
-        color: ${iconColor};
-        font-weight: 600;
-        margin-top: 10px;
-        text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-      }
-      
-      .fade-out {
-        opacity: 0;
-        pointer-events: none;
-      }
+      .fade-out { opacity: 0; pointer-events: none; }
     `;
-    
     document.head.appendChild(style);
   }
 
@@ -132,18 +63,17 @@ export class LoadingSpinner {
    * Renderiza o loading
    */
   render() {
-    const iconClass = this.type === 'dog' ? 'fa-dog' : 'fa-cat';
-    
     const overlay = document.createElement('div');
     overlay.id = 'loadingOverlay';
-    overlay.className = 'loading-overlay';
+    overlay.className = 'fixed inset-0 z-[60] bg-black flex items-center justify-center transition-opacity';
+    const color = this.type === 'dog' ? '#e67e22' : '#E50914';
+    const rgba = color === '#e67e22' ? 'rgba(230,126,34,0.3)' : 'rgba(229,9,20,0.3)';
     overlay.innerHTML = `
-      <div class="loading-spinner">
-        <i class="fas ${iconClass}"></i>
-        <p>${this.message}</p>
+      <div class="flex flex-col items-center justify-center">
+        <img src="/assets/petflix-logo.png" class="h-12 mb-8 animate-pulse" onerror="this.style.display='none';var f=document.createElement('h1');f.className='text-[#E50914] text-4xl font-bold tracking-widest animate-pulse';f.textContent='PETFLIX';this.parentNode.appendChild(f);" />
+        <div class="w-12 h-12 border-4 rounded-full animate-spin" style="border-color:${rgba}; border-top-color:${color};"></div>
       </div>
     `;
-    
     document.body.insertAdjacentElement('afterbegin', overlay);
   }
 

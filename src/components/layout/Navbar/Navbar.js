@@ -15,8 +15,8 @@ export class Navbar {
     if (!this.container) return;
     const logoImg = 'assets/petflix-logo_prev_ui.png';
     const html = `
-      <nav class="fixed top-0 w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/80 to-transparent">
-        <div class="px-4 md:px-12 py-4 flex items-center justify-between">
+      <nav class="fixed top-0 w-full z-50 transition-colors duration-300 bg-gradient-to-b from-black/80 to-transparent">
+        <div class="h-16 px-4 md:px-12 flex items-center justify-between">
           <a href="#/dashboard" class="flex items-center gap-3">
             <img src="${logoImg}" alt="Petflix" class="h-8 hidden md:block" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'" />
             <span class="text-red-600 text-2xl font-bold tracking-widest" style="display:none">PETFLIX</span>
@@ -60,6 +60,15 @@ export class Navbar {
         }
       });
     }
+    window.addEventListener('scroll', () => {
+      const nav = this.container.querySelector('nav');
+      if (!nav) return;
+      if (window.scrollY > 50) {
+        nav.classList.add('bg-black');
+      } else {
+        nav.classList.remove('bg-black');
+      }
+    });
   }
 }
 
