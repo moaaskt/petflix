@@ -1,4 +1,3 @@
-import './CategoryRow.css';
 import { ThumbnailCard } from '../ThumbnailCard/ThumbnailCard.js';
 
 const ROW_HANDLERS = new Map();
@@ -6,7 +5,7 @@ const ROW_HANDLERS = new Map();
 export function CategoryRow({ title, items = [], loading = false, onCardClick } = {}) {
   const rowId = `row_${Math.random().toString(36).slice(2)}`;
   const cardsHtml = loading
-    ? Array.from({ length: 6 }).map(() => '<div class="skeleton-card"></div>').join('')
+    ? Array.from({ length: 6 }).map(() => `<div class=\"relative flex-none w-[160px] md:w-[240px] aspect-video rounded-md bg-gray-700 animate-pulse\"></div>`).join('')
     : items.map(i => ThumbnailCard({ id: i.videoId || i.id, title: i.title, thumbnail: i.thumbnail || i.thumb })).join('');
 
   if (typeof onCardClick === 'function') {
@@ -14,60 +13,28 @@ export function CategoryRow({ title, items = [], loading = false, onCardClick } 
   }
 
   return `
-    <section class="category-row" data-row-id="${rowId}" aria-label="${title}">
-      <div class="row-header container">
-        <h3 class="row-title">${title}</h3>
-        <div class="row-actions" hidden></div>
-      </div>
-      <div class="row-viewport">
-        <button class="row-btn row-btn--prev" aria-label="Anterior" data-row="${rowId}"><i class="fas fa-chevron-left"></i></button>
-        <div class="row-track" data-row="${rowId}" role="list">
+    <section aria-label="${title}" data-row-id="${rowId}">
+      <h3 class="text-lg md:text-xl font-bold text-white mb-2 pl-4 md:pl-12">${title}</h3>
+      <div class="relative group px-4 md:px-12 pb-8">
+        <button type="button" data-prev class="absolute left-0 top-0 bottom-0 z-40 bg-black/50 hover:bg-black/80 flex items-center justify-center w-12 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-white"><path d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+        </button>
+        <div class="flex gap-2 overflow-x-auto no-scrollbar" data-row="${rowId}" role="list">
           ${cardsHtml}
         </div>
-        <button class="row-btn row-btn--next" aria-label="Próximo" data-row="${rowId}"><i class="fas fa-chevron-right"></i></button>
+        <button type="button" data-next class="absolute right-0 top-0 bottom-0 z-40 bg-black/50 hover:bg-black/80 flex items-center justify-center w-12 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-white"><path d="M8.25 4.5L15.75 12l-7.5 7.5"/></svg>
+        </button>
       </div>
     </section>
   `;
 }
 
 function initRow(root) {
-  const viewport = root.querySelector('.row-viewport');
-  const track = root.querySelector('.row-track');
-  const prev = root.querySelector('.row-btn--prev');
-  const next = root.querySelector('.row-btn--next');
-  if (!viewport || !track || !prev || !next) return;
-
-  const getCardWidth = () => {
-    const card = track.querySelector('.thumbnail-card');
-    return card ? card.getBoundingClientRect().width : 200;
-  };
-
-  const scrollByCards = (n) => {
-    const cardWidth = getCardWidth();
-    const gap = parseFloat(getComputedStyle(track).gap || '16');
-    const amount = (cardWidth + gap) * n;
-    viewport.scrollBy({ left: amount, behavior: 'smooth' });
-  };
-
-  let isDown = false; let startX; let scrollLeft;
-  const startDrag = (e) => { isDown = true; track.classList.add('grabbing'); startX = (e.touches? e.touches[0].pageX : e.pageX); scrollLeft = viewport.scrollLeft; };
-  const endDrag = () => { isDown = false; track.classList.remove('grabbing'); };
-  const moveDrag = (e) => { if (!isDown) return; e.preventDefault(); const x = (e.touches? e.touches[0].pageX : e.pageX); const walk = (x - startX) * 2; viewport.scrollLeft = scrollLeft - walk; };
-
-  prev.addEventListener('click', () => scrollByCards(-3));
-  next.addEventListener('click', () => scrollByCards(3));
-
-  track.addEventListener('mousedown', startDrag);
-  track.addEventListener('mouseleave', endDrag);
-  track.addEventListener('mouseup', endDrag);
-  track.addEventListener('mousemove', moveDrag);
-  track.addEventListener('touchstart', startDrag, { passive: true });
-  track.addEventListener('touchend', endDrag, { passive: true });
-  track.addEventListener('touchmove', moveDrag, { passive: false });
-
+  const track = root.querySelector('[role="list"]');
+  if (!track) return;
   const handler = ROW_HANDLERS.get(root.getAttribute('data-row-id'));
-
-  track.querySelectorAll('.thumbnail-card').forEach(card => {
+  track.querySelectorAll('[data-id]').forEach(card => {
     card.addEventListener('click', () => {
       const id = card.getAttribute('data-id');
       if (typeof handler === 'function') handler(id);
@@ -80,10 +47,22 @@ function initRow(root) {
       }
     });
   });
+  const prevBtn = root.querySelector('[data-prev]');
+  const nextBtn = root.querySelector('[data-next]');
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      track.scrollBy({ left: -window.innerWidth / 2, behavior: 'smooth' });
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      track.scrollBy({ left: window.innerWidth / 2, behavior: 'smooth' });
+    });
+  }
 }
 
-function initCategoryRows() {
-  document.querySelectorAll('.category-row').forEach(root => initRow(root));
+export function initCategoryRows() {
+  document.querySelectorAll('section[data-row-id]').forEach(root => initRow(root));
 }
 
 if (typeof window !== 'undefined') {
@@ -91,12 +70,10 @@ if (typeof window !== 'undefined') {
     let shouldInit = false;
     mutations.forEach(m => {
       m.addedNodes.forEach(node => {
-        if (node.classList && node.classList.contains('category-row')) shouldInit = true;
-        else if (node.querySelector && node.querySelector('.category-row')) shouldInit = true;
+        if (node.querySelector && node.querySelector('[role="list"]')) shouldInit = true;
       });
     });
     if (shouldInit) initCategoryRows();
   });
-
   requestAnimationFrame(() => initCategoryRows());
 }

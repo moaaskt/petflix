@@ -1,55 +1,32 @@
 /**
  * MoviesPage - Página de filmes unificada
  */
-import { CategoryRow } from '../../components/features/CategoryRow/CategoryRow.js';
-import '../../styles/pages/movies.css';
+import { ThumbnailCard } from '../../components/features/ThumbnailCard/ThumbnailCard.js';
 import { navigateTo } from '../../router/navigator.js';
 
 export function render() {
   const title = 'Filmes';
-  const mockItems = [
-    {
-      title: 'Demon Slayer',
-      thumbnail: 'https://i.ytimg.com/vi/2MKkj1DQ0NU/maxresdefault.jpg',
-      videoId: '2MKkj1DQ0NU'
-    },
-    {
-      title: 'One Piece',
-      thumbnail: 'https://i.ytimg.com/vi/0bZB5u28P8E/maxresdefault.jpg',
-      videoId: '0bZB5u28P8E'
-    },
-    {
-      title: 'Naruto',
-      thumbnail: 'https://i.ytimg.com/vi/-G9EoDQFhHk/maxresdefault.jpg',
-      videoId: '-G9EoDQFhHk'
-    }
+  const items = [
+    { title: 'A Vida Secreta dos Bichos', thumbnail: 'assets/1.jpg', videoId: 'Ws-9ra38AlI' },
+    { title: 'Beethoven', thumbnail: 'assets/betown.jpg', videoId: 'ki8wHMR-yOI' },
+    { title: 'K-9', thumbnail: 'assets/filmedog7.jpg', videoId: 'UqtFvSKhKmA' },
+    { title: 'Sempre ao Seu Lado', thumbnail: 'assets/caminho-de-casa.jpg', videoId: 'UFY8vW5IedY' },
+    { title: 'Gato de Botas', thumbnail: 'assets/capa-filme-gato-de-botas-2-o-ultimo-pedido-1f766-large.jpg', videoId: '6pbreU5ChmA' },
+    { title: 'Oliver & Companhia', thumbnail: 'assets/seriesgato2.jpg', videoId: 'JxS5E-kZc2s' }
   ];
 
   return `
-    <div class="page page--movies">
-      <div class="container">
-        <header class="page-header">
-          <h2 class="section-title">${title}</h2>
-        </header>
+    <div class="pt-20 px-4 md:px-12">
+      <h2 class="text-2xl md:text-3xl font-bold mb-6">${title}</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        ${items.map(i => ThumbnailCard({ id: i.videoId, title: i.title, thumbnail: i.thumbnail })).join('')}
       </div>
-      
-      <section class="section">
-        ${CategoryRow({ title: 'Populares (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      </section>
-
-      <section class="section">
-        ${CategoryRow({ title: 'Filmes de Cachorro (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      </section>
-
-      <section class="section">
-        ${CategoryRow({ title: 'Animações de Pets (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      </section>
     </div>
   `;
 }
 
 export function init() {
-  // Inicialização da MoviesPage (se necessário)
+  const root = document.getElementById('app');
 }
 
 // Função global para fechar modal (usada no HTML)

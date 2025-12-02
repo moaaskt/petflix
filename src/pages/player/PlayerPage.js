@@ -1,5 +1,3 @@
-import './PlayerPage.css';
-import { CategoryRow } from '../../components/features/CategoryRow/CategoryRow.js';
 import { navigateTo } from '../../router/navigator.js';
 
 function getVideoIdFromHash() {
@@ -11,80 +9,52 @@ function getVideoIdFromHash() {
 
 export function render() {
   const vid = getVideoIdFromHash();
+  const src = vid ? `https://www.youtube.com/embed/${encodeURIComponent(vid)}?autoplay=1&controls=0&modestbranding=1` : '';
   return `
-    <div class="page page--player">
-      <div class="container">
-        <button id="backBtn" class="back-btn" aria-label="Voltar">← Voltar</button>
+    <div class="relative w-full h-screen bg-black overflow-hidden flex items-center justify-center">
+      <button id="backBtn" class="absolute top-4 left-4 z-50" aria-label="Voltar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-white"><path d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+      </button>
+      <div id="playerContainer" class="absolute inset-0 w-full h-full">
+        ${src ? `<iframe id="playerFrame" src="${src}" class="w-full h-full" allow="autoplay; encrypted-media" allowfullscreen></iframe>` : ''}
       </div>
-
-      <div class="player-wrap">
-        <div id="playerFrame" class="player-skeleton" aria-label="Player"></div>
-      </div>
-
-      <div class="container">
-        <h1 id="videoTitle" class="title-skeleton">Carregando título...</h1>
-        <p id="videoMeta" class="meta"></p>
-        <p id="videoDesc" class="desc-skeleton">Carregando descrição...</p>
-      </div>
-
-      <section class="section">
-        <div class="container">
-          <h2 class="section-title">Mais Parecidos</h2>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/60 opacity-0 hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+        <div id="overlayTitle" class="text-2xl md:text-4xl font-semibold text-white">Carregando...</div>
+        <div class="mt-4 w-full h-1 bg-gray-600 rounded overflow-hidden">
+          <div id="overlayProgress" class="bg-[#E50914] w-1/3 h-full"></div>
         </div>
-        <div id="relatedContainer">
-          ${CategoryRow({ title: 'Mais Parecidos', loading: true })}
-        </div>
-      </section>
+      </div>
     </div>
   `;
 }
 
 export async function init() {
-  // Limpa e reconfigura listeners
   const backBtn = document.getElementById('backBtn');
-  if (backBtn) {
-    const clone = backBtn.cloneNode(true);
-    backBtn.parentNode.replaceChild(clone, backBtn);
-    clone.addEventListener('click', () => navigateTo('/dashboard'));
-  }
+  backBtn?.addEventListener('click', () => window.history.back());
 
   const videoId = getVideoIdFromHash();
   if (!videoId) {
-    navigateTo('/dashboard');
+    const container = document.getElementById('playerContainer');
+    if (container) {
+      container.innerHTML = `
+        <div class="w-full h-full flex items-center justify-center">
+          <div class="text-center space-y-4">
+            <div class="text-white text-xl">Conteúdo indisponível no momento</div>
+            <button class="border border-gray-400 text-gray-200 px-6 py-2 uppercase tracking-widest hover:border-white hover:text-white transition-all" id="backHome">Voltar ao Início</button>
+          </div>
+        </div>
+      `;
+      const backHome = document.getElementById('backHome');
+      backHome?.addEventListener('click', () => navigateTo('/dashboard'));
+    }
     return;
   }
 
-  // Carrega detalhes do vídeo
   try {
     const { youtubeService } = await import('../../services/api/youtube.service.js');
     const details = await youtubeService.getVideoDetails(videoId);
-
-    // Atualiza player
-    const frame = document.getElementById('playerFrame');
-    if (frame) {
-      frame.outerHTML = `<div class="player-frame"><iframe src="https://www.youtube.com/embed/${details.videoId}?autoplay=1&mute=0" allow="autoplay; encrypted-media" allowfullscreen title="${details.title}"></iframe></div>`;
-    }
-
-    // Atualiza texto
-    const titleEl = document.getElementById('videoTitle');
-    const metaEl = document.getElementById('videoMeta');
-    const descEl = document.getElementById('videoDesc');
-    if (titleEl) titleEl.textContent = details.title || 'Sem título';
-    if (metaEl) metaEl.textContent = `${details.channelTitle || ''} • ${new Date(details.publishedAt).toLocaleDateString()}`;
-    if (descEl) descEl.textContent = details.description || '';
-
-    // Carrega relacionados
-    const related = await youtubeService.searchRelated(videoId);
-    const relatedContainer = document.getElementById('relatedContainer');
-    if (relatedContainer) {
-      relatedContainer.innerHTML = CategoryRow({
-        title: 'Mais Parecidos',
-        items: related.map(r => ({ id: r.videoId || r.id, title: r.title, thumbnail: r.thumbnail })),
-        onCardClick: (id) => navigateTo(`/player?videoId=${id}`)
-      });
-    }
-  } catch (e) {
-    console.error('Erro ao carregar PlayerPage:', e);
-  }
+    const titleEl = document.getElementById('overlayTitle');
+    if (titleEl) titleEl.textContent = details?.title || 'Sem título';
+  } catch {}
 }
 
