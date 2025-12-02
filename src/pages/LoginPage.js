@@ -13,7 +13,7 @@ export function render() {
   console.log('LoginPage: Renderizando HTML');
   return `
     <div class="relative min-h-screen w-full overflow-hidden">
-      <img src="https://images.unsplash.com/photo-1574375927938-d5a98e8efe85?q=80&w=2669&auto=format&fit=crop" alt="background" class="absolute inset-0 w-full h-full object-cover z-0" />
+      <div class="absolute inset-0 w-full h-full bg-cover bg-center z-0" style="background-image: url('/assets/background-index.jpg');"></div>
       <div class="absolute inset-0 z-10 bg-black/60 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
       <div class="relative z-20 flex flex-col justify-center items-center min-h-screen px-4">
         <div class="bg-black/75 backdrop-blur-sm p-8 md:p-16 rounded-md w-full max-w-md min-h-[500px]">

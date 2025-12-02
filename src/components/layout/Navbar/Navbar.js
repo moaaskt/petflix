@@ -3,6 +3,8 @@
  */
 import { authService } from '../../../services/auth/auth.service.js';
 import { navigateTo } from '../../../router/navigator.js';
+import { ThumbnailCard } from '../../features/ThumbnailCard/ThumbnailCard.js';
+import { searchContent } from '../../../services/content.service.js';
 
 export class Navbar {
   constructor(containerId) {
@@ -25,11 +27,15 @@ export class Navbar {
             <a href="#/filmes" class="hidden md:inline text-gray-200 hover:text-white">Filmes</a>
             <a href="#/series" class="hidden md:inline text-gray-200 hover:text-white">Séries</a>
             <a href="#/docs" class="hidden md:inline text-gray-200 hover:text-white">Documentários</a>
-            <button id="searchIcon" class="text-gray-200 hover:text-white" aria-label="Buscar">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 3.5a7.5 7.5 0 0013.15 13.15z" />
-              </svg>
-            </button>
+            <div id="searchContainer" class="flex items-center gap-2">
+              <button id="searchIcon" class="text-gray-200 hover:text-white" aria-label="Buscar">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 3.5a7.5 7.5 0 0013.15 13.15z" />
+                </svg>
+              </button>
+              <input id="searchInput" type="text" placeholder="Buscar" class="w-0 opacity-0 border border-white bg-black/80 px-4 py-1 text-white rounded transition-all duration-300" />
+              <button id="searchClear" class="opacity-0 pointer-events-none text-gray-300 hover:text-white" aria-label="Limpar">✕</button>
+            </div>
             <a href="#/home" class="text-gray-200 hover:text-white" aria-label="Perfil">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19a4 4 0 10-6 0m12 0a9 9 0 10-18 0" />
@@ -49,6 +55,11 @@ export class Navbar {
 
   attach() {
     const logoutBtn = document.getElementById('logoutBtn');
+    const searchIcon = document.getElementById('searchIcon');
+    const searchInput = document.getElementById('searchInput');
+    const searchClear = document.getElementById('searchClear');
+    const nav = this.container.querySelector('nav');
+
     if (logoutBtn) {
       logoutBtn.addEventListener('click', async (e) => {
         e.preventDefault();
@@ -61,7 +72,6 @@ export class Navbar {
       });
     }
     window.addEventListener('scroll', () => {
-      const nav = this.container.querySelector('nav');
       if (!nav) return;
       if (window.scrollY > 50) {
         nav.classList.add('bg-black');
@@ -69,11 +79,86 @@ export class Navbar {
         nav.classList.remove('bg-black');
       }
     });
+
+    function expandInput(open) {
+      if (!searchInput || !searchClear) return;
+      if (open) {
+        searchInput.className = 'w-64 opacity-100 border border-white bg-black/80 px-4 py-1 text-white rounded transition-all duration-300';
+        searchInput.focus();
+      } else {
+        searchInput.className = 'w-0 opacity-0 border border-white bg-black/80 px-4 py-1 text-white rounded transition-all duration-300';
+        searchInput.value = '';
+        removeOverlay();
+      }
+      const hasText = searchInput.value.trim().length > 0;
+      searchClear.className = (hasText ? '' : 'opacity-0 pointer-events-none ') + 'text-gray-300 hover:text-white';
+    }
+
+    function removeOverlay() {
+      const overlay = document.getElementById('searchOverlay');
+      if (overlay) overlay.remove();
+    }
+
+    function renderOverlay(results) {
+      removeOverlay();
+      if (!Array.isArray(results) || results.length === 0) return;
+      const el = document.createElement('div');
+      el.id = 'searchOverlay';
+      el.className = 'fixed top-16 left-0 w-full bg-[#141414] min-h-screen z-40 p-8';
+      const grid = results.map(r => ThumbnailCard({ id: r.videoId || r.id, title: r.title, thumbnail: r.image || r.thumbnail })).join('');
+      el.innerHTML = `
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">${grid}</div>
+      `;
+      document.body.appendChild(el);
+      const cards = el.querySelectorAll('[data-id]');
+      cards.forEach(card => {
+        const id = card.getAttribute('data-id');
+        card.addEventListener('click', () => navigateTo(`/player?videoId=${id}`));
+      });
+    }
+
+    function debounce(fn, wait) {
+      let t;
+      return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...args), wait);
+      };
+    }
+
+    const onInput = debounce(() => {
+      if (!searchInput) return;
+      const q = searchInput.value.trim();
+      const hasText = q.length > 0;
+      searchClear.className = (hasText ? '' : 'opacity-0 pointer-events-none ') + 'text-gray-300 hover:text-white';
+      if (q.length < 3) {
+        removeOverlay();
+        return;
+      }
+      const results = searchContent(q);
+      renderOverlay(results);
+    }, 300);
+
+    if (searchIcon) {
+      searchIcon.addEventListener('click', () => expandInput(searchInput.classList.contains('opacity-0')));
+    }
+    if (searchInput) {
+      searchInput.addEventListener('input', onInput);
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          expandInput(false);
+        }
+      });
+    }
+    if (searchClear) {
+      searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        expandInput(false);
+      });
+    }
   }
 }
 
 export default Navbar;
-
 
 
 
