@@ -17,23 +17,3 @@
 
 .page--movies .section { margin: var(--space-7) 0; }
 
-.page--movies .carousel-viewport { padding: 0 var(--space-4); }
-
-.page--movies .carousel-track {
-  scroll-snap-type: x mandatory;
-}
-
-.page--movies .movie-card {
-  scroll-snap-align: start;
-  transform-origin: center left;
-}
-
-.page--movies .movie-card:hover {
-  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-}
-
-@media (max-width: var(--mobile)) {
-  .page--movies .carousel-btn { display: none; }
-  .page--movies .movie-card { width: 150px; }
-}
-

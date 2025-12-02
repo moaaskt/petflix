@@ -17,14 +17,3 @@
 
 .page--documentaries .section { margin: var(--space-7) 0; }
 
-.page--documentaries .carousel-viewport { padding: 0 var(--space-4); }
-
-.page--documentaries .carousel-track { scroll-snap-type: x mandatory; }
-.page--documentaries .movie-card { scroll-snap-align: start; transform-origin: center left; }
-.page--documentaries .movie-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
-
-@media (max-width: var(--mobile)) {
-  .page--documentaries .carousel-btn { display: none; }
-  .page--documentaries .movie-card { width: 150px; }
-}
-

@@ -17,14 +17,3 @@
 
 .page--series .section { margin: var(--space-7) 0; }
 
-.page--series .carousel-viewport { padding: 0 var(--space-4); }
-
-.page--series .carousel-track { scroll-snap-type: x mandatory; }
-.page--series .movie-card { scroll-snap-align: start; transform-origin: center left; }
-.page--series .movie-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
-
-@media (max-width: var(--mobile)) {
-  .page--series .carousel-btn { display: none; }
-  .page--series .movie-card { width: 150px; }
-}
-
