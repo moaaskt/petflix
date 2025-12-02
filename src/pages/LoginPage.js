@@ -2,6 +2,7 @@
  * LoginPage - Página de Login estilo Netflix
  */
 import { authService } from '../services/auth/auth.service.js';
+import { navigateTo } from '../router/navigator.js';
 import '../styles/pages/login.css';
 
 /**
@@ -9,6 +10,7 @@ import '../styles/pages/login.css';
  * @returns {string} HTML da página
  */
 export function render() {
+  console.log('LoginPage: Renderizando HTML');
   return `
     <div class="login-page">
       <div class="login-card">
@@ -21,7 +23,7 @@ export function render() {
             <input type="password" id="login-password" class="login-input" placeholder="Senha" required>
           </div>
           
-          <div class="login-error" id="login-error"></div>
+          <div class="login-error text-red-500 mt-2" id="login-error"></div>
           
           <button type="submit" class="login-button" id="login-button">Entrar</button>
           
@@ -46,6 +48,7 @@ export function init() {
 
   if (!form) return;
 
+  console.log('LoginPage: Tentando anexar listener ao form...');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -60,13 +63,15 @@ export function init() {
 
     try {
       setLoading(true);
-      await authService.signIn(email, password);
-      
-      // Redirecionamento é tratado pelo AuthState listener ou router guard,
-      // mas podemos forçar aqui também para UX imediata
-      window.location.hash = '#/home';
+      console.log('Auth: Tentando logar com email...', email);
+      const user = await authService.signIn(email, password);
+      if (user) {
+        console.log('Auth: Sucesso');
+        navigateTo('/home');
+      }
     } catch (error) {
       console.error('Erro no login:', error);
+      console.log('Auth: Erro capturado', error);
       // Mensagens de erro amigáveis
       let message = 'Ocorreu um erro ao fazer login. Tente novamente.';
       if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
@@ -81,6 +86,7 @@ export function init() {
       setLoading(false);
     }
   });
+  console.log('LoginPage: Listener anexado com sucesso');
 
   function showError(message) {
     if (errorDiv) {
@@ -97,4 +103,8 @@ export function init() {
     if (emailInput) emailInput.disabled = isLoading;
     if (passwordInput) passwordInput.disabled = isLoading;
   }
+}
+
+export function afterRender() {
+  init();
 }
