@@ -35,3 +35,4 @@ firebase-debug.log
 
 # Vite
 .vite/
+node_modules
