@@ -33,7 +33,7 @@ class AuthService {
         throw new AuthError('Por favor, verifique seu e-mail antes de fazer login. Enviamos um link de confirmação para seu e-mail.', 'email-not-verified');
       }
 
-      return user;
+      return userCredential;
     } catch (error) {
       const message = getFirebaseAuthErrorMessage(error);
       throw new AuthError(message, error.code);

@@ -1,10 +1,7 @@
 /**
  * Main Entry Point - Ponto de entrada da aplicação SPA
  */
-import './styles/reset.css';
-import './styles/theme.css';
-import './styles/global.css';
-import './styles/layout.css';
+import './style.css';
 import { initRouter } from './router/index.js';
 import { initAppState } from './state/AppState.js';
 import { initAuthState } from './state/AuthState.js';

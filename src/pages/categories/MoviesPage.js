@@ -1,55 +1,32 @@
 /**
  * MoviesPage - Página de filmes unificada
  */
-import { CategoryRow } from '../../components/features/CategoryRow/CategoryRow.js';
-import '../../styles/pages/movies.css';
+import { ThumbnailCard } from '../../components/features/ThumbnailCard/ThumbnailCard.js';
 import { navigateTo } from '../../router/navigator.js';
+import { getByCategory } from '../../services/content.service.js';
 
 export function render() {
   const title = 'Filmes';
-  const mockItems = [
-    {
-      title: 'Demon Slayer',
-      thumbnail: 'https://i.ytimg.com/vi/2MKkj1DQ0NU/maxresdefault.jpg',
-      videoId: '2MKkj1DQ0NU'
-    },
-    {
-      title: 'One Piece',
-      thumbnail: 'https://i.ytimg.com/vi/0bZB5u28P8E/maxresdefault.jpg',
-      videoId: '0bZB5u28P8E'
-    },
-    {
-      title: 'Naruto',
-      thumbnail: 'https://i.ytimg.com/vi/-G9EoDQFhHk/maxresdefault.jpg',
-      videoId: '-G9EoDQFhHk'
-    }
-  ];
+  const species = document.body.classList.contains('theme-cat') ? 'cat' : 'dog';
+  const items = getByCategory(species, 'movie').map(i => ({ title: i.title, thumbnail: i.image, videoId: i.videoId }));
 
   return `
-    <div class="page page--movies">
-      <div class="container">
-        <header class="page-header">
-          <h2 class="section-title">${title}</h2>
-        </header>
+    <div class="pt-20 px-4 md:px-12">
+      <h2 class="text-2xl md:text-3xl font-bold mb-6">${title}</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        ${items.map(i => ThumbnailCard({ id: i.videoId, title: i.title, thumbnail: i.thumbnail })).join('')}
       </div>
-      
-      <section class="section">
-        ${CategoryRow({ title: 'Populares (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      </section>
-
-      <section class="section">
-        ${CategoryRow({ title: 'Filmes de Cachorro (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      </section>
-
-      <section class="section">
-        ${CategoryRow({ title: 'Animações de Pets (Mock)', items: mockItems, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      </section>
     </div>
   `;
 }
 
 export function init() {
-  // Inicialização da MoviesPage (se necessário)
+  const cards = Array.from(document.querySelectorAll('[data-id]'));
+  cards.forEach(el => {
+    const id = el.getAttribute('data-id');
+    if (!id) return;
+    el.addEventListener('click', () => navigateTo(`/player?videoId=${id}`));
+  });
 }
 
 // Função global para fechar modal (usada no HTML)

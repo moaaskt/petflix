@@ -7,7 +7,8 @@ import { onAuthStateChanged } from 'firebase/auth';
 let state = {
   user: null,
   loading: true,
-  error: null
+  error: null,
+  theme: 'dog'
 };
 
 const subscribers = new Set();
@@ -108,6 +109,14 @@ export const AuthState = {
   setState,
   subscribe
 };
+
+export function applyTheme(themeName) {
+  const body = document.body;
+  body.classList.remove('theme-dog', 'theme-cat');
+  if (themeName === 'cat') body.classList.add('theme-cat');
+  else body.classList.add('theme-dog');
+  setState({ theme: themeName === 'cat' ? 'cat' : 'dog' });
+}
 
 export default AuthState;
 

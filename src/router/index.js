@@ -108,8 +108,11 @@ async function renderRoute(route) {
 
       contentEl.innerHTML = pageHtml;
       await layoutInit();
-
-      if (component && typeof component.init === 'function') {
+      if (component && typeof component.afterRender === 'function') {
+        console.log('Router: Chamando afterRender para', route.path);
+        await component.afterRender();
+      } else if (component && typeof component.init === 'function') {
+        console.log('Router: Chamando init para', route.path);
         await component.init();
       }
     } else {
@@ -123,7 +126,11 @@ async function renderRoute(route) {
         throw new Error('Componente inválido: ' + route.path);
       }
       appContainer.innerHTML = html;
-      if (component && typeof component.init === 'function') {
+      if (component && typeof component.afterRender === 'function') {
+        console.log('Router: Chamando afterRender para', route.path);
+        await component.afterRender();
+      } else if (component && typeof component.init === 'function') {
+        console.log('Router: Chamando init para', route.path);
         await component.init();
       }
     }

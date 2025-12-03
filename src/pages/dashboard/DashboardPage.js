@@ -3,33 +3,46 @@
  */
 import { useAuth } from '../../hooks/useAuth.js';
 import { navigateTo } from '../../router/navigator.js';
-import { CategoryRow } from '../../components/features/CategoryRow/CategoryRow.js';
+import { CategoryRow, initCategoryRows } from '../../components/features/CategoryRow/CategoryRow.js';
 import { render as renderHero, init as initHero } from '../../components/layout/HeroBanner/HeroBanner.js';
-import { localStorageService } from '../../services/storage/localStorage.service.js';
-import { PET_TYPES } from '../../config/constants.js';
-import '../../styles/pages/dashboard.css';
+import { LoadingSpinner } from '../../components/ui/Loading/LoadingSpinner.js';
+import { getFeatured, getByCategory, getByGenre, getTrending } from '../../services/content.service.js';
+ 
 
 export function render() {
-  const petType = localStorageService.getPetType() || PET_TYPES.DOG;
-  const mock = Array.from({ length: 12 }).map((_, i) => ({ id: `mock-${i}`, title: `Item ${i+1}`, thumbnail: `https://picsum.photos/seed/pet${i}/640/360` }));
+  const species = document.body.classList.contains('theme-cat') ? 'cat' : 'dog';
+  const trending = getTrending(species).map(mapCard);
+  const action = getByGenre(species, 'action').map(mapCard);
+  const adventure = getByGenre(species, 'adventure').map(mapCard);
+  const comedy = getByGenre(species, 'comedy').map(mapCard);
+  const drama = getByGenre(species, 'drama').map(mapCard);
+  const series = getByCategory(species, 'series').map(mapCard);
+  const docs = getByCategory(species, 'doc').map(mapCard);
+  const movies = getByCategory(species, 'movie').map(mapCard);
+
+  const isCat = species === 'cat';
+  const rowsCat = `
+      ${CategoryRow({ title: 'Populares na Petflix', items: trending, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
+      ${CategoryRow({ title: 'Gatos Planejando o Caos', items: [...action, ...adventure].slice(0, 20), onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
+      ${CategoryRow({ title: 'Soneca da Tarde', items: docs, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
+      ${CategoryRow({ title: 'Comédias Felinas', items: comedy, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
+      ${CategoryRow({ title: 'Séries para Maratonar', items: series, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
+  `;
+  const rowsDog = `
+      ${CategoryRow({ title: 'Em Alta Hoje', items: trending, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
+      ${CategoryRow({ title: 'Aventuras no Parque', items: [...action, ...adventure].slice(0, 20), onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
+      ${CategoryRow({ title: 'Bons Garotos', items: drama, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
+      ${CategoryRow({ title: 'Histórias de Adoção', items: docs, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
+      ${CategoryRow({ title: 'Filmes para toda a família', items: movies, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
+  `;
 
   return `
-    <div class="page page--dashboard">
+    <div>
       <div id="hero-container">
-        ${renderHero({ item: { title: 'Carregando...', thumbnail: '/assets/hero-fallback.jpg', id: '' } })}
+        ${renderHero({ item: mapHero(getFeatured(species)) })}
       </div>
-
-      <section class="section">
-        ${CategoryRow({ title: 'Populares', items: mock, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      </section>
-
-      <section class="section">
-        ${CategoryRow({ title: 'Recomendados', items: mock, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      </section>
-
-      <section class="section">
-        ${CategoryRow({ title: 'Top', items: mock, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      </section>
+      <div class="h-12 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent"></div>
+      ${isCat ? rowsCat : rowsDog}
     </div>
   `;
 }
@@ -51,26 +64,21 @@ class DashboardPage {
    * @returns {string} Tipo de pet
    */
   getPetType() {
-    // Tenta detectar pela URL
-    if (window.location.pathname.includes('indexcach')) {
-      return PET_TYPES.DOG;
-    }
-    if (window.location.pathname.includes('indexgato')) {
-      return PET_TYPES.CAT;
-    }
-    
-    // Fallback para localStorage
-    return localStorageService.getPetType() || PET_TYPES.DOG;
+    // Usa a classe do body para identificar espécie
+    return document.body.classList.contains('theme-cat') ? 'cat' : 'dog';
   }
 
   /**
    * Inicializa a página
    */
   init() {
+    const species = document.body.classList.contains('theme-cat') ? 'cat' : 'dog';
+    console.log('Espécie atual:', species);
     this.checkAuth();
     this.loadFeatured();
     this.setupScrollEffect();
     this.applyPageClasses();
+    try { initCategoryRows(); } catch {}
   }
 
   /**
@@ -89,13 +97,26 @@ class DashboardPage {
    */
   async loadFeatured() {
     try {
-      const { getFeatured } = await import('../../services/banner/featured.service.js');
-      this.featured = await getFeatured(this.petType === PET_TYPES.DOG ? 'dog' : 'cat');
+      const species = document.body.classList.contains('theme-cat') ? 'cat' : 'dog';
+      console.log('Espécie atual:', species);
+      const spinner = new LoadingSpinner({ type: species === 'dog' ? 'dog' : 'cat' });
+      spinner.show();
+      this.featured = getFeatured(species);
+      const heroData = this.featured;
+      console.log('Hero Data:', heroData);
       const hero = document.getElementById('hero-container');
-      if (hero && this.featured) {
-        hero.innerHTML = renderHero({ item: this.featured });
+      if (hero && heroData) {
+        if (!heroData || !heroData.id) {
+          console.error('Erro crítico: Nenhum dado para o Hero Banner.');
+          return;
+        }
+        hero.innerHTML = renderHero({ item: mapHero(heroData) });
         initHero();
       }
+      setTimeout(() => {
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) overlay.remove();
+      }, 800);
     } catch (e) {
       console.warn('Falha ao carregar destaque:', e);
     }
@@ -112,12 +133,12 @@ class DashboardPage {
    */
   setupScrollEffect() {
     window.addEventListener('scroll', () => {
-      const navbar = document.querySelector('.navbar-petflix');
+      const navbar = document.querySelector('nav');
       if (navbar) {
         if (window.scrollY > 50) {
-          navbar.classList.add('scrolled');
+          navbar.classList.add('bg-black/80');
         } else {
-          navbar.classList.remove('scrolled');
+          navbar.classList.remove('bg-black/80');
         }
       }
     });
@@ -126,7 +147,18 @@ class DashboardPage {
   applyPageClasses() {
     const app = document.getElementById('app');
     if (app) {
-      app.classList.add('page', 'page--dashboard');
+      app.classList.add('bg-[#141414]');
     }
   }
+
+  
+}
+
+function mapCard(item) {
+  return { id: item.videoId, title: item.title, thumbnail: item.image };
+}
+
+function mapHero(item) {
+  if (!item) return { title: 'Petflix Destaque', thumbnail: '/assets/hero-fallback.jpg', id: '' };
+  return { title: item.title, thumbnail: item.image, id: item.videoId };
 }
