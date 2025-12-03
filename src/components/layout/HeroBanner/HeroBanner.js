@@ -13,10 +13,12 @@ export function render({ item } = {}) {
         <h1 class="hero-title">${title}</h1>
         <div class="hero-actions">
           <button class="btn btn-primary" id="heroPlayBtn" data-video-id="${videoId}" aria-label="Reproduzir">
-            <i class="fas fa-play"></i> Assistir
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M8 5v14l11-7z"/></svg>
+            Assistir
           </button>
           <button class="btn btn-secondary" id="heroInfoBtn" aria-label="Mais informações">
-            <i class="fas fa-info-circle"></i> Mais info
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            Mais info
           </button>
         </div>
       </div>

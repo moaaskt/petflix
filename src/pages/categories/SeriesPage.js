@@ -3,16 +3,12 @@
  */
 import { ThumbnailCard } from '../../components/features/ThumbnailCard/ThumbnailCard.js';
 import { navigateTo } from '../../router/navigator.js';
+import { getByCategory } from '../../services/content.service.js';
 
 export function render() {
   const title = 'Séries';
-  const items = [
-    { title: 'Dog Tales', thumbnail: 'assets/seriesgato2.jpg', videoId: 'MjbKt2bVFec' },
-    { title: 'Cat Chronicles', thumbnail: 'assets/seiesgato3.webp', videoId: 'QadUonunflw' },
-    { title: 'Pet Adventures', thumbnail: 'assets/seriesgato2.jpg', videoId: 'iMMd4018RBQ' },
-    { title: 'Wild Friends', thumbnail: 'assets/docdog2.jpg', videoId: 'fEPkp0iFMTI' },
-    { title: 'Paws & Claws', thumbnail: 'assets/seriesgato2.jpg', videoId: 'UqtFvSKhKmA' }
-  ];
+  const species = document.body.classList.contains('theme-cat') ? 'cat' : 'dog';
+  const items = getByCategory(species, 'series').map(i => ({ title: i.title, thumbnail: i.image, videoId: i.videoId }));
 
   return `
     <div class="pt-20 px-4 md:px-12">

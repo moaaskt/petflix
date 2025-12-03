@@ -134,7 +134,8 @@ export class Navbar {
         removeOverlay();
         return;
       }
-      const results = searchContent(q);
+      const species = document.body.classList.contains('theme-cat') ? 'cat' : 'dog';
+      const results = searchContent(q, species);
       renderOverlay(results);
     }, 300);
 
@@ -159,7 +160,6 @@ export class Navbar {
 }
 
 export default Navbar;
-
 
 
 
