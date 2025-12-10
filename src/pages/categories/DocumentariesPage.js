@@ -5,10 +5,10 @@ import { ThumbnailCard } from '../../components/features/ThumbnailCard/Thumbnail
 import { navigateTo } from '../../router/navigator.js';
 import { getByCategory } from '../../services/content.service.js';
 
-export function render() {
+export async function render() {
   const title = 'Documentários';
   const species = document.body.classList.contains('theme-cat') ? 'cat' : 'dog';
-  const items = getByCategory(species, 'doc').map(i => ({ title: i.title, thumbnail: i.image, videoId: i.videoId }));
+  const items = (await getByCategory(species, 'doc')).map(i => ({ title: i.title, thumbnail: i.image, videoId: i.videoId }));
 
   return `
     <div class="pt-20 px-4 md:px-12">

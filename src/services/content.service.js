@@ -1,3 +1,173 @@
+import { db, collection } from '../config/firebase.js';
+import { getDocs } from 'firebase/firestore';
+
+// Cache local para evitar múltiplas leituras do Firestore
+let cachedContent = null;
+let isLoading = false;
+let loadPromise = null;
+
+/**
+ * Carrega todos os conteúdos do Firestore (com cache)
+ * @returns {Promise<Array>}
+ */
+async function loadAllContent() {
+  // Se já temos os dados em cache, retorna imediatamente
+  if (cachedContent !== null) {
+    return cachedContent;
+  }
+
+  // Se já está carregando, espera a promessa existente
+  if (isLoading && loadPromise) {
+    return loadPromise;
+  }
+
+  // Inicia o carregamento
+  isLoading = true;
+  loadPromise = (async () => {
+    try {
+      const moviesRef = collection(db, 'movies');
+      const snapshot = await getDocs(moviesRef);
+      
+      const content = [];
+      snapshot.forEach((doc) => {
+        content.push({ id: doc.id, ...doc.data() });
+      });
+
+      // Salva no cache
+      cachedContent = content;
+      isLoading = false;
+      
+      return content;
+    } catch (error) {
+      console.error('❌ Erro ao carregar conteúdo do Firestore:', error);
+      isLoading = false;
+      // Retorna array vazio em caso de erro (ex: sem internet)
+      return [];
+    }
+  })();
+
+  return loadPromise;
+}
+
+/**
+ * Retorna todos os conteúdos
+ * @returns {Promise<Array>}
+ */
+export async function getAll() {
+  return await loadAllContent();
+}
+
+/**
+ * Filtra conteúdos por espécie (dog/cat)
+ * @param {string} species - Espécie do animal
+ * @returns {Promise<Array>}
+ */
+export async function getBySpecies(species) {
+  const s = (species || '').toLowerCase();
+  const all = await loadAllContent();
+  return all.filter(i => i.species === s);
+}
+
+/**
+ * Retorna conteúdo em destaque (featured) de uma espécie
+ * @param {string} species - Espécie do animal
+ * @returns {Promise<Object>}
+ */
+export async function getFeatured(species) {
+  const all = await getBySpecies(species);
+  const list = all.filter(i => i.featured);
+  
+  if (list.length > 0) return list[Math.floor(Math.random() * list.length)];
+  if (all.length > 0) return all[0];
+  
+  // Retorna objeto padrão caso não encontre nada
+  return { 
+    id: 'error', 
+    title: 'Conteúdo Indisponível', 
+    description: 'Tente outro perfil.', 
+    image: '/assets/hero-fallback.jpg', 
+    type: 'movie', 
+    species: (species || 'dog'), 
+    genre: 'drama', 
+    videoId: '', 
+    featured: false, 
+    trending: false, 
+    original: false 
+  };
+}
+
+/**
+ * Filtra conteúdos por categoria (type)
+ * @param {string} species - Espécie do animal
+ * @param {string} type - Tipo do conteúdo (movie, series, doc)
+ * @returns {Promise<Array>}
+ */
+export async function getByCategory(species, type) {
+  const s = (species || '').toLowerCase();
+  const t = (type || '').toLowerCase();
+  const all = await loadAllContent();
+  return all.filter(i => i.species === s && i.type === t);
+}
+
+/**
+ * Filtra conteúdos por gênero
+ * @param {string} species - Espécie do animal
+ * @param {string} genre - Gênero do conteúdo
+ * @returns {Promise<Array>}
+ */
+export async function getByGenre(species, genre) {
+  const s = (species || '').toLowerCase();
+  const g = (genre || '').toLowerCase();
+  const all = await loadAllContent();
+  return all.filter(i => i.species === s && i.genre === g);
+}
+
+/**
+ * Retorna conteúdos em alta (trending)
+ * @param {string} species - Espécie do animal
+ * @param {number} limit - Limite de resultados
+ * @returns {Promise<Array>}
+ */
+export async function getTrending(species, limit = 20) {
+  const base = await getBySpecies(species);
+  const list = base.filter(i => i.trending);
+  const pool = list.length > 0 ? list : base;
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, Math.min(limit, shuffled.length));
+}
+
+/**
+ * Retorna conteúdos originais da plataforma
+ * @param {string} species - Espécie do animal
+ * @returns {Promise<Array>}
+ */
+export async function getOriginals(species) {
+  const all = await getBySpecies(species);
+  return all.filter(i => i.original === true);
+}
+
+/**
+ * Busca conteúdos por texto
+ * @param {string} query - Termo de busca
+ * @param {string} species - Espécie do animal (opcional)
+ * @returns {Promise<Array>}
+ */
+export async function searchContent(query, species) {
+  const q = (query || '').toLowerCase().trim();
+  const base = species ? await getBySpecies(species) : await loadAllContent();
+  
+  if (!q) return [];
+  
+  return base.filter(item => (
+    (item.title || '').toLowerCase().includes(q) ||
+    (item.description || '').toLowerCase().includes(q)
+  )).slice(0, 20);
+}
+
+/**
+ * Mantém ALL_CONTENT exportado para compatibilidade com o seed script
+ * Este array será usado apenas pelo seed-db.js
+ */
 export const ALL_CONTENT = [
   { id: 'DOG-ACT-001', title: 'Operação Petisco', description: 'Uma equipe canina enfrenta uma missão cheia de ação para resgatar petiscos raros.', image: 'https://images.unsplash.com/photo-1507149833265-60c372daea22?w=1200&auto=format&fit=crop', type: 'movie', species: 'dog', genre: 'action', videoId: 'Ws-9ra38AlI', featured: true, trending: true, original: false },
   { id: 'DOG-DRM-002', title: 'O Cão que Sabia Demais', description: 'Um cão com um passado misterioso descobre sua verdadeira família.', image: 'https://images.unsplash.com/photo-1546422401-e64280fa5db5?w=1200&auto=format&fit=crop', type: 'movie', species: 'dog', genre: 'drama', videoId: 'ki8wHMR-yOI', featured: true, trending: true, original: false },
@@ -19,7 +189,6 @@ export const ALL_CONTENT = [
   { id: 'DOG-SER-018', title: 'Patrulha do Parque', description: 'Série de aventuras caninas no parque.', image: 'https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?w=1200&auto=format&fit=crop', type: 'series', species: 'dog', genre: 'adventure', videoId: '1jLOOCADTGs', featured: false, trending: false, original: false },
   { id: 'DOG-SER-019', title: 'Filhotes em Ação', description: 'Filhotes explorando o mundo.', image: 'https://images.unsplash.com/photo-1504595403659-9088ce801e29?w=1200&auto=format&fit=crop', type: 'series', species: 'dog', genre: 'comedy', videoId: 'MjbKt2bVFec', featured: false, trending: true, original: false },
   { id: 'DOG-ORG-020', title: 'Cães do Bairro', description: 'Original Petflix sobre a vida canina urbana.', image: 'https://images.unsplash.com/photo-1558944351-5711d26e46b4?w=1200&auto=format&fit=crop', type: 'series', species: 'dog', genre: 'comedy', videoId: 'DOG-ORG-020-VID', featured: false, trending: true, original: true },
-
   { id: 'CAT-ACT-001', title: 'A Vingança do Sachê', description: 'Um herói felino em busca do sachê perdido.', image: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=1200&auto=format&fit=crop', type: 'movie', species: 'cat', genre: 'action', videoId: '6pbreU5ChmA', featured: true, trending: true, original: false },
   { id: 'CAT-CMD-002', title: 'Derrubando Copos', description: 'Comédia sobre gatos e a gravidade.', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1200&auto=format&fit=crop', type: 'movie', species: 'cat', genre: 'comedy', videoId: '8nQF3zVotOg', featured: true, trending: true, original: false },
   { id: 'CAT-DRM-003', title: 'O Ponto Vermelho', description: 'Drama felino perseguindo um inalcançável ponto de luz.', image: 'https://images.unsplash.com/photo-1511044568930-3382016e2997?w=1200&auto=format&fit=crop', type: 'movie', species: 'cat', genre: 'drama', videoId: 'Gar-789', featured: false, trending: true, original: false },
@@ -42,51 +211,4 @@ export const ALL_CONTENT = [
   { id: 'CAT-ORG-020', title: 'O Império dos Miaus', description: 'Original Petflix sobre a ascensão felina.', image: 'https://images.unsplash.com/photo-1495360010541-32531be3b5c9?w=1200&auto=format&fit=crop', type: 'series', species: 'cat', genre: 'drama', videoId: 'CAT-ORG-020-VID', featured: true, trending: true, original: true }
 ];
 
-export function getBySpecies(species) {
-  const s = (species || '').toLowerCase();
-  return ALL_CONTENT.filter(i => i.species === s);
-}
-
-export function getFeatured(species) {
-  const all = getBySpecies(species);
-  const list = all.filter(i => i.featured);
-  if (list.length > 0) return list[Math.floor(Math.random() * list.length)];
-  if (all.length > 0) return all[0];
-  return { id: 'error', title: 'Conteúdo Indisponível', description: 'Tente outro perfil.', image: '/assets/hero-fallback.jpg', type: 'movie', species: (species || 'dog'), genre: 'drama', videoId: '', featured: false, trending: false, original: false };
-}
-
-export function getByCategory(species, type) {
-  const s = (species || '').toLowerCase();
-  const t = (type || '').toLowerCase();
-  return ALL_CONTENT.filter(i => i.species === s && i.type === t);
-}
-
-export function getByGenre(species, genre) {
-  const s = (species || '').toLowerCase();
-  const g = (genre || '').toLowerCase();
-  return ALL_CONTENT.filter(i => i.species === s && i.genre === g);
-}
-
-export function getTrending(species, limit = 20) {
-  const base = getBySpecies(species);
-  const list = base.filter(i => i.trending);
-  const pool = list.length > 0 ? list : base;
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, Math.min(limit, shuffled.length));
-}
-
-export function getOriginals(species) {
-  return getBySpecies(species).filter(i => i.original === true);
-}
-
-export function searchContent(query, species) {
-  const q = (query || '').toLowerCase().trim();
-  const base = species ? getBySpecies(species) : ALL_CONTENT;
-  if (!q) return [];
-  return base.filter(item => (
-    (item.title || '').toLowerCase().includes(q) ||
-    (item.description || '').toLowerCase().includes(q)
-  )).slice(0, 20);
-}
-
-export default { ALL_CONTENT, getBySpecies, getFeatured, getByCategory, getByGenre, getTrending, getOriginals, searchContent };
+export default { getAll, getBySpecies, getFeatured, getByCategory, getByGenre, getTrending, getOriginals, searchContent };

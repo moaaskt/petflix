@@ -175,7 +175,7 @@ export class Navbar {
       };
     }
 
-    const onInput = debounce(() => {
+    const onInput = debounce(async () => {
       if (!searchInput) return;
       const q = searchInput.value.trim();
       const hasText = q.length > 0;
@@ -185,7 +185,7 @@ export class Navbar {
         return;
       }
       const species = document.body.classList.contains('theme-cat') ? 'cat' : 'dog';
-      const results = searchContent(q, species);
+      const results = await searchContent(q, species);
       renderOverlay(results);
     }, 300);
 
