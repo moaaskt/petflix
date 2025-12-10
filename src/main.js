@@ -6,6 +6,7 @@ import { initRouter } from './router/index.js';
 import { initAppState } from './state/AppState.js';
 import { initAuthState } from './state/AuthState.js';
 import { setupAuthPersistence } from './config/firebase.js';
+import { seedDatabase } from './utils/seed-db.js';
 
 /**
  * Inicializa a aplicação
@@ -14,11 +15,15 @@ async function init() {
   try {
     // 1. Configura persistência de auth
     await setupAuthPersistence();
-    // 2. Inicializa estados globais
+    
+    // 2. Popula banco de dados (apenas se estiver vazio)
+    // await seedDatabase();
+    
+    // 3. Inicializa estados globais
     initAuthState();
     initAppState();
     
-    // 3. Inicializa router
+    // 4. Inicializa router
     initRouter();
     
     console.log('✅ Petflix SPA inicializado com sucesso');

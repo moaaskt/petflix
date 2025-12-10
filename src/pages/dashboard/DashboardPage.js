@@ -9,16 +9,16 @@ import { LoadingSpinner } from '../../components/ui/Loading/LoadingSpinner.js';
 import { getFeatured, getByCategory, getByGenre, getTrending } from '../../services/content.service.js';
  
 
-export function render() {
+export async function render() {
   const species = document.body.classList.contains('theme-cat') ? 'cat' : 'dog';
-  const trending = getTrending(species).map(mapCard);
-  const action = getByGenre(species, 'action').map(mapCard);
-  const adventure = getByGenre(species, 'adventure').map(mapCard);
-  const comedy = getByGenre(species, 'comedy').map(mapCard);
-  const drama = getByGenre(species, 'drama').map(mapCard);
-  const series = getByCategory(species, 'series').map(mapCard);
-  const docs = getByCategory(species, 'doc').map(mapCard);
-  const movies = getByCategory(species, 'movie').map(mapCard);
+  const trending = (await getTrending(species)).map(mapCard);
+  const action = (await getByGenre(species, 'action')).map(mapCard);
+  const adventure = (await getByGenre(species, 'adventure')).map(mapCard);
+  const comedy = (await getByGenre(species, 'comedy')).map(mapCard);
+  const drama = (await getByGenre(species, 'drama')).map(mapCard);
+  const series = (await getByCategory(species, 'series')).map(mapCard);
+  const docs = (await getByCategory(species, 'doc')).map(mapCard);
+  const movies = (await getByCategory(species, 'movie')).map(mapCard);
 
   const isCat = species === 'cat';
   const rowsCat = `
@@ -36,10 +36,11 @@ export function render() {
       ${CategoryRow({ title: 'Filmes para toda a família', items: movies, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
   `;
 
+  const featured = await getFeatured(species);
   return `
     <div>
       <div id="hero-container">
-        ${renderHero({ item: mapHero(getFeatured(species)) })}
+        ${renderHero({ item: mapHero(featured) })}
       </div>
       <div class="h-12 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent"></div>
       ${isCat ? rowsCat : rowsDog}
@@ -101,7 +102,7 @@ class DashboardPage {
       console.log('Espécie atual:', species);
       const spinner = new LoadingSpinner({ type: species === 'dog' ? 'dog' : 'cat' });
       spinner.show();
-      this.featured = getFeatured(species);
+      this.featured = await getFeatured(species);
       const heroData = this.featured;
       console.log('Hero Data:', heroData);
       const hero = document.getElementById('hero-container');
