@@ -9,6 +9,7 @@ import { searchContent } from '../../../services/content.service.js';
 export class Navbar {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
+    this.isMobileMenuOpen = false;
     this.mount();
     this.attach();
   }
@@ -17,16 +18,25 @@ export class Navbar {
     if (!this.container) return;
     const logoImg = 'assets/petflix-logo_prev_ui.png';
     const html = `
-      <nav class="fixed top-0 w-full z-50 transition-colors duration-300 bg-gradient-to-b from-black/80 to-transparent">
+      <nav class="fixed top-0 w-full z-50 transition-colors duration-300 bg-gradient-to-b from-black/80 to-transparent relative">
         <div class="h-16 px-4 md:px-12 flex items-center justify-between">
           <a href="#/dashboard" class="flex items-center gap-3">
             <img src="${logoImg}" alt="Petflix" class="h-8 hidden md:block" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'" />
             <span class="text-red-600 text-2xl font-bold tracking-widest" style="display:none">PETFLIX</span>
           </a>
           <div class="flex items-center gap-6">
-            <a href="#/filmes" class="hidden md:inline text-gray-200 hover:text-white">Filmes</a>
-            <a href="#/series" class="hidden md:inline text-gray-200 hover:text-white">Séries</a>
-            <a href="#/docs" class="hidden md:inline text-gray-200 hover:text-white">Documentários</a>
+            <ul class="hidden md:flex items-center gap-6">
+              <li><a href="#/dashboard" class="text-gray-200 hover:text-white">Início</a></li>
+              <li><a href="#/series" class="text-gray-200 hover:text-white">Séries</a></li>
+              <li><a href="#/filmes" class="text-gray-200 hover:text-white">Filmes</a></li>
+              <li><a href="#/docs" class="text-gray-200 hover:text-white">Bombando</a></li>
+              <li><a href="#/conta" class="text-gray-200 hover:text-white">Minha Lista</a></li>
+            </ul>
+            <button id="mobileMenuBtn" class="flex md:hidden text-gray-200 hover:text-white" aria-label="Menu" aria-expanded="false">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            </button>
             <div id="searchContainer" class="flex items-center gap-2">
               <button id="searchIcon" class="text-gray-200 hover:text-white" aria-label="Buscar">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -48,6 +58,13 @@ export class Navbar {
             </button>
           </div>
         </div>
+        <div id="mobileMenu" class="absolute top-16 left-0 w-full bg-black border-t border-gray-800 flex flex-col p-4 gap-4 transition-transform duration-300 origin-top scale-y-0 hidden z-40">
+          <a href="#/dashboard" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Início</a>
+          <a href="#/series" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Séries</a>
+          <a href="#/filmes" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Filmes</a>
+          <a href="#/docs" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Bombando</a>
+          <a href="#/conta" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Minha Lista</a>
+        </div>
       </nav>
     `;
     this.container.innerHTML = html;
@@ -59,6 +76,39 @@ export class Navbar {
     const searchInput = document.getElementById('searchInput');
     const searchClear = document.getElementById('searchClear');
     const nav = this.container.querySelector('nav');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+    // Toggle mobile menu
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        this.isMobileMenuOpen = !this.isMobileMenuOpen;
+        if (this.isMobileMenuOpen) {
+          mobileMenu.classList.remove('scale-y-0', 'hidden');
+          mobileMenu.classList.add('scale-y-100', 'flex');
+          mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        } else {
+          mobileMenu.classList.remove('scale-y-100', 'flex');
+          mobileMenu.classList.add('scale-y-0', 'hidden');
+          mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    // Close mobile menu when clicking on a link
+    mobileMenuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        this.isMobileMenuOpen = false;
+        if (mobileMenu) {
+          mobileMenu.classList.remove('scale-y-100', 'flex');
+          mobileMenu.classList.add('scale-y-0', 'hidden');
+        }
+        if (mobileMenuBtn) {
+          mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
 
     if (logoutBtn) {
       logoutBtn.addEventListener('click', async (e) => {
