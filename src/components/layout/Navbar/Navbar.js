@@ -18,7 +18,7 @@ export class Navbar {
     if (!this.container) return;
     const logoImg = 'assets/petflix-logo_prev_ui.png';
     const html = `
-      <nav class="fixed top-0 w-full z-50 transition-colors duration-300 bg-gradient-to-b from-black/80 to-transparent">
+      <nav class="fixed top-0 w-full z-50 transition-colors duration-300 bg-gradient-to-b from-black/80 to-transparent relative">
         <div class="h-16 px-4 md:px-12 flex items-center justify-between">
           <a href="#/dashboard" class="flex items-center gap-3">
             <img src="${logoImg}" alt="Petflix" class="h-8 hidden md:block" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'" />
@@ -58,7 +58,7 @@ export class Navbar {
             </button>
           </div>
         </div>
-        <div id="mobileMenu" class="w-full bg-black border-t border-gray-800 flex-col p-4 gap-4 transition-transform duration-300 origin-top scale-y-0 hidden">
+        <div id="mobileMenu" class="absolute top-16 left-0 w-full bg-black border-t border-gray-800 flex flex-col p-4 gap-4 transition-transform duration-300 origin-top scale-y-0 hidden z-40">
           <a href="#/dashboard" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Início</a>
           <a href="#/series" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Séries</a>
           <a href="#/filmes" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Filmes</a>
