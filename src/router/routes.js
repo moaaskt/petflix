@@ -8,6 +8,7 @@ import * as MoviesPage from '../pages/categories/MoviesPage.js';
 import * as SeriesPage from '../pages/categories/SeriesPage.js';
 import * as DocumentariesPage from '../pages/categories/DocumentariesPage.js';
 import * as ProfilePage from '../pages/ProfilePage.js';
+import * as AccountPage from '../pages/account/AccountPage.js';
 import * as DashboardPage from '../pages/dashboard/DashboardPage.js';
 import * as PlayerPage from '../pages/player/PlayerPage.js';
 
@@ -145,6 +146,16 @@ export const routes = [
     meta: {
       title: 'Perfil - PetFlix',
       requiresAuth: true,
+      middleware: [requireAuth]
+    }
+  },
+  {
+    path: '/conta',
+    component: AccountPage,
+    meta: {
+      title: 'Minha Conta - PetFlix',
+      requiresAuth: true,
+      layout: 'app',
       middleware: [requireAuth]
     }
   },

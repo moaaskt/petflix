@@ -36,7 +36,7 @@ export class Navbar {
               <input id="searchInput" type="text" placeholder="Buscar" class="w-0 opacity-0 border border-white bg-black/80 px-4 py-1 text-white rounded transition-all duration-300" />
               <button id="searchClear" class="opacity-0 pointer-events-none text-gray-300 hover:text-white" aria-label="Limpar">✕</button>
             </div>
-            <a href="#/home" class="text-gray-200 hover:text-white" aria-label="Perfil">
+            <a href="#/conta" class="text-gray-200 hover:text-white" aria-label="Minha Conta" title="Minha Conta">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19a4 4 0 10-6 0m12 0a9 9 0 10-18 0" />
               </svg>
