@@ -1,5 +1,6 @@
 import { navigateTo } from '../../router/navigator.js';
 import { getThemeIcon } from '../../components/ui/Icons/ThemeIcons.js';
+import { escapeHTML } from '../../utils/security.js';
 
 function getVideoIdFromHash() {
   const hash = window.location.hash || '';
@@ -191,7 +192,7 @@ export async function init() {
     const { youtubeService } = await import('../../services/api/youtube.service.js');
     const details = await youtubeService.getVideoDetails(videoId);
     const titleEl = document.getElementById('overlayTitle');
-    if (titleEl) titleEl.textContent = details?.title || 'Sem título';
+    if (titleEl) titleEl.textContent = escapeHTML(details?.title || 'Sem título');
   } catch {}
 
   await loadYTAPI();

@@ -1,6 +1,8 @@
+import { escapeHTML } from '../../../utils/security.js';
+
 export function ThumbnailCard({ id, title, thumbnail }) {
   const vid = id;
-  const safeTitle = title || '';
+  const safeTitle = escapeHTML(title || '');
   const src = thumbnail || 'assets/background-index.jpg';
   return `
     <div class="relative flex-none w-[160px] md:w-[240px] aspect-video transition-transform duration-300 hover:scale-105 hover:z-20 cursor-pointer rounded-md overflow-hidden snap-start" tabindex="0" role="button" data-id="${vid}" aria-label="${safeTitle}">

@@ -1,9 +1,11 @@
 import { ThumbnailCard } from '../ThumbnailCard/ThumbnailCard.js';
+import { escapeHTML } from '../../../utils/security.js';
 
 const ROW_HANDLERS = new Map();
 
 export function CategoryRow({ title, items = [], loading = false, onCardClick } = {}) {
   const rowId = `row_${Math.random().toString(36).slice(2)}`;
+  const safeTitle = escapeHTML(title || '');
   const cardsHtml = loading
     ? Array.from({ length: 6 }).map(() => `<div class=\"relative flex-none w-[160px] md:w-[240px] aspect-video rounded-md bg-gray-700 animate-pulse\"></div>`).join('')
     : items.map(i => ThumbnailCard({ id: i.videoId || i.id, title: i.title, thumbnail: i.thumbnail || i.thumb })).join('');
@@ -13,8 +15,8 @@ export function CategoryRow({ title, items = [], loading = false, onCardClick } 
   }
 
   return `
-    <section aria-label="${title}" data-row-id="${rowId}">
-      <h3 class="text-lg md:text-xl font-bold text-white mb-2 pl-4 md:pl-12">${title}</h3>
+    <section aria-label="${safeTitle}" data-row-id="${rowId}">
+      <h3 class="text-lg md:text-xl font-bold text-white mb-2 pl-4 md:pl-12">${safeTitle}</h3>
       <div class="relative group px-4 md:px-12 pb-8">
         <button type="button" data-prev class="absolute left-0 top-0 bottom-0 z-40 bg-black/50 hover:bg-black/80 hidden md:flex items-center justify-center w-12 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-white"><path d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
