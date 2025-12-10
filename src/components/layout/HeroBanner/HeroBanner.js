@@ -1,8 +1,9 @@
 import './HeroBanner.css';
 import { navigateTo } from '../../../router/navigator.js';
+import { escapeHTML } from '../../../utils/security.js';
 
 export function render({ item } = {}) {
-  const title = item?.title || 'Petflix Destaque';
+  const title = escapeHTML(item?.title || 'Petflix Destaque');
   const thumb = item?.thumbnail || '/assets/hero-fallback.jpg';
   const videoId = item?.videoId || item?.id || '';
 
