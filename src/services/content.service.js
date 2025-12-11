@@ -1,5 +1,5 @@
 import { db, collection } from '../config/firebase.js';
-import { getDocs } from 'firebase/firestore';
+import { getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
 // Cache local para evitar múltiplas leituras do Firestore
 let cachedContent = null;
@@ -165,6 +165,78 @@ export async function searchContent(query, species) {
 }
 
 /**
+ * Cria um novo filme no Firestore
+ * @param {Object} data - Dados do filme
+ * @returns {Promise<string>} ID do documento criado
+ */
+export async function create(data) {
+  try {
+    const moviesRef = collection(db, 'movies');
+    const movieData = {
+      ...data,
+      createdAt: new Date().toISOString(),
+      trending: data.trending !== undefined ? data.trending : false,
+      original: data.original !== undefined ? data.original : false
+    };
+    
+    const docRef = await addDoc(moviesRef, movieData);
+    
+    // Limpa o cache para forçar recarregamento
+    cachedContent = null;
+    
+    console.log('✅ Filme criado com sucesso:', docRef.id);
+    return docRef.id;
+  } catch (error) {
+    console.error('❌ Erro ao criar filme:', error);
+    throw error;
+  }
+}
+
+/**
+ * Atualiza um filme existente no Firestore
+ * @param {string} id - ID do documento
+ * @param {Object} data - Dados para atualizar
+ * @returns {Promise<void>}
+ */
+export async function update(id, data) {
+  try {
+    const movieRef = doc(db, 'movies', id);
+    await updateDoc(movieRef, {
+      ...data,
+      updatedAt: new Date().toISOString()
+    });
+    
+    // Limpa o cache para forçar recarregamento
+    cachedContent = null;
+    
+    console.log('✅ Filme atualizado com sucesso:', id);
+  } catch (error) {
+    console.error('❌ Erro ao atualizar filme:', error);
+    throw error;
+  }
+}
+
+/**
+ * Deleta um filme do Firestore
+ * @param {string} id - ID do documento
+ * @returns {Promise<void>}
+ */
+export async function deleteMovie(id) {
+  try {
+    const movieRef = doc(db, 'movies', id);
+    await deleteDoc(movieRef);
+    
+    // Limpa o cache para forçar recarregamento
+    cachedContent = null;
+    
+    console.log('✅ Filme deletado com sucesso:', id);
+  } catch (error) {
+    console.error('❌ Erro ao deletar filme:', error);
+    throw error;
+  }
+}
+
+/**
  * Mantém ALL_CONTENT exportado para compatibilidade com o seed script
  * Este array será usado apenas pelo seed-db.js
  */
@@ -211,4 +283,4 @@ export const ALL_CONTENT = [
   { id: 'CAT-ORG-020', title: 'O Império dos Miaus', description: 'Original Petflix sobre a ascensão felina.', image: 'https://images.unsplash.com/photo-1495360010541-32531be3b5c9?w=1200&auto=format&fit=crop', type: 'series', species: 'cat', genre: 'drama', videoId: 'CAT-ORG-020-VID', featured: true, trending: true, original: true }
 ];
 
-export default { getAll, getBySpecies, getFeatured, getByCategory, getByGenre, getTrending, getOriginals, searchContent };
+export default { getAll, getBySpecies, getFeatured, getByCategory, getByGenre, getTrending, getOriginals, searchContent, create, update, deleteMovie };
