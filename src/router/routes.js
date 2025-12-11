@@ -11,6 +11,7 @@ import * as ProfilePage from '../pages/ProfilePage.js';
 import * as AccountPage from '../pages/account/AccountPage.js';
 import * as DashboardPage from '../pages/dashboard/DashboardPage.js';
 import * as PlayerPage from '../pages/player/PlayerPage.js';
+import * as AdminMoviesPage from '../pages/admin/AdminMoviesPage.js';
 
 /**
  * Middleware para verificar autenticação
@@ -156,6 +157,16 @@ export const routes = [
       title: 'Minha Conta - PetFlix',
       requiresAuth: true,
       layout: 'app',
+      middleware: [requireAuth]
+    }
+  },
+  {
+    path: '/admin',
+    component: AdminMoviesPage,
+    meta: {
+      title: 'Admin - PetFlix',
+      requiresAuth: true,
+      layout: 'admin',
       middleware: [requireAuth]
     }
   },
