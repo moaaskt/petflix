@@ -87,15 +87,42 @@ async function renderRoute(route) {
   // Renderiza componente
   try {
     const component = route.component;
-    const useLayout = route.meta && route.meta.layout === 'app';
+    const useAppLayout = route.meta && route.meta.layout === 'app';
+    const useAdminLayout = route.meta && route.meta.layout === 'admin';
 
-    if (useLayout) {
+    if (useAppLayout) {
       const { render: layoutRender, init: layoutInit } = await import('../components/layout/AppLayout/AppLayout.js');
       appContainer.innerHTML = layoutRender('');
 
       // Render page inside layout content
       const contentEl = document.getElementById('layoutContent');
       if (!contentEl) throw new Error('Elemento #layoutContent não encontrado no AppLayout');
+
+      let pageHtml;
+      if (component && typeof component.render === 'function') {
+        pageHtml = await component.render();
+      } else if (typeof component === 'function') {
+        pageHtml = await component();
+      } else {
+        throw new Error('Componente inválido: ' + route.path);
+      }
+
+      contentEl.innerHTML = pageHtml;
+      await layoutInit();
+      if (component && typeof component.afterRender === 'function') {
+        console.log('Router: Chamando afterRender para', route.path);
+        await component.afterRender();
+      } else if (component && typeof component.init === 'function') {
+        console.log('Router: Chamando init para', route.path);
+        await component.init();
+      }
+    } else if (useAdminLayout) {
+      const { render: layoutRender, init: layoutInit } = await import('../components/layout/AdminLayout/AdminLayout.js');
+      appContainer.innerHTML = layoutRender('');
+
+      // Render page inside admin layout content
+      const contentEl = document.getElementById('adminContent');
+      if (!contentEl) throw new Error('Elemento #adminContent não encontrado no AdminLayout');
 
       let pageHtml;
       if (component && typeof component.render === 'function') {
