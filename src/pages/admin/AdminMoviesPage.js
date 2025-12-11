@@ -34,7 +34,7 @@ export async function render() {
           <input
             type="text"
             id="searchInput"
-            placeholder="Buscar filme..."
+            placeholder="Buscar por título..."
             class="w-full md:w-96 px-4 py-2 pl-10 bg-zinc-900 border border-zinc-700 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-600"
           />
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-zinc-400 absolute left-3 top-1/2 transform -translate-y-1/2">
@@ -202,7 +202,7 @@ function setupPagination() {
 }
 
 /**
- * Retorna os filmes filtrados baseado no termo de busca
+ * Retorna os filmes filtrados baseado no termo de busca (apenas por título)
  */
 function getFilteredMovies() {
   if (!searchTerm) {
@@ -211,8 +211,7 @@ function getFilteredMovies() {
   
   return allMovies.filter(movie => {
     const title = (movie.title || '').toLowerCase();
-    const description = (movie.description || '').toLowerCase();
-    return title.includes(searchTerm) || description.includes(searchTerm);
+    return title.includes(searchTerm);
   });
 }
 
