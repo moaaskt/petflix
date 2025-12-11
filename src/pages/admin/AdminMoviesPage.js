@@ -1,9 +1,15 @@
 /**
  * AdminMoviesPage - Página de gerenciamento de filmes
  */
-import { getAll } from '../../services/content.service.js';
+import { getAll, create, update, deleteMovie } from '../../services/content.service.js';
+import { MovieFormModal } from '../../components/admin/MovieFormModal.js';
 
-let moviesData = [];
+// Estado da página
+let allMovies = []; // Cópia completa de todos os filmes
+let currentPage = 1;
+let itemsPerPage = 10;
+let searchTerm = '';
+let modalInstance = null;
 
 export async function render() {
   return `
@@ -20,6 +26,21 @@ export async function render() {
           </svg>
           Novo Filme
         </button>
+      </div>
+      
+      <!-- Search Bar -->
+      <div class="mb-6">
+        <div class="relative">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Buscar filme..."
+            class="w-full md:w-96 px-4 py-2 pl-10 bg-zinc-900 border border-zinc-700 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+          />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-zinc-400 absolute left-3 top-1/2 transform -translate-y-1/2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 3.5a7.5 7.5 0 0013.15 13.15z" />
+          </svg>
+        </div>
       </div>
       
       <!-- Table Container -->
@@ -50,12 +71,36 @@ export async function render() {
             </tbody>
           </table>
         </div>
+        
+        <!-- Pagination Controls -->
+        <div id="paginationControls" class="flex items-center justify-between px-6 py-4 bg-zinc-800 border-t border-zinc-700">
+          <div class="text-sm text-zinc-400">
+            <span id="moviesStats">Total: <span id="moviesCount" class="font-semibold text-white">0</span> filmes</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <button 
+              id="prevPageBtn"
+              class="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded transition-colors"
+              disabled
+            >
+              Anterior
+            </button>
+            <span id="pageInfo" class="text-zinc-300 text-sm">
+              Página 1 de 1
+            </span>
+            <button 
+              id="nextPageBtn"
+              class="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded transition-colors"
+              disabled
+            >
+              Próximo
+            </button>
+          </div>
+        </div>
       </div>
       
-      <!-- Stats -->
-      <div id="moviesStats" class="mt-4 text-sm text-zinc-400 hidden">
-        Total: <span id="moviesCount" class="font-semibold text-white">0</span> filmes
-      </div>
+      <!-- Modal Container -->
+      <div id="modalContainer"></div>
     </div>
   `;
 }
@@ -63,50 +108,277 @@ export async function render() {
 export async function init() {
   try {
     // Carrega todos os filmes do Firestore
-    moviesData = await getAll();
+    await loadMovies();
     
-    // Renderiza a tabela
-    renderTable();
+    // Inicializa o modal (inicialmente oculto)
+    initModal();
     
-    // Atualiza estatísticas
-    updateStats();
-    
-    // Configura botão "Novo Filme" (placeholder)
+    // Configura botão "Novo Filme"
     const newMovieBtn = document.getElementById('newMovieBtn');
     if (newMovieBtn) {
       newMovieBtn.addEventListener('click', () => {
-        console.log('Novo Filme - Funcionalidade em desenvolvimento');
-        // TODO: Implementar modal/formulário de novo filme
+        openCreateModal();
       });
     }
+    
+    // Configura busca
+    setupSearch();
+    
+    // Configura paginação
+    setupPagination();
   } catch (error) {
     console.error('Erro ao carregar filmes:', error);
-    const tbody = document.getElementById('moviesTableBody');
-    if (tbody) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="6" class="px-6 py-12 text-center text-red-400">
-            <div class="flex flex-col items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-              </svg>
-              <span>Erro ao carregar filmes. Tente novamente.</span>
-            </div>
-          </td>
-        </tr>
-      `;
-    }
+    showError();
   }
 }
 
 /**
- * Renderiza a tabela com os filmes
+ * Carrega os filmes e atualiza a tabela
+ */
+async function loadMovies() {
+  try {
+    allMovies = await getAll();
+    currentPage = 1; // Reset para primeira página ao recarregar
+    renderTable();
+    updatePagination();
+  } catch (error) {
+    console.error('Erro ao carregar filmes:', error);
+    showError();
+  }
+}
+
+/**
+ * Configura o input de busca
+ */
+function setupSearch() {
+  const searchInput = document.getElementById('searchInput');
+  if (!searchInput) return;
+  
+  // Debounce para melhor performance
+  let searchTimeout;
+  searchInput.addEventListener('input', (e) => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      searchTerm = e.target.value.toLowerCase().trim();
+      currentPage = 1; // Reset para primeira página ao buscar
+      renderTable();
+      updatePagination();
+    }, 300);
+  });
+}
+
+/**
+ * Configura os controles de paginação
+ */
+function setupPagination() {
+  const prevBtn = document.getElementById('prevPageBtn');
+  const nextBtn = document.getElementById('nextPageBtn');
+  
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderTable();
+        updatePagination();
+        // Scroll para o topo da tabela
+        document.querySelector('#moviesTableBody')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }
+  
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      const filteredMovies = getFilteredMovies();
+      const totalPages = Math.ceil(filteredMovies.length / itemsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderTable();
+        updatePagination();
+        // Scroll para o topo da tabela
+        document.querySelector('#moviesTableBody')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }
+}
+
+/**
+ * Retorna os filmes filtrados baseado no termo de busca
+ */
+function getFilteredMovies() {
+  if (!searchTerm) {
+    return allMovies;
+  }
+  
+  return allMovies.filter(movie => {
+    const title = (movie.title || '').toLowerCase();
+    const description = (movie.description || '').toLowerCase();
+    return title.includes(searchTerm) || description.includes(searchTerm);
+  });
+}
+
+/**
+ * Retorna os filmes da página atual
+ */
+function getPaginatedMovies() {
+  const filtered = getFilteredMovies();
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  return filtered.slice(startIndex, endIndex);
+}
+
+/**
+ * Mostra mensagem de erro na tabela
+ */
+function showError() {
+  const tbody = document.getElementById('moviesTableBody');
+  if (tbody) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" class="px-6 py-12 text-center text-red-400">
+          <div class="flex flex-col items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+            <span>Erro ao carregar filmes. Tente novamente.</span>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+}
+
+/**
+ * Inicializa o modal
+ */
+function initModal() {
+  const modalContainer = document.getElementById('modalContainer');
+  if (!modalContainer) return;
+  
+  // Cria modal inicial (vazio, para criação)
+  modalInstance = new MovieFormModal({
+    movie: null,
+    onSave: handleSaveMovie,
+    onClose: () => {
+      if (modalInstance) modalInstance.hide();
+    }
+  });
+  
+  modalContainer.innerHTML = modalInstance.render();
+  modalInstance.init();
+  modalInstance.hide();
+}
+
+/**
+ * Abre o modal para criar novo filme
+ */
+function openCreateModal() {
+  const modalContainer = document.getElementById('modalContainer');
+  if (!modalContainer) return;
+  
+  modalInstance = new MovieFormModal({
+    movie: null,
+    onSave: handleSaveMovie,
+    onClose: () => {
+      if (modalInstance) modalInstance.hide();
+    }
+  });
+  
+  modalContainer.innerHTML = modalInstance.render();
+  modalInstance.init();
+  modalInstance.show();
+}
+
+/**
+ * Abre o modal para editar filme existente
+ */
+function openEditModal(movieId) {
+  const modalContainer = document.getElementById('modalContainer');
+  if (!modalContainer) return;
+  
+  const movie = allMovies.find(m => m.id === movieId);
+  if (!movie) {
+    alert('Filme não encontrado');
+    return;
+  }
+  
+  modalInstance = new MovieFormModal({
+    movie: movie,
+    onSave: handleSaveMovie,
+    onClose: () => {
+      if (modalInstance) modalInstance.hide();
+    }
+  });
+  
+  modalContainer.innerHTML = modalInstance.render();
+  modalInstance.init();
+  modalInstance.show();
+}
+
+/**
+ * Handler para salvar filme (criar ou editar)
+ */
+async function handleSaveMovie(data, movieId = null) {
+  try {
+    if (movieId) {
+      // Edição
+      await update(movieId, data);
+      console.log('✅ Filme atualizado com sucesso');
+    } else {
+      // Criação
+      await create(data);
+      console.log('✅ Filme criado com sucesso');
+    }
+    
+    // Recarrega a lista
+    await loadMovies();
+    
+    // Fecha o modal
+    if (modalInstance) {
+      modalInstance.hide();
+    }
+  } catch (error) {
+    console.error('Erro ao salvar filme:', error);
+    alert('Erro ao salvar filme. Verifique o console para mais detalhes.');
+    throw error;
+  }
+}
+
+/**
+ * Handler para excluir filme
+ */
+async function handleDeleteMovie(movieId) {
+  const movie = allMovies.find(m => m.id === movieId);
+  if (!movie) {
+    alert('Filme não encontrado');
+    return;
+  }
+  
+  const confirmDelete = confirm(`Tem certeza que deseja excluir o filme "${movie.title}"?`);
+  if (!confirmDelete) return;
+  
+  try {
+    await deleteMovie(movieId);
+    console.log('✅ Filme excluído com sucesso');
+    
+    // Recarrega a lista
+    await loadMovies();
+  } catch (error) {
+    console.error('Erro ao excluir filme:', error);
+    alert('Erro ao excluir filme. Verifique o console para mais detalhes.');
+  }
+}
+
+/**
+ * Renderiza a tabela com os filmes (filtrados e paginados)
  */
 function renderTable() {
   const tbody = document.getElementById('moviesTableBody');
   if (!tbody) return;
   
-  if (moviesData.length === 0) {
+  const filteredMovies = getFilteredMovies();
+  const paginatedMovies = getPaginatedMovies();
+  
+  if (allMovies.length === 0) {
     tbody.innerHTML = `
       <tr>
         <td colspan="6" class="px-6 py-12 text-center text-zinc-400">
@@ -123,7 +395,23 @@ function renderTable() {
     return;
   }
   
-  tbody.innerHTML = moviesData.map(movie => {
+  if (filteredMovies.length === 0 && searchTerm) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" class="px-6 py-12 text-center text-zinc-400">
+          <div class="flex flex-col items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 3.5a7.5 7.5 0 0013.15 13.15z" />
+            </svg>
+            <span>Nenhum filme encontrado para "${searchTerm}"</span>
+          </div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  tbody.innerHTML = paginatedMovies.map(movie => {
     const speciesIcon = movie.species === 'dog' 
       ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-blue-400">
            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
@@ -204,14 +492,35 @@ function renderTable() {
 }
 
 /**
- * Atualiza estatísticas
+ * Atualiza os controles de paginação
  */
-function updateStats() {
-  const statsEl = document.getElementById('moviesStats');
-  const countEl = document.getElementById('moviesCount');
+function updatePagination() {
+  const filteredMovies = getFilteredMovies();
+  const totalPages = Math.ceil(filteredMovies.length / itemsPerPage);
   
-  if (statsEl) statsEl.classList.remove('hidden');
-  if (countEl) countEl.textContent = moviesData.length;
+  // Atualiza contador
+  const countEl = document.getElementById('moviesCount');
+  if (countEl) {
+    countEl.textContent = filteredMovies.length;
+  }
+  
+  // Atualiza informação da página
+  const pageInfo = document.getElementById('pageInfo');
+  if (pageInfo) {
+    pageInfo.textContent = `Página ${currentPage} de ${totalPages || 1}`;
+  }
+  
+  // Atualiza botões
+  const prevBtn = document.getElementById('prevPageBtn');
+  const nextBtn = document.getElementById('nextPageBtn');
+  
+  if (prevBtn) {
+    prevBtn.disabled = currentPage === 1;
+  }
+  
+  if (nextBtn) {
+    nextBtn.disabled = currentPage >= totalPages || totalPages === 0;
+  }
 }
 
 /**
@@ -224,17 +533,18 @@ function attachEventListeners() {
   editButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
       const movieId = e.currentTarget.getAttribute('data-movie-id');
-      console.log('Editar filme:', movieId);
-      // TODO: Implementar modal de edição
+      openEditModal(movieId);
     });
   });
   
   deleteButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
       const movieId = e.currentTarget.getAttribute('data-movie-id');
-      console.log('Excluir filme:', movieId);
-      // TODO: Implementar confirmação e exclusão
+      handleDeleteMovie(movieId);
     });
   });
+  
+  // Atualiza paginação após renderizar tabela
+  updatePagination();
 }
 
