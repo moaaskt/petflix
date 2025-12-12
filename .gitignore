@@ -12,6 +12,9 @@ build/
 .env.local
 .env.*.local
 
+# .env.example deve ser commitado (template para outros desenvolvedores)
+!.env.example
+
 # IDE
 .vscode/
 .idea/
