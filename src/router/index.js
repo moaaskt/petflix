@@ -87,10 +87,37 @@ async function renderRoute(route) {
   // Renderiza componente
   try {
     const component = route.component;
+    const usePublicLayout = route.meta && route.meta.layout === 'public';
     const useAppLayout = route.meta && route.meta.layout === 'app';
     const useAdminLayout = route.meta && route.meta.layout === 'admin';
 
-    if (useAppLayout) {
+    if (usePublicLayout) {
+      const { render: layoutRender, init: layoutInit } = await import('../components/layout/PublicLayout/PublicLayout.js');
+      appContainer.innerHTML = layoutRender('');
+
+      // Render page inside public layout content
+      const contentEl = document.getElementById('publicContent');
+      if (!contentEl) throw new Error('Elemento #publicContent não encontrado no PublicLayout');
+
+      let pageHtml;
+      if (component && typeof component.render === 'function') {
+        pageHtml = await component.render();
+      } else if (typeof component === 'function') {
+        pageHtml = await component();
+      } else {
+        throw new Error('Componente inválido: ' + route.path);
+      }
+
+      contentEl.innerHTML = pageHtml;
+      await layoutInit();
+      if (component && typeof component.afterRender === 'function') {
+        console.log('Router: Chamando afterRender para', route.path);
+        await component.afterRender();
+      } else if (component && typeof component.init === 'function') {
+        console.log('Router: Chamando init para', route.path);
+        await component.init();
+      }
+    } else if (useAppLayout) {
       const { render: layoutRender, init: layoutInit } = await import('../components/layout/AppLayout/AppLayout.js');
       appContainer.innerHTML = layoutRender('');
 
