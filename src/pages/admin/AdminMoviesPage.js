@@ -3,6 +3,8 @@
  */
 import { getAll, create, update, deleteMovie } from '../../services/content.service.js';
 import { MovieFormModal } from '../../components/admin/MovieFormModal.js';
+import { ConfirmationModal } from '../../components/ui/ConfirmationModal.js';
+import { Toast } from '../../utils/toast.js';
 
 // Estado da página
 let allMovies = []; // Cópia completa de todos os filmes
@@ -10,6 +12,8 @@ let currentPage = 1;
 let itemsPerPage = 10;
 let searchTerm = '';
 let modalInstance = null;
+let confirmationModalInstance = null;
+let itemToDeleteId = null;
 
 export async function render() {
   return `
@@ -101,6 +105,9 @@ export async function render() {
       
       <!-- Modal Container -->
       <div id="modalContainer"></div>
+      
+      <!-- Confirmation Modal Container -->
+      <div id="confirmationModalContainer"></div>
     </div>
   `;
 }
@@ -112,6 +119,9 @@ export async function init() {
     
     // Inicializa o modal (inicialmente oculto)
     initModal();
+    
+    // Inicializa o modal de confirmação
+    initConfirmationModal();
     
     // Configura botão "Novo Filme"
     const newMovieBtn = document.getElementById('newMovieBtn');
@@ -268,6 +278,85 @@ function initModal() {
 }
 
 /**
+ * Inicializa o modal de confirmação
+ */
+function initConfirmationModal() {
+  const confirmationContainer = document.getElementById('confirmationModalContainer');
+  if (!confirmationContainer) return;
+  
+  confirmationModalInstance = new ConfirmationModal({
+    modalId: 'deleteConfirmationModal',
+    title: 'Tem certeza?',
+    message: 'Essa ação não pode ser desfeita.',
+    confirmText: 'Excluir',
+    cancelText: 'Cancelar',
+    confirmButtonColor: 'red',
+    icon: 'delete',
+    onConfirm: handleConfirmDelete,
+    onCancel: handleCancelDelete
+  });
+  
+  confirmationContainer.innerHTML = confirmationModalInstance.render();
+  confirmationModalInstance.init();
+}
+
+/**
+ * Abre o modal de confirmação para exclusão
+ */
+function openDeleteModal(movieId) {
+  const movie = allMovies.find(m => m.id === movieId);
+  if (!movie) {
+    Toast.show('Filme não encontrado', 'error');
+    return;
+  }
+  
+  itemToDeleteId = movieId;
+  
+  // Atualiza a mensagem do modal com o título do filme
+  if (confirmationModalInstance) {
+    confirmationModalInstance.updateOptions({
+      message: `Tem certeza que deseja excluir o filme "${movie.title}"? Esta ação não pode ser desfeita.`
+    });
+  }
+  
+  if (confirmationModalInstance) {
+    confirmationModalInstance.show();
+  }
+}
+
+/**
+ * Handler para confirmar exclusão
+ */
+async function handleConfirmDelete() {
+  if (!itemToDeleteId) return;
+  
+  try {
+    await deleteMovie(itemToDeleteId);
+    console.log('✅ Filme excluído com sucesso');
+    
+    // Recarrega a lista
+    await loadMovies();
+    
+    // Mostra toast de sucesso
+    Toast.show('Filme removido.', 'success');
+    
+    // Limpa o estado
+    itemToDeleteId = null;
+  } catch (error) {
+    console.error('Erro ao excluir filme:', error);
+    Toast.show('Erro ao excluir filme. Verifique o console para mais detalhes.', 'error');
+    itemToDeleteId = null;
+  }
+}
+
+/**
+ * Handler para cancelar exclusão
+ */
+function handleCancelDelete() {
+  itemToDeleteId = null;
+}
+
+/**
  * Abre o modal para criar novo filme
  */
 function openCreateModal() {
@@ -296,7 +385,7 @@ function openEditModal(movieId) {
   
   const movie = allMovies.find(m => m.id === movieId);
   if (!movie) {
-    alert('Filme não encontrado');
+    Toast.show('Filme não encontrado', 'error');
     return;
   }
   
@@ -335,36 +424,21 @@ async function handleSaveMovie(data, movieId = null) {
     if (modalInstance) {
       modalInstance.hide();
     }
+    
+    // Mostra toast de sucesso
+    Toast.show('Filme salvo com sucesso!', 'success');
   } catch (error) {
     console.error('Erro ao salvar filme:', error);
-    alert('Erro ao salvar filme. Verifique o console para mais detalhes.');
+    Toast.show('Erro ao salvar filme. Verifique o console para mais detalhes.', 'error');
     throw error;
   }
 }
 
 /**
- * Handler para excluir filme
+ * Handler para excluir filme (abre o modal de confirmação)
  */
-async function handleDeleteMovie(movieId) {
-  const movie = allMovies.find(m => m.id === movieId);
-  if (!movie) {
-    alert('Filme não encontrado');
-    return;
-  }
-  
-  const confirmDelete = confirm(`Tem certeza que deseja excluir o filme "${movie.title}"?`);
-  if (!confirmDelete) return;
-  
-  try {
-    await deleteMovie(movieId);
-    console.log('✅ Filme excluído com sucesso');
-    
-    // Recarrega a lista
-    await loadMovies();
-  } catch (error) {
-    console.error('Erro ao excluir filme:', error);
-    alert('Erro ao excluir filme. Verifique o console para mais detalhes.');
-  }
+function handleDeleteMovie(movieId) {
+  openDeleteModal(movieId);
 }
 
 /**
