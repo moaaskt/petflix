@@ -6,6 +6,50 @@ import { navigateTo } from '../../../router/navigator.js';
 import { ThumbnailCard } from '../../features/ThumbnailCard/ThumbnailCard.js';
 import { searchContent } from '../../../services/content.service.js';
 
+/**
+ * Gera a inicial do nome ou email do usuário
+ */
+function getUserInitial(user) {
+  if (user?.displayName) {
+    return user.displayName.charAt(0).toUpperCase();
+  }
+  if (user?.email) {
+    return user.email.charAt(0).toUpperCase();
+  }
+  return 'U';
+}
+
+/**
+ * Renderiza o avatar do usuário
+ */
+function renderUserAvatar(user) {
+  const initial = getUserInitial(user);
+  const colors = ['bg-red-600', 'bg-blue-600', 'bg-green-600', 'bg-purple-600', 'bg-orange-600'];
+  const colorIndex = (initial.charCodeAt(0) % colors.length);
+  const bgColor = colors[colorIndex];
+  
+  if (user?.photoURL) {
+    const fallbackHTML = `<div class="w-8 h-8 rounded-full ${bgColor} text-white flex items-center justify-center text-sm font-semibold overflow-hidden">${initial}</div>`;
+    return `
+      <img 
+        src="${user.photoURL}" 
+        alt="${user.displayName || 'Usuário'}" 
+        class="w-8 h-8 rounded-full object-cover"
+        onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      />
+      <div class="w-8 h-8 rounded-full ${bgColor} text-white items-center justify-center text-sm font-semibold overflow-hidden hidden">
+        ${initial}
+      </div>
+    `;
+  }
+  
+  return `
+    <div class="w-8 h-8 rounded-full ${bgColor} text-white flex items-center justify-center text-sm font-semibold overflow-hidden">
+      ${initial}
+    </div>
+  `;
+}
+
 export class Navbar {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -17,6 +61,8 @@ export class Navbar {
   mount() {
     if (!this.container) return;
     const logoImg = 'assets/petflix-logo_prev_ui.png';
+    const user = authService.getCurrentUser();
+    const avatarHTML = renderUserAvatar(user);
     const html = `
       <nav class="fixed top-0 w-full z-50 transition-colors duration-300 bg-gradient-to-b from-black/80 to-transparent relative">
         <div class="h-16 px-4 md:px-12 flex items-center justify-between">
@@ -46,10 +92,8 @@ export class Navbar {
               <input id="searchInput" type="text" placeholder="Buscar" class="w-0 opacity-0 border border-white bg-black/80 px-4 py-1 text-white rounded transition-all duration-300" />
               <button id="searchClear" class="opacity-0 pointer-events-none text-gray-300 hover:text-white" aria-label="Limpar">✕</button>
             </div>
-            <a href="#/conta" class="text-gray-200 hover:text-white" aria-label="Minha Conta" title="Minha Conta">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19a4 4 0 10-6 0m12 0a9 9 0 10-18 0" />
-              </svg>
+            <a href="#/conta" class="flex items-center justify-center w-8 h-8 rounded-full overflow-hidden hover:ring-2 hover:ring-white/50 transition-all" aria-label="Minha Conta" title="Minha Conta" id="userAvatarLink">
+              ${avatarHTML}
             </a>
             <button id="logoutBtn" class="text-gray-200 hover:text-white" aria-label="Sair">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -79,6 +123,16 @@ export class Navbar {
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+    const userAvatarLink = document.getElementById('userAvatarLink');
+    
+    // Atualiza avatar quando o estado de autenticação mudar
+    if (userAvatarLink) {
+      authService.onAuthStateChanged((user) => {
+        if (userAvatarLink) {
+          userAvatarLink.innerHTML = renderUserAvatar(user);
+        }
+      });
+    }
 
     // Toggle mobile menu
     if (mobileMenuBtn && mobileMenu) {
