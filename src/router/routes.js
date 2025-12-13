@@ -68,7 +68,8 @@ export const routes = [
     component: LoginPage,
     meta: {
       title: 'Login - PetFlix',
-      requiresAuth: false
+      requiresAuth: false,
+      layout: 'public'
     }
   },
   {
@@ -76,7 +77,8 @@ export const routes = [
     component: RegisterPage,
     meta: {
       title: 'Cadastro - PetFlix',
-      requiresAuth: false
+      requiresAuth: false,
+      layout: 'public'
     }
   },
   {
@@ -85,7 +87,7 @@ export const routes = [
     meta: {
       title: 'Selecione seu Perfil - PetFlix',
       requiresAuth: true,
-      layout: 'app',
+      layout: 'public',
       middleware: [requireAuth] 
       // Removi requireEmailVerified daqui para evitar loop, 
       // já que a lógica de requireEmailVerified redireciona para /home
