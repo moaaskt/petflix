@@ -11,25 +11,25 @@ function getVideoIdFromHash() {
 
 export function render() {
   return `
-    <div class="relative w-full h-screen bg-black overflow-hidden">
-      <button id="backBtn" class="absolute top-4 left-4 z-50" aria-label="Voltar">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-white"><path d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+    <div id="playerContainer" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 100; background-color: #000;">
+      <button id="backBtn" style="position: absolute; top: 16px; left: 16px; z-index: 101; background: transparent; border: none; cursor: pointer; padding: 0;" aria-label="Voltar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 32px; height: 32px; color: white;"><path d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
       </button>
-      <div id="videoContainer" class="absolute inset-0 w-full h-full"></div>
-      <div id="overlay" class="absolute inset-0 flex flex-col justify-end opacity-0 hover:opacity-100 transition-opacity duration-300">
-        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/60"></div>
-        <div class="relative z-50 p-4 md:p-8 space-y-4">
-          <div id="overlayTitle" class="text-2xl md:text-4xl font-semibold text-white">Carregando...</div>
-          <div class="flex items-center gap-4">
-            <button id="playPause" class="w-10 h-10 grid place-items-center rounded-full bg-white/10 hover:bg-white/20 transition text-white cursor-pointer z-50"></button>
-            <button id="muteToggle" class="w-10 h-10 grid place-items-center rounded-full bg-white/10 hover:bg-white/20 transition text-white cursor-pointer z-50"></button>
-            <button id="fullscreenToggle" class="w-10 h-10 ml-auto grid place-items-center rounded-full bg-white/10 hover:bg-white/20 transition text-white cursor-pointer z-50"></button>
+      <div id="videoContainer" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%;"></div>
+      <div id="overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; transition: opacity 0.3s; pointer-events: none;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent, rgba(0,0,0,0.6));"></div>
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 101; padding: 24px; padding-bottom: 40px; pointer-events: none;">
+          <div id="overlayTitle" style="font-size: 1.5rem; font-weight: 600; color: white; margin-bottom: 16px; pointer-events: auto;">Carregando...</div>
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px; pointer-events: auto;">
+            <button id="playPause" style="width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,0.1); color: white; cursor: pointer; border: none; transition: background 0.2s;"></button>
+            <button id="muteToggle" style="width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,0.1); color: white; cursor: pointer; border: none; transition: background 0.2s;"></button>
+            <button id="fullscreenToggle" style="width: 40px; height: 40px; margin-left: auto; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,0.1); color: white; cursor: pointer; border: none; transition: background 0.2s;"></button>
           </div>
-          <div class="w-full h-1 bg-gray-700 rounded overflow-hidden">
-            <div id="progressBar" class="player-theme-bg h-full w-0"></div>
+          <div style="width: 100%; height: 4px; background: #374151; border-radius: 2px; overflow: hidden; pointer-events: auto;">
+            <div id="progressBar" style="height: 100%; width: 0%; background: var(--player-theme-bg, #ef4444);"></div>
           </div>
         </div>
-        <button id="centerToggle" class="absolute inset-0 z-40" aria-label="Toggle"></button>
+        <button id="centerToggle" style="position: absolute; top: 0; left: 0; right: 0; bottom: 30%; z-index: 30; pointer-events: auto; background: transparent; border: none; cursor: pointer;" aria-label="Toggle"></button>
       </div>
     </div>
   `;
@@ -41,11 +41,35 @@ export async function init() {
 
   const videoId = getVideoIdFromHash();
   const container = document.getElementById('videoContainer');
+  const playerContainer = document.getElementById('playerContainer');
+  const overlay = document.getElementById('overlay');
   const playPause = document.getElementById('playPause');
   const muteToggle = document.getElementById('muteToggle');
   const fullscreenToggle = document.getElementById('fullscreenToggle');
   const centerToggle = document.getElementById('centerToggle');
   const progressBar = document.getElementById('progressBar');
+
+  // Adicionar efeito hover no overlay para mostrar controles
+  if (overlay) {
+    overlay.addEventListener('mouseenter', () => {
+      overlay.style.opacity = '1';
+    });
+    overlay.addEventListener('mouseleave', () => {
+      overlay.style.opacity = '0';
+    });
+  }
+
+  // Adicionar efeito hover nos botões
+  [playPause, muteToggle, fullscreenToggle].forEach(btn => {
+    if (btn) {
+      btn.addEventListener('mouseenter', () => {
+        btn.style.background = 'rgba(255,255,255,0.2)';
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.background = 'rgba(255,255,255,0.1)';
+      });
+    }
+  });
 
   if (!videoId || !container) {
     if (container) {
@@ -65,12 +89,19 @@ export async function init() {
 
   playPause.innerHTML = getThemeIcon('play');
   muteToggle.innerHTML = getThemeIcon('volume');
-  fullscreenToggle.innerHTML = getThemeIcon('fullscreen');
 
   let player = null;
   let isPlaying = false;
   let isMuted = false;
   let progressTimer = null;
+
+  // Função para detectar fullscreen em todos os navegadores
+  function isFullscreen() {
+    return !!(document.fullscreenElement || 
+              document.webkitFullscreenElement || 
+              document.mozFullScreenElement || 
+              document.msFullscreenElement);
+  }
 
   function loadYTAPI() {
     return new Promise((resolve, reject) => {
@@ -130,18 +161,55 @@ export async function init() {
     }
   }
 
-  function toggleFullscreen() {
-    const root = container;
-    if (!root) return;
-    const isFs = document.fullscreenElement != null;
+  function toggleFullscreen(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    if (!playerContainer) return;
+    
+    const isFs = isFullscreen();
+    
     if (isFs) {
-      document.exitFullscreen?.();
-      fullscreenToggle.innerHTML = getThemeIcon('fullscreen');
+      const exitFullscreen = document.exitFullscreen || 
+                             document.webkitExitFullscreen || 
+                             document.mozCancelFullScreen || 
+                             document.msExitFullscreen;
+      
+      if (exitFullscreen) {
+        exitFullscreen.call(document).catch(err => {
+          console.error('Erro ao sair do fullscreen:', err);
+        });
+      }
     } else {
-      root.requestFullscreen?.();
-      fullscreenToggle.innerHTML = getThemeIcon('exit-fullscreen');
+      const requestFullscreen = playerContainer.requestFullscreen || 
+                                playerContainer.webkitRequestFullscreen || 
+                                playerContainer.mozRequestFullScreen || 
+                                playerContainer.msRequestFullscreen;
+      
+      if (requestFullscreen) {
+        requestFullscreen.call(playerContainer).catch(err => {
+          console.error('Erro ao entrar em fullscreen:', err);
+        });
+      }
     }
   }
+
+  function updateFullscreenIcon() {
+    if (!fullscreenToggle) return;
+    const isFs = isFullscreen();
+    fullscreenToggle.innerHTML = isFs ? getThemeIcon('exit-fullscreen') : getThemeIcon('fullscreen');
+  }
+
+  // Listener para mudanças de fullscreen
+  document.addEventListener('fullscreenchange', updateFullscreenIcon);
+  document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
+  document.addEventListener('mozfullscreenchange', updateFullscreenIcon);
+  document.addEventListener('MSFullscreenChange', updateFullscreenIcon);
+
+  // Atualizar ícone inicial baseado no estado atual
+  updateFullscreenIcon();
 
   function initPlayer() {
     player = new window.YT.Player('videoContainer', {
@@ -150,10 +218,18 @@ export async function init() {
         autoplay: 1,
         controls: 0,
         modestbranding: 1,
-        rel: 0
+        rel: 0,
+        enablejsapi: 1,
+        fs: 1
       },
       events: {
         onReady: () => {
+          // Garantir que o iframe tenha permissões de fullscreen
+          const iframe = container.querySelector('iframe');
+          if (iframe) {
+            iframe.setAttribute('allowfullscreen', 'true');
+            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+          }
           isMuted = player.isMuted?.() || false;
           isPlaying = true;
           playPause.innerHTML = getThemeIcon('pause');
