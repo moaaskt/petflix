@@ -3,9 +3,11 @@
  * Exibe todos os filmes salvos na lista do perfil atual
  */
 import { navigateTo } from '../router/navigator.js';
-import { getList } from '../services/list.service.js';
+import { getList, toggleItem } from '../services/list.service.js';
 import { ThumbnailCard } from '../components/features/ThumbnailCard/ThumbnailCard.js';
 import { LoadingSpinner } from '../components/ui/Loading/LoadingSpinner.js';
+import { Toast } from '../utils/toast.js';
+import { ConfirmationModal } from '../components/ui/ConfirmationModal.js';
 
 export function render() {
   return `
@@ -66,7 +68,8 @@ async function loadList() {
       const cardData = {
         id: item.videoId || item.id,
         title: item.title || 'Sem título',
-        thumbnail: item.thumbnail || item.image || 'assets/background-index.jpg'
+        thumbnail: item.thumbnail || item.image || 'assets/background-index.jpg',
+        isInList: true
       };
       return ThumbnailCard(cardData);
     }).join('');
@@ -88,6 +91,32 @@ async function loadList() {
       });
     });
 
+    // Event listeners para os botões de lista
+    container.querySelectorAll('[data-movie-id]').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation(); // Impede que o clique abra o player
+        e.preventDefault();
+        
+        const movieId = btn.getAttribute('data-movie-id');
+        const card = btn.closest('[data-id]');
+        if (!card) return;
+        
+        // Buscar dados do filme do card
+        const title = card.getAttribute('aria-label') || card.querySelector('img')?.alt || 'Filme';
+        const thumbnail = card.querySelector('img')?.src || '';
+        
+        const movie = {
+          id: movieId,
+          videoId: movieId,
+          title: title,
+          thumbnail: thumbnail
+        };
+        
+        // Abre modal de confirmação antes de remover
+        openRemoveConfirmationModal(movie, title);
+      });
+    });
+
   } catch (error) {
     console.error('Erro ao carregar lista:', error);
     container.innerHTML = `
@@ -100,6 +129,56 @@ async function loadList() {
       </div>
     `;
   }
+}
+
+/**
+ * Abre o modal de confirmação para remover item da lista
+ */
+function openRemoveConfirmationModal(movie, title) {
+  // Remove modal anterior se existir
+  const existingModal = document.getElementById('removeConfirmationModal');
+  if (existingModal) {
+    existingModal.remove();
+  }
+  
+  // Cria nova instância do modal
+  const confirmationModal = new ConfirmationModal({
+    modalId: 'removeConfirmationModal',
+    title: 'Remover da lista?',
+    message: `Tem certeza que deseja remover "${title}" da sua lista?`,
+    confirmText: 'Sim, remover',
+    cancelText: 'Cancelar',
+    confirmButtonColor: 'red',
+    icon: 'delete',
+    onConfirm: async () => {
+      try {
+        const wasAdded = await toggleItem(movie);
+        
+        if (!wasAdded) {
+          // Item foi removido - recarregar a lista
+          Toast.info(`${title} removido da sua lista`);
+          await loadList();
+        } else {
+          // Item foi adicionado (não deveria acontecer aqui, mas por segurança)
+          Toast.success(`${title} adicionado à sua lista`);
+          await loadList();
+        }
+      } catch (error) {
+        console.error('Erro ao alternar item na lista:', error);
+        Toast.error('Erro ao atualizar lista. Tente novamente.');
+      }
+    },
+    onCancel: () => {
+      // Apenas fecha o modal (não faz nada)
+    }
+  });
+  
+  // Adiciona o modal ao body
+  document.body.insertAdjacentHTML('beforeend', confirmationModal.render());
+  
+  // Inicializa e mostra o modal
+  confirmationModal.init();
+  confirmationModal.show();
 }
 
 export default { render, init };
