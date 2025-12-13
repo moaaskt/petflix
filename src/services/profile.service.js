@@ -235,7 +235,7 @@ export async function initializeDefaultProfiles(userId = null) {
     const dogProfile = await createProfile({
       name: 'Cachorro',
       species: 'dog',
-      avatar: 'assets/caramelo.jpg',
+      avatar: 'assets/avataresPerfis/caramelo.jpg',
       isDefault: true
     }, uid);
 
@@ -243,7 +243,7 @@ export async function initializeDefaultProfiles(userId = null) {
     const catProfile = await createProfile({
       name: 'Gato',
       species: 'cat',
-      avatar: 'assets/gato-siames-1.jpg',
+      avatar: 'assets/avataresPerfis/gato-siames-1.jpg',
       isDefault: false
     }, uid);
 

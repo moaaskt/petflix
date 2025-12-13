@@ -1,6 +1,21 @@
 /**
  * ProfileFormModal - Modal para criar/editar perfis
  */
+
+// Lista de avatares disponíveis (todos da pasta avataresPerfis)
+const DEFAULT_AVATARS = [
+  'assets/avataresPerfis/caramelo.jpg',
+  'assets/avataresPerfis/dog1.jpg',
+  'assets/avataresPerfis/dog2.jpg',
+  'assets/avataresPerfis/dog3.jpg',
+  'assets/avataresPerfis/dog4.jpg',
+  'assets/avataresPerfis/dog5.jpg',
+  'assets/avataresPerfis/gato-siames-1.jpg',
+  'assets/avataresPerfis/gato1.jpg',
+  'assets/avataresPerfis/gato2.jpg',
+  'assets/avataresPerfis/Image_fx (8).jpg'
+];
+
 export class ProfileFormModal {
   constructor({ profile = null, profilesCount = 0, onSave, onDelete, onClose }) {
     this.profile = profile; // Se null, é criação. Se preenchido, é edição
@@ -28,8 +43,8 @@ export class ProfileFormModal {
     
     // Avatar padrão baseado na espécie
     const defaultAvatar = this.formData.species === 'dog' 
-      ? 'assets/caramelo.jpg' 
-      : 'assets/gato-siames-1.jpg';
+      ? 'assets/avataresPerfis/caramelo.jpg' 
+      : 'assets/avataresPerfis/gato-siames-1.jpg';
     
     const avatarUrl = this.formData.avatar || defaultAvatar;
     const defaultColor = this.formData.species === 'dog' ? 'blue' : 'red';
@@ -114,20 +129,43 @@ export class ProfileFormModal {
               </select>
             </div>
 
-            <!-- URL do Avatar (Opcional) -->
+            <!-- Seletor de Avatares -->
             <div>
-              <label for="profileAvatar" class="block text-sm font-medium text-zinc-300 mb-2">
-                URL do Avatar (Opcional)
+              <label class="block text-sm font-medium text-zinc-300 mb-3">
+                Escolha um Avatar *
               </label>
-              <input
-                type="url"
-                id="profileAvatar"
-                name="avatar"
-                value="${this.formData.avatar}"
-                class="w-full px-4 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-red-600"
-                placeholder="https://exemplo.com/imagem.jpg"
-              />
-              <p class="mt-1 text-xs text-zinc-500">Deixe em branco para usar o avatar padrão</p>
+              <div id="avatars-grid" class="grid grid-cols-4 gap-4 justify-center mb-4">
+                ${DEFAULT_AVATARS.map((avatarUrl, index) => {
+                  const isSelected = this.formData.avatar === avatarUrl;
+                  return `
+                    <button
+                      type="button"
+                      class="avatar-option relative w-20 h-20 rounded-full overflow-hidden border-2 transition-all cursor-pointer ${
+                        isSelected 
+                          ? 'ring-4 ring-green-500 border-green-500 scale-110' 
+                          : 'border-zinc-600 hover:border-zinc-400 hover:scale-105'
+                      }"
+                      data-avatar-url="${avatarUrl}"
+                      aria-label="Selecionar avatar ${index + 1}"
+                    >
+                      <img 
+                        src="${avatarUrl}" 
+                        alt="Avatar ${index + 1}"
+                        class="w-full h-full object-cover"
+                        onerror="this.parentElement.style.display='none'"
+                      />
+                      ${isSelected ? `
+                        <div class="absolute inset-0 bg-green-500/20 flex items-center justify-center z-10">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6 text-green-500">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                          </svg>
+                        </div>
+                      ` : ''}
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+              <p class="text-xs text-zinc-500 text-center">Selecione um avatar da galeria acima</p>
             </div>
 
             <!-- Mensagem de erro (se houver) -->
@@ -271,18 +309,39 @@ export class ProfileFormModal {
       });
     }
 
+    // Event listeners para seleção de avatares
+    const avatarOptions = modal.querySelectorAll('.avatar-option');
+    avatarOptions.forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const avatarUrl = option.getAttribute('data-avatar-url');
+        if (avatarUrl) {
+          this.selectAvatar(avatarUrl);
+        }
+      });
+    });
+
+    // Marca o avatar inicial como selecionado se existir
+    if (this.formData.avatar) {
+      // Verifica se o avatar atual está na lista de avatares padrão
+      const isDefaultAvatar = DEFAULT_AVATARS.includes(this.formData.avatar);
+      if (isDefaultAvatar) {
+        this.updateAvatarGridSelection(this.formData.avatar);
+      }
+    }
+
     // Atualiza preview quando nome ou espécie mudam
     const nameInput = document.getElementById('profileName');
     const speciesSelect = document.getElementById('profileSpecies');
-    const avatarInput = document.getElementById('profileAvatar');
 
     const updatePreview = () => {
       const name = nameInput?.value || '';
       const species = speciesSelect?.value || 'dog';
-      const avatar = avatarInput?.value || '';
+      const avatar = this.formData.avatar || '';
       
-      const previewImg = modal.querySelector('img');
-      const previewFallback = modal.querySelector('.flex.w-full.h-full');
+      const previewImg = modal.querySelector('.flex.justify-center img');
+      const previewFallback = modal.querySelector('.flex.justify-center .flex.w-full.h-full');
       const previewIcon = previewFallback?.querySelector('span');
       
       // Atualiza ícone
@@ -311,7 +370,111 @@ export class ProfileFormModal {
 
     if (nameInput) nameInput.addEventListener('input', updatePreview);
     if (speciesSelect) speciesSelect.addEventListener('change', updatePreview);
-    if (avatarInput) avatarInput.addEventListener('input', updatePreview);
+
+    // Se não houver avatar selecionado, seleciona o padrão baseado na espécie
+    if (!this.formData.avatar) {
+      const defaultAvatar = this.formData.species === 'dog' 
+        ? 'assets/avataresPerfis/caramelo.jpg' 
+        : 'assets/avataresPerfis/gato-siames-1.jpg';
+      this.formData.avatar = defaultAvatar;
+      this.updateAvatarGridSelection(defaultAvatar);
+      updatePreview();
+    }
+  }
+
+  /**
+   * Seleciona um avatar da galeria
+   * @param {string} avatarUrl - URL do avatar selecionado
+   */
+  selectAvatar(avatarUrl) {
+    this.formData.avatar = avatarUrl;
+
+    // Atualiza visual da grid
+    this.updateAvatarGridSelection(avatarUrl);
+
+    // Atualiza preview
+    this.updateAvatarPreview();
+  }
+
+  /**
+   * Atualiza a seleção visual na grid de avatares
+   * @param {string} selectedUrl - URL do avatar selecionado
+   */
+  updateAvatarGridSelection(selectedUrl) {
+    const modal = document.getElementById('profileFormModal');
+    if (!modal) return;
+
+    const avatarOptions = modal.querySelectorAll('.avatar-option');
+    avatarOptions.forEach(option => {
+      const optionUrl = option.getAttribute('data-avatar-url');
+      const isSelected = optionUrl === selectedUrl;
+      
+      if (isSelected) {
+        option.classList.add('ring-4', 'ring-green-500', 'border-green-500', 'scale-110');
+        option.classList.remove('border-zinc-600', 'hover:border-zinc-400');
+        
+        // Adiciona ícone de check se não existir
+        if (!option.querySelector('svg')) {
+          const checkIcon = document.createElement('div');
+          checkIcon.className = 'absolute inset-0 bg-green-500/20 flex items-center justify-center z-10';
+          checkIcon.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6 text-green-500">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+            </svg>
+          `;
+          option.appendChild(checkIcon);
+        }
+      } else {
+        option.classList.remove('ring-4', 'ring-green-500', 'border-green-500', 'scale-110');
+        option.classList.add('border-zinc-600', 'hover:border-zinc-400');
+        
+        // Remove ícone de check
+        const checkIcon = option.querySelector('svg')?.parentElement;
+        if (checkIcon && checkIcon.classList.contains('absolute')) {
+          checkIcon.remove();
+        }
+      }
+    });
+  }
+
+  /**
+   * Remove seleção dos avatares da grid
+   */
+  clearAvatarSelection() {
+    const modal = document.getElementById('profileFormModal');
+    if (!modal) return;
+
+    const avatarOptions = modal.querySelectorAll('.avatar-option');
+    avatarOptions.forEach(option => {
+      option.classList.remove('ring-4', 'ring-green-500', 'border-green-500', 'scale-110');
+      option.classList.add('border-zinc-600', 'hover:border-zinc-400');
+      
+      const checkIcon = option.querySelector('svg')?.parentElement;
+      if (checkIcon && checkIcon.classList.contains('absolute')) {
+        checkIcon.remove();
+      }
+    });
+  }
+
+  /**
+   * Atualiza o preview do avatar
+   */
+  updateAvatarPreview() {
+    const modal = document.getElementById('profileFormModal');
+    if (!modal) return;
+
+    const avatarUrl = this.formData.avatar;
+    const previewImg = modal.querySelector('.flex.justify-center img');
+    const previewFallback = modal.querySelector('.flex.justify-center .flex.w-full.h-full');
+    
+    if (avatarUrl && previewImg) {
+      previewImg.src = avatarUrl;
+      previewImg.style.display = 'block';
+      if (previewFallback) previewFallback.style.display = 'none';
+    } else if (previewImg && previewFallback) {
+      previewImg.style.display = 'none';
+      previewFallback.style.display = 'flex';
+    }
   }
 
   /**
@@ -328,6 +491,12 @@ export class ProfileFormModal {
 
     if (name.length > 20) {
       this.showError('O nome deve ter no máximo 20 caracteres');
+      return false;
+    }
+
+    // Valida se um avatar foi selecionado
+    if (!this.formData.avatar || !DEFAULT_AVATARS.includes(this.formData.avatar)) {
+      this.showError('Por favor, selecione um avatar da galeria');
       return false;
     }
 
@@ -367,13 +536,17 @@ export class ProfileFormModal {
     const form = document.getElementById('profileForm');
     if (!form) return;
 
-    const formData = new FormData(form);
+    const formDataObj = new FormData(form);
+    const name = formDataObj.get('name').trim();
+    const species = formDataObj.get('species');
+    
+    // Usa o avatar selecionado do formData (não há mais input de URL)
     const profileData = {
-      name: formData.get('name').trim(),
-      species: formData.get('species'),
-      avatar: formData.get('avatar')?.trim() || '',
-      color: formData.get('species') === 'cat' ? 'red' : 'blue',
-      icon: formData.get('name').trim().charAt(0).toUpperCase()
+      name: name,
+      species: species,
+      avatar: this.formData.avatar || '',
+      color: species === 'cat' ? 'red' : 'blue',
+      icon: name.charAt(0).toUpperCase()
     };
 
     try {
