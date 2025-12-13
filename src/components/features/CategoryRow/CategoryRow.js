@@ -1,13 +1,19 @@
 import { ThumbnailCard } from '../ThumbnailCard/ThumbnailCard.js';
 import { escapeHTML } from '../../../utils/security.js';
+import { SkeletonCard } from '../../common/Skeleton/SkeletonCard.js';
 
 const ROW_HANDLERS = new Map();
 
 export function CategoryRow({ title, items = [], loading = false, onCardClick } = {}) {
   const rowId = `row_${Math.random().toString(36).slice(2)}`;
   const safeTitle = escapeHTML(title || '');
-  const cardsHtml = loading
-    ? Array.from({ length: 6 }).map(() => `<div class=\"relative flex-none w-[160px] md:w-[240px] aspect-video rounded-md bg-gray-700 animate-pulse\"></div>`).join('')
+  
+  // Mostrar skeleton se loading ou se não houver items
+  const showSkeleton = loading || !items || items.length === 0;
+  
+  // Usar SkeletonCard diretamente (sem wrapper) pois já estamos dentro de um container flex
+  const cardsHtml = showSkeleton
+    ? Array.from({ length: 5 }).map(() => SkeletonCard({ variant: 'video' })).join('')
     : items.map(i => ThumbnailCard({ id: i.videoId || i.id, title: i.title, thumbnail: i.thumbnail || i.thumb })).join('');
 
   if (typeof onCardClick === 'function') {

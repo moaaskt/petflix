@@ -217,7 +217,10 @@ export class Navbar {
       const cards = el.querySelectorAll('[data-id]');
       cards.forEach(card => {
         const id = card.getAttribute('data-id');
-        card.addEventListener('click', () => navigateTo(`/player?videoId=${id}`));
+        card.addEventListener('click', () => {
+          removeOverlay();
+          navigateTo(`/player?videoId=${id}`);
+        });
       });
     }
 

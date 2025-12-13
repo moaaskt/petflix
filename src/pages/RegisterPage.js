@@ -1,5 +1,6 @@
 import { authService } from '../services/auth/auth.service.js';
 import '../styles/pages/register.css';
+import { Toast } from '../utils/toast.js';
 
 export function render() {
   return `
@@ -20,8 +21,6 @@ export function render() {
             <input type="password" id="register-confirm-password" class="register-input" placeholder="Confirmar senha" required minlength="6">
           </div>
 
-          <div class="register-error" id="register-error"></div>
-
           <button type="submit" class="register-button" id="register-button">Cadastrar</button>
 
           <div class="register-link">
@@ -39,7 +38,6 @@ export function init() {
   const emailInput = document.getElementById('register-email');
   const passwordInput = document.getElementById('register-password');
   const confirmPasswordInput = document.getElementById('register-confirm-password');
-  const errorDiv = document.getElementById('register-error');
   const button = document.getElementById('register-button');
 
   if (!form) return;
@@ -53,17 +51,17 @@ export function init() {
     const confirmPassword = confirmPasswordInput.value;
 
     if (!name || !email || !password || !confirmPassword) {
-      showError('Por favor, preencha todos os campos.');
+      Toast.error('Por favor, preencha todos os campos.');
       return;
     }
 
     if (password !== confirmPassword) {
-      showError('As senhas não coincidem.');
+      Toast.error('As senhas não coincidem.');
       return;
     }
 
     if (password.length < 6) {
-      showError('A senha deve ter pelo menos 6 caracteres.');
+      Toast.warning('A senha deve ter pelo menos 6 caracteres.');
       return;
     }
 
@@ -71,8 +69,11 @@ export function init() {
       setLoading(true);
       await authService.signUp(email, password, name);
 
-      alert('Conta criada com sucesso! Verifique seu email para ativar a conta.');
-      window.location.hash = '#/login';
+      Toast.success('Conta criada com sucesso! Verifique seu email para ativar a conta.');
+      // Pequeno delay para mostrar o toast de sucesso antes de navegar
+      setTimeout(() => {
+        window.location.hash = '#/login';
+      }, 1500);
 
     } catch (error) {
       console.error('Erro no cadastro:', error);
@@ -83,23 +84,16 @@ export function init() {
       } else if (error.code === 'auth/invalid-email') {
         message = 'Email inválido.';
       } else if (error.code === 'auth/weak-password') {
-        message = 'A senha é muito fraca.';
+        message = 'A senha é muito fraca. Escolha uma senha mais forte.';
       } else if (error.message) {
         message = error.message;
       }
 
-      showError(message);
+      Toast.error(message);
     } finally {
       setLoading(false);
     }
   });
-
-  function showError(message) {
-    if (errorDiv) {
-      errorDiv.textContent = message;
-      errorDiv.style.display = 'block';
-    }
-  }
 
   function setLoading(isLoading) {
     if (button) {
