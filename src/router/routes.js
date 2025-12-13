@@ -3,6 +3,7 @@
  */
 import * as LoginPage from '../pages/LoginPage.js';
 import * as RegisterPage from '../pages/RegisterPage.js';
+import * as ForgotPasswordPage from '../pages/ForgotPasswordPage.js';
 import * as HomePage from '../pages/home/HomePage.js';
 import * as MoviesPage from '../pages/categories/MoviesPage.js';
 import * as SeriesPage from '../pages/categories/SeriesPage.js';
@@ -77,6 +78,15 @@ export const routes = [
     component: RegisterPage,
     meta: {
       title: 'Cadastro - PetFlix',
+      requiresAuth: false,
+      layout: 'public'
+    }
+  },
+  {
+    path: '/forgot-password',
+    component: ForgotPasswordPage,
+    meta: {
+      title: 'Recuperar Senha - PetFlix',
       requiresAuth: false,
       layout: 'public'
     }
