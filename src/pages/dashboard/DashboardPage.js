@@ -21,20 +21,23 @@ export async function render() {
   const movies = (await getByCategory(species, 'movie')).map(mapCard);
 
   const isCat = species === 'cat';
-  const rowsCat = `
-      ${CategoryRow({ title: 'Populares na Petflix', items: trending, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      ${CategoryRow({ title: 'Gatos Planejando o Caos', items: [...action, ...adventure].slice(0, 20), onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      ${CategoryRow({ title: 'Soneca da Tarde', items: docs, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      ${CategoryRow({ title: 'Comédias Felinas', items: comedy, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      ${CategoryRow({ title: 'Séries para Maratonar', items: series, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-  `;
-  const rowsDog = `
-      ${CategoryRow({ title: 'Em Alta Hoje', items: trending, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      ${CategoryRow({ title: 'Aventuras no Parque', items: [...action, ...adventure].slice(0, 20), onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      ${CategoryRow({ title: 'Bons Garotos', items: drama, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      ${CategoryRow({ title: 'Histórias de Adoção', items: docs, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-      ${CategoryRow({ title: 'Filmes para toda a família', items: movies, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })}
-  `;
+  
+  // Aguardar todas as CategoryRows (agora são async)
+  const rowsCat = await Promise.all([
+    CategoryRow({ title: 'Populares na Petflix', items: trending, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) }),
+    CategoryRow({ title: 'Gatos Planejando o Caos', items: [...action, ...adventure].slice(0, 20), onCardClick: (id) => navigateTo(`/player?videoId=${id}`) }),
+    CategoryRow({ title: 'Soneca da Tarde', items: docs, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) }),
+    CategoryRow({ title: 'Comédias Felinas', items: comedy, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) }),
+    CategoryRow({ title: 'Séries para Maratonar', items: series, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })
+  ]);
+  
+  const rowsDog = await Promise.all([
+    CategoryRow({ title: 'Em Alta Hoje', items: trending, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) }),
+    CategoryRow({ title: 'Aventuras no Parque', items: [...action, ...adventure].slice(0, 20), onCardClick: (id) => navigateTo(`/player?videoId=${id}`) }),
+    CategoryRow({ title: 'Bons Garotos', items: drama, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) }),
+    CategoryRow({ title: 'Histórias de Adoção', items: docs, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) }),
+    CategoryRow({ title: 'Filmes para toda a família', items: movies, onCardClick: (id) => navigateTo(`/player?videoId=${id}`) })
+  ]);
 
   const featured = await getFeatured(species);
   return `
@@ -43,7 +46,7 @@ export async function render() {
         ${renderHero({ item: mapHero(featured) })}
       </div>
       <div class="h-12 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent"></div>
-      ${isCat ? rowsCat : rowsDog}
+      ${isCat ? rowsCat.join('') : rowsDog.join('')}
     </div>
   `;
 }

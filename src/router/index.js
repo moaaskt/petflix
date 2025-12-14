@@ -65,6 +65,10 @@ async function executeMiddlewares(route, from) {
  * Renderiza rota
  */
 async function renderRoute(route) {
+  // Remove overlay de busca se ainda existir (segurança extra)
+  const overlay = document.getElementById('searchOverlay');
+  if (overlay) overlay.remove();
+  
   if (!appContainer) {
     appContainer = document.getElementById('app');
     if (!appContainer) {

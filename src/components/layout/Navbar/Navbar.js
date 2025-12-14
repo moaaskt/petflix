@@ -76,7 +76,7 @@ export class Navbar {
               <li><a href="#/series" class="text-gray-200 hover:text-white">Séries</a></li>
               <li><a href="#/filmes" class="text-gray-200 hover:text-white">Filmes</a></li>
               <li><a href="#/docs" class="text-gray-200 hover:text-white">Bombando</a></li>
-              <li><a href="#/conta" class="text-gray-200 hover:text-white">Minha Lista</a></li>
+              <li><a href="#/my-list" class="text-gray-200 hover:text-white">Minha Lista</a></li>
             </ul>
             <button id="mobileMenuBtn" class="flex md:hidden text-gray-200 hover:text-white" aria-label="Menu" aria-expanded="false">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -107,7 +107,7 @@ export class Navbar {
           <a href="#/series" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Séries</a>
           <a href="#/filmes" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Filmes</a>
           <a href="#/docs" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Bombando</a>
-          <a href="#/conta" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Minha Lista</a>
+          <a href="#/my-list" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Minha Lista</a>
         </div>
       </nav>
     `;
@@ -217,7 +217,10 @@ export class Navbar {
       const cards = el.querySelectorAll('[data-id]');
       cards.forEach(card => {
         const id = card.getAttribute('data-id');
-        card.addEventListener('click', () => navigateTo(`/player?videoId=${id}`));
+        card.addEventListener('click', () => {
+          removeOverlay();
+          navigateTo(`/player?videoId=${id}`);
+        });
       });
     }
 

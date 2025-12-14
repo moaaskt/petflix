@@ -3,6 +3,7 @@
  */
 import * as LoginPage from '../pages/LoginPage.js';
 import * as RegisterPage from '../pages/RegisterPage.js';
+import * as ForgotPasswordPage from '../pages/ForgotPasswordPage.js';
 import * as HomePage from '../pages/home/HomePage.js';
 import * as MoviesPage from '../pages/categories/MoviesPage.js';
 import * as SeriesPage from '../pages/categories/SeriesPage.js';
@@ -12,6 +13,7 @@ import * as AccountPage from '../pages/account/AccountPage.js';
 import * as DashboardPage from '../pages/dashboard/DashboardPage.js';
 import * as PlayerPage from '../pages/player/PlayerPage.js';
 import * as AdminMoviesPage from '../pages/admin/AdminMoviesPage.js';
+import * as MyListPage from '../pages/MyListPage.js';
 
 /**
  * Middleware para verificar autenticação
@@ -77,6 +79,15 @@ export const routes = [
     component: RegisterPage,
     meta: {
       title: 'Cadastro - PetFlix',
+      requiresAuth: false,
+      layout: 'public'
+    }
+  },
+  {
+    path: '/forgot-password',
+    component: ForgotPasswordPage,
+    meta: {
+      title: 'Recuperar Senha - PetFlix',
       requiresAuth: false,
       layout: 'public'
     }
@@ -160,6 +171,16 @@ export const routes = [
       requiresAuth: true,
       layout: 'app',
       middleware: [requireAuth]
+    }
+  },
+  {
+    path: '/my-list',
+    component: MyListPage,
+    meta: {
+      title: 'Minha Lista - PetFlix',
+      requiresAuth: true,
+      layout: 'app',
+      middleware: [requireAuth, requireEmailVerified]
     }
   },
   {
