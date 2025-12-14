@@ -21,7 +21,7 @@ export function render(content = '') {
         <nav class="flex-1 p-4">
           <ul class="space-y-2">
             <li>
-              <a href="#/admin" class="flex items-center gap-3 px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white rounded-lg transition-colors cursor-pointer">
+              <a href="#/admin" id="nav-dashboard" class="nav-link flex items-center gap-3 px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white rounded-lg transition-colors cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                 </svg>
@@ -29,7 +29,7 @@ export function render(content = '') {
               </a>
             </li>
             <li>
-              <a href="#/admin" class="flex items-center gap-3 px-4 py-3 bg-zinc-800 text-white rounded-lg cursor-pointer">
+              <a href="#/admin/movies" id="nav-movies" class="nav-link flex items-center gap-3 px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white rounded-lg transition-colors cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125z" />
                 </svg>
@@ -70,6 +70,36 @@ export async function init() {
       navigateTo('/dashboard');
     });
   }
+  
+  // Atualiza o highlight do item ativo na sidebar
+  updateActiveNavItem();
+  
+  // Escuta mudanças na hash para atualizar o highlight
+  window.addEventListener('hashchange', updateActiveNavItem);
+}
+
+/**
+ * Atualiza o highlight do item ativo na sidebar baseado na URL atual
+ */
+function updateActiveNavItem() {
+  const currentHash = window.location.hash || '#/admin';
+  const navLinks = document.querySelectorAll('.nav-link');
+  
+  navLinks.forEach(link => {
+    const linkHash = link.getAttribute('href');
+    
+    // Remove classes ativas
+    link.classList.remove('bg-red-600', 'text-white');
+    link.classList.add('text-zinc-300');
+    
+    // Verifica se o link corresponde à rota atual
+    if (currentHash === linkHash || 
+        (currentHash.startsWith('#/admin/movies') && linkHash === '#/admin/movies') ||
+        (currentHash === '#/admin' && linkHash === '#/admin')) {
+      link.classList.add('bg-red-600', 'text-white');
+      link.classList.remove('text-zinc-300');
+    }
+  });
 }
 
 export default { render, init };

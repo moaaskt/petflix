@@ -13,6 +13,7 @@ import * as AccountPage from '../pages/account/AccountPage.js';
 import * as DashboardPage from '../pages/dashboard/DashboardPage.js';
 import * as PlayerPage from '../pages/player/PlayerPage.js';
 import * as AdminMoviesPage from '../pages/admin/AdminMoviesPage.js';
+import * as AdminDashboardPage from '../pages/admin/AdminDashboardPage.js';
 import * as MyListPage from '../pages/MyListPage.js';
 
 /**
@@ -224,9 +225,19 @@ export const routes = [
   },
   {
     path: '/admin',
+    component: AdminDashboardPage,
+    meta: {
+      title: 'Dashboard Admin - PetFlix',
+      requiresAuth: true,
+      layout: 'admin',
+      middleware: [requireAuth, requireAdmin]
+    }
+  },
+  {
+    path: '/admin/movies',
     component: AdminMoviesPage,
     meta: {
-      title: 'Admin - PetFlix',
+      title: 'Gerenciar Filmes - PetFlix',
       requiresAuth: true,
       layout: 'admin',
       middleware: [requireAuth, requireAdmin]
