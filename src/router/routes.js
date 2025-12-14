@@ -62,6 +62,45 @@ async function requireEmailVerified(to, from, next) {
 }
 
 /**
+ * Middleware para verificar se o usuário é administrador
+ */
+async function requireAdmin(to, from, next) {
+  const { AuthState } = await import('../state/AuthState.js');
+  const { authService } = await import('../services/auth/auth.service.js');
+  const { getUserRole } = await import('../services/user.service.js');
+  const { Toast } = await import('../utils/toast.js');
+  
+  const currentUser = authService.getCurrentUser();
+  
+  if (!currentUser) {
+    next('/login');
+    return false;
+  }
+  
+  // Verifica a role no estado primeiro
+  const state = AuthState.getState();
+  let role = state.user?.role;
+  
+  // Se não estiver no estado, busca no Firestore
+  if (!role) {
+    try {
+      role = await getUserRole(currentUser.uid);
+    } catch (error) {
+      console.error('Erro ao obter role do usuário:', error);
+      role = 'user';
+    }
+  }
+  
+  if (role !== 'admin') {
+    Toast.error('Acesso restrito a administradores');
+    next('/dashboard');
+    return false;
+  }
+  
+  return true;
+}
+
+/**
  * Definição de rotas
  */
 export const routes = [
@@ -190,7 +229,7 @@ export const routes = [
       title: 'Admin - PetFlix',
       requiresAuth: true,
       layout: 'admin',
-      middleware: [requireAuth]
+      middleware: [requireAuth, requireAdmin]
     }
   },
   {

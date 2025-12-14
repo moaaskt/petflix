@@ -3,6 +3,7 @@
  */
 import { auth } from '../config/firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
+import { getUserRole } from '../services/user.service.js';
 
 let state = {
   user: null,
@@ -79,13 +80,26 @@ function subscribe(callback) {
  * Inicializa AuthState e observa mudanças no Firebase Auth
  */
 export function initAuthState() {
-  onAuthStateChanged(auth, (user) => {
-    const serialized = user ? {
-      uid: user.uid,
-      email: user.email,
-      emailVerified: user.emailVerified,
-      displayName: user.displayName || ''
-    } : null;
+  onAuthStateChanged(auth, async (user) => {
+    let serialized = null;
+    
+    if (user) {
+      // Carrega a role do usuário do Firestore
+      let role = 'user';
+      try {
+        role = await getUserRole(user.uid);
+      } catch (error) {
+        console.warn('Erro ao carregar role do usuário:', error);
+      }
+      
+      serialized = {
+        uid: user.uid,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        displayName: user.displayName || '',
+        role: role
+      };
+    }
 
     try {
       localStorage.setItem('currentUser', JSON.stringify(serialized));
