@@ -28,7 +28,7 @@ export function render() {
                 <input type="checkbox" class="accent-[#e50914]" id="remember-me" />
                 <span>Lembre-se de mim</span>
               </label>
-              <a href="#/forgot-password" class="hover:underline">Precisa de ajuda?</a>
+              <a href="#/forgot-password" id="help-link" class="cursor-pointer hover:underline hover:text-white transition-colors">Precisa de ajuda?</a>
             </div>
             <div class="text-gray-400 text-sm mt-6">
               Novo por aqui? <a href="#/register" class="text-white hover:underline">Criar conta</a>
@@ -48,11 +48,20 @@ export function init() {
   const emailInput = document.getElementById('login-email');
   const passwordInput = document.getElementById('login-password');
   const button = document.getElementById('login-button');
+  const helpLink = document.getElementById('help-link');
 
   // Contador de tentativas falhas
   let failedAttempts = 0;
 
   if (!form) return;
+
+  // Listener para o link "Precisa de ajuda?"
+  if (helpLink) {
+    helpLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      navigateTo('/forgot-password');
+    });
+  }
 
   console.log('LoginPage: Tentando anexar listener ao form...');
   form.addEventListener('submit', async (e) => {

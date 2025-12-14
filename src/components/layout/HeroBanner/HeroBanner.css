@@ -28,25 +28,27 @@
 }
 
 .hero-actions {
-  display: flex;
-  gap: var(--space-4);
   margin-top: var(--space-5);
 }
 
+/* Estilos base para botões - agora usando Tailwind, mas mantendo fallback */
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
-  padding: 10px 18px;
-  border-radius: 6px;
-  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  border: none;
 }
 
-.btn-primary { background: var(--color-primary); color: #fff; }
-.btn-secondary { background: rgba(255,255,255,0.2); color: #fff; }
-.btn:hover { filter: brightness(1.1); }
+.btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
 
+/* Acessibilidade: reduzir animações se preferido */
 @media (prefers-reduced-motion: reduce) {
-  .btn:hover { filter: none; }
+  .btn {
+    transition: none;
+  }
 }
 

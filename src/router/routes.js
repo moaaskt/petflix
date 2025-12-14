@@ -13,6 +13,7 @@ import * as AccountPage from '../pages/account/AccountPage.js';
 import * as DashboardPage from '../pages/dashboard/DashboardPage.js';
 import * as PlayerPage from '../pages/player/PlayerPage.js';
 import * as AdminMoviesPage from '../pages/admin/AdminMoviesPage.js';
+import * as MyListPage from '../pages/MyListPage.js';
 
 /**
  * Middleware para verificar autenticação
@@ -170,6 +171,16 @@ export const routes = [
       requiresAuth: true,
       layout: 'app',
       middleware: [requireAuth]
+    }
+  },
+  {
+    path: '/my-list',
+    component: MyListPage,
+    meta: {
+      title: 'Minha Lista - PetFlix',
+      requiresAuth: true,
+      layout: 'app',
+      middleware: [requireAuth, requireEmailVerified]
     }
   },
   {
