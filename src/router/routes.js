@@ -13,6 +13,8 @@ import * as AccountPage from '../pages/account/AccountPage.js';
 import * as DashboardPage from '../pages/dashboard/DashboardPage.js';
 import * as PlayerPage from '../pages/player/PlayerPage.js';
 import * as AdminMoviesPage from '../pages/admin/AdminMoviesPage.js';
+import * as AdminUsersPage from '../pages/admin/AdminUsersPage.js';
+import * as AdminDashboardPage from '../pages/admin/AdminDashboardPage.js';
 import * as MyListPage from '../pages/MyListPage.js';
 
 /**
@@ -58,6 +60,45 @@ async function requireEmailVerified(to, from, next) {
     next('/home'); 
     return false;
   }
+  return true;
+}
+
+/**
+ * Middleware para verificar se o usuário é administrador
+ */
+async function requireAdmin(to, from, next) {
+  const { AuthState } = await import('../state/AuthState.js');
+  const { authService } = await import('../services/auth/auth.service.js');
+  const { getUserRole } = await import('../services/user.service.js');
+  const { Toast } = await import('../utils/toast.js');
+  
+  const currentUser = authService.getCurrentUser();
+  
+  if (!currentUser) {
+    next('/login');
+    return false;
+  }
+  
+  // Verifica a role no estado primeiro
+  const state = AuthState.getState();
+  let role = state.user?.role;
+  
+  // Se não estiver no estado, busca no Firestore
+  if (!role) {
+    try {
+      role = await getUserRole(currentUser.uid);
+    } catch (error) {
+      console.error('Erro ao obter role do usuário:', error);
+      role = 'user';
+    }
+  }
+  
+  if (role !== 'admin') {
+    Toast.error('Acesso restrito a administradores');
+    next('/dashboard');
+    return false;
+  }
+  
   return true;
 }
 
@@ -185,12 +226,32 @@ export const routes = [
   },
   {
     path: '/admin',
-    component: AdminMoviesPage,
+    component: AdminDashboardPage,
     meta: {
-      title: 'Admin - PetFlix',
+      title: 'Dashboard Admin - PetFlix',
       requiresAuth: true,
       layout: 'admin',
-      middleware: [requireAuth]
+      middleware: [requireAuth, requireAdmin]
+    }
+  },
+  {
+    path: '/admin/movies',
+    component: AdminMoviesPage,
+    meta: {
+      title: 'Gerenciar Filmes - PetFlix',
+      requiresAuth: true,
+      layout: 'admin',
+      middleware: [requireAuth, requireAdmin]
+    }
+  },
+  {
+    path: '/admin/users',
+    component: AdminUsersPage,
+    meta: {
+      title: 'Gerenciar Usuários - PetFlix',
+      requiresAuth: true,
+      layout: 'admin',
+      middleware: [requireAuth, requireAdmin]
     }
   },
   {

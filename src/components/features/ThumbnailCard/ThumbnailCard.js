@@ -1,5 +1,37 @@
 import { escapeHTML } from '../../../utils/security.js';
 
+/**
+ * Função global de fallback para imagens que falham ao carregar
+ * Implementa fallback em cascata: maxresdefault.jpg -> hqdefault.jpg -> placeholder
+ * Esta função é definida no escopo global para ser acessível via onerror inline
+ */
+if (typeof window !== 'undefined' && !window.petflixImageFallback) {
+  window.petflixImageFallback = function(img) {
+    // Previne loops infinitos se já tentamos o placeholder final
+    if (img.dataset.fallbackAttempted === 'final') {
+      img.onerror = null;
+      return;
+    }
+
+    const currentSrc = img.src;
+    
+    // Se for maxresdefault.jpg do YouTube, tenta hqdefault.jpg
+    if (currentSrc.includes('maxresdefault.jpg')) {
+      img.src = currentSrc.replace('maxresdefault.jpg', 'hqdefault.jpg');
+      img.dataset.fallbackAttempted = 'hqdefault';
+      return;
+    }
+    
+    // Se for hqdefault.jpg ou qualquer outra URL que falhou, usa placeholder
+    // Placeholder SVG: fundo cinza escuro (#3A3A3A) com ícone de vídeo (#6B7280)
+    const placeholder = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQwIiBoZWlnaHQ9IjEzNSIgdmlld0JveD0iMCAwIDI0MCAxMzUiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyNDAiIGhlaWdodD0iMTM1IiBmaWxsPSIjM0EzQTNBIi8+CjxwYXRoIGQ9Ik0xMjAgNjcuNUMxMjAgNjcuNSAxMTUgNjAgMTA1IDYwQzk1IDYwIDkwIDY3LjUgOTAgNjcuNUM5MCA2Ny41IDkwIDc1IDEwMCA3NUMxMTAgNzUgMTIwIDc1IDEyMCA2Ny41Wk0xMjAgNjcuNUMxMjAgNjcuNSAxMjUgNjAgMTM1IDYwQzE0NSA2MCAxNTAgNjcuNSAxNTAgNjcuNUMxNTAgNjcuNSAxNTAgNzUgMTQwIDc1QzEzMCA3NSAxMjAgNzUgMTIwIDY3LjVaTTEyMCA5MEMxMTAgOTAgMTAwIDg1IDEwMCA3NUMxMDAgNjUgMTEwIDYwIDEyMCA2MEMxMzAgNjAgMTQwIDY1IDE0MCA3NUMxNDAgODUgMTMwIDkwIDEyMCA5MFoiIGZpbGw9IiM2QjcyODAiLz4KPC9zdmc+';
+    
+    img.src = placeholder;
+    img.dataset.fallbackAttempted = 'final';
+    img.onerror = null; // Remove o handler para evitar loops infinitos
+  };
+}
+
 export function ThumbnailCard({ id, title, thumbnail, isInList = false }) {
   const vid = id;
   const safeTitle = escapeHTML(title || '');
@@ -21,7 +53,13 @@ export function ThumbnailCard({ id, title, thumbnail, isInList = false }) {
   
   return `
     <div class="relative flex-none w-[160px] md:w-[240px] aspect-video transition-transform duration-300 hover:scale-105 hover:z-20 cursor-pointer rounded-md overflow-hidden snap-start group" tabindex="0" role="button" data-id="${vid}" aria-label="${safeTitle}">
-      <img src="${src}" alt="${safeTitle}" loading="lazy" class="w-full h-full object-cover" />
+      <img 
+        src="${src}" 
+        alt="${safeTitle}" 
+        loading="lazy" 
+        class="w-full h-full object-cover" 
+        onerror="window.petflixImageFallback && window.petflixImageFallback(this)"
+      />
       <button 
         id="${listButtonId}"
         class="absolute top-2 right-2 w-8 h-8 ${listButtonClass} rounded-full flex items-center justify-center text-white transition-all duration-200 ${listButtonOpacity} hover:scale-110 z-30"

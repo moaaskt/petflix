@@ -123,7 +123,7 @@ function updateHeroListButton(isInList) {
     listIcon.removeAttribute('stroke-width');
     listIcon.removeAttribute('stroke-linecap');
     listIcon.removeAttribute('stroke-linejoin');
-    listIcon.className = 'w-5 h-5 flex-shrink-0';
+    listIcon.setAttribute('class', 'w-5 h-5 flex-shrink-0');
     listText.textContent = 'Remover';
     listBtn.setAttribute('aria-label', 'Remover da lista');
   } else {
@@ -135,7 +135,7 @@ function updateHeroListButton(isInList) {
     listIcon.setAttribute('stroke-linecap', 'round');
     listIcon.setAttribute('stroke-linejoin', 'round');
     listIcon.removeAttribute('fill');
-    listIcon.className = 'w-5 h-5 flex-shrink-0';
+    listIcon.setAttribute('class', 'w-5 h-5 flex-shrink-0');
     listText.textContent = 'Minha Lista';
     listBtn.setAttribute('aria-label', 'Adicionar à lista');
   }
