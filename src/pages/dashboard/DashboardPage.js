@@ -159,10 +159,10 @@ class DashboardPage {
 }
 
 function mapCard(item) {
-  return { id: item.videoId, title: item.title, thumbnail: item.image };
+  return { id: item.videoId, title: item.title, thumbnail: item.thumbnail || item.image };
 }
 
 function mapHero(item) {
   if (!item) return { title: 'Petflix Destaque', thumbnail: '/assets/hero-fallback.jpg', id: '' };
-  return { title: item.title, thumbnail: item.image, id: item.videoId };
+  return { title: item.title, thumbnail: item.thumbnail || item.image, id: item.videoId };
 }

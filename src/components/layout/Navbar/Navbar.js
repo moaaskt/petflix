@@ -209,7 +209,7 @@ export class Navbar {
       const el = document.createElement('div');
       el.id = 'searchOverlay';
       el.className = 'fixed top-16 left-0 w-full bg-[#141414] min-h-screen z-40 p-8';
-      const grid = results.map(r => ThumbnailCard({ id: r.videoId || r.id, title: r.title, thumbnail: r.image || r.thumbnail })).join('');
+      const grid = results.map(r => ThumbnailCard({ id: r.videoId || r.id, title: r.title, thumbnail: r.thumbnail || r.image })).join('');
       el.innerHTML = `
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">${grid}</div>
       `;

@@ -8,6 +8,7 @@ import { initAppState } from './state/AppState.js';
 import { initAuthState } from './state/AuthState.js';
 import { setupAuthPersistence } from './config/firebase.js';
 import { seedDatabase } from './utils/seed-db.js';
+import { populateDatabase } from './utils/seed-content.js';
 
 // Inicializa o tratamento global de erros primeiro
 initGlobalErrorHandling();
@@ -21,7 +22,8 @@ async function init() {
     await setupAuthPersistence();
     
     // 2. Popula banco de dados (apenas se estiver vazio)
-    // await seedDatabase();
+    // await seedDatabase(); // Popula coleção 'content' com dados mockados
+    //  await populateDatabase(true); // Popula coleção 'content' com conteúdo curado (YouTube IDs válidos)
     
     // 3. Inicializa estados globais
     initAuthState();

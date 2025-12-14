@@ -8,7 +8,7 @@ import { getByCategory } from '../../services/content.service.js';
 export async function render() {
   const title = 'Filmes';
   const species = document.body.classList.contains('theme-cat') ? 'cat' : 'dog';
-  const items = (await getByCategory(species, 'movie')).map(i => ({ title: i.title, thumbnail: i.image, videoId: i.videoId }));
+  const items = (await getByCategory(species, 'movie')).map(i => ({ title: i.title, thumbnail: i.thumbnail || i.image, videoId: i.videoId }));
 
   return `
     <div class="pt-20 px-4 md:px-12">
