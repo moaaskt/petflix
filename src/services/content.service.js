@@ -25,8 +25,8 @@ async function loadAllContent() {
   isLoading = true;
   loadPromise = (async () => {
     try {
-      const moviesRef = collection(db, 'movies');
-      const snapshot = await getDocs(moviesRef);
+      const contentRef = collection(db, 'content');
+      const snapshot = await getDocs(contentRef);
       
       const content = [];
       snapshot.forEach((doc) => {
@@ -85,6 +85,7 @@ export async function getFeatured(species) {
     id: 'error', 
     title: 'Conteúdo Indisponível', 
     description: 'Tente outro perfil.', 
+    thumbnail: '/assets/hero-fallback.jpg',
     image: '/assets/hero-fallback.jpg', 
     type: 'movie', 
     species: (species || 'dog'), 
@@ -171,7 +172,7 @@ export async function searchContent(query, species) {
  */
 export async function create(data) {
   try {
-    const moviesRef = collection(db, 'movies');
+    const contentRef = collection(db, 'content');
     const movieData = {
       ...data,
       createdAt: new Date().toISOString(),
@@ -179,7 +180,7 @@ export async function create(data) {
       original: data.original !== undefined ? data.original : false
     };
     
-    const docRef = await addDoc(moviesRef, movieData);
+    const docRef = await addDoc(contentRef, movieData);
     
     // Limpa o cache para forçar recarregamento
     cachedContent = null;
@@ -200,8 +201,8 @@ export async function create(data) {
  */
 export async function update(id, data) {
   try {
-    const movieRef = doc(db, 'movies', id);
-    await updateDoc(movieRef, {
+    const contentRef = doc(db, 'content', id);
+    await updateDoc(contentRef, {
       ...data,
       updatedAt: new Date().toISOString()
     });
@@ -223,8 +224,8 @@ export async function update(id, data) {
  */
 export async function deleteMovie(id) {
   try {
-    const movieRef = doc(db, 'movies', id);
-    await deleteDoc(movieRef);
+    const contentRef = doc(db, 'content', id);
+    await deleteDoc(contentRef);
     
     // Limpa o cache para forçar recarregamento
     cachedContent = null;

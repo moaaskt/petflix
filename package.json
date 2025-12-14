@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "apexcharts": "^5.3.6",
     "firebase": "^9.23.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"

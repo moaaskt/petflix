@@ -80,9 +80,29 @@ export async function updateUserData(updates) {
   }
 }
 
+/**
+ * Obtém a role do usuário
+ * @param {string} uid - ID do usuário
+ * @returns {Promise<string>} Role do usuário ('admin' ou 'user', padrão: 'user')
+ */
+export async function getUserRole(uid) {
+  try {
+    if (!uid) {
+      return 'user';
+    }
+    
+    const data = await firebaseService.get(`users/${uid}`);
+    return data?.role || 'user';
+  } catch (error) {
+    console.warn('Erro ao obter role do usuário:', error);
+    return 'user';
+  }
+}
+
 export default {
   saveUserData,
   getUserData,
-  updateUserData
+  updateUserData,
+  getUserRole
 };
 

@@ -1,6 +1,6 @@
 /**
  * Script de Seed para popular o Firestore com dados mockados
- * Este script verifica se a coleção 'movies' está vazia e popula com dados do ALL_CONTENT
+ * Este script verifica se a coleção 'content' está vazia e popula com dados do ALL_CONTENT
  */
 import { db, collection } from '../config/firebase.js';
 import { getDocs, addDoc } from 'firebase/firestore';
@@ -14,10 +14,10 @@ export async function seedDatabase() {
   try {
     console.log('🌱 Iniciando migração de dados para o Firestore...');
 
-    const moviesRef = collection(db, 'movies');
+    const contentRef = collection(db, 'content');
     
     // Verifica se a coleção já possui dados
-    const snapshot = await getDocs(moviesRef);
+    const snapshot = await getDocs(contentRef);
     
     if (!snapshot.empty) {
       console.log('✅ Banco de dados já populado. Pulando migração.');
@@ -29,7 +29,7 @@ export async function seedDatabase() {
     // Loop através do ALL_CONTENT e adiciona cada item ao Firestore
     for (const movie of ALL_CONTENT) {
       try {
-        await addDoc(moviesRef, movie);
+        await addDoc(contentRef, movie);
         console.log(`✅ Filme "${movie.title}" salvo com sucesso!`);
       } catch (error) {
         console.error(`❌ Erro ao salvar filme "${movie.title}":`, error);
