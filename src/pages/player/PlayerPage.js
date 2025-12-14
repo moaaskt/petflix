@@ -1,6 +1,8 @@
 import { navigateTo } from '../../router/navigator.js';
 import { getThemeIcon } from '../../components/ui/Icons/ThemeIcons.js';
 import { escapeHTML } from '../../utils/security.js';
+import { loadYouTubeAPI } from '../../services/youtube.service.js';
+import { Toast } from '../../utils/toast.js';
 
 function getVideoIdFromHash() {
   const hash = window.location.hash || '';
@@ -103,24 +105,6 @@ export async function init() {
               document.msFullscreenElement);
   }
 
-  function loadYTAPI() {
-    return new Promise((resolve, reject) => {
-      if (window.YT && window.YT.Player) {
-        resolve();
-        return;
-      }
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      tag.onload = () => resolve();
-      tag.onerror = () => reject(new Error('YT API'));
-      document.head.appendChild(tag);
-      const check = () => {
-        if (window.YT && window.YT.Player) resolve();
-        else setTimeout(check, 100);
-      };
-      check();
-    });
-  }
 
   function startProgress() {
     if (progressTimer) clearInterval(progressTimer);
@@ -212,41 +196,45 @@ export async function init() {
   updateFullscreenIcon();
 
   function initPlayer() {
-    player = new window.YT.Player('videoContainer', {
-      videoId,
-      playerVars: {
-        autoplay: 1,
-        controls: 0,
-        modestbranding: 1,
-        rel: 0,
-        enablejsapi: 1,
-        fs: 1
-      },
-      events: {
-        onReady: () => {
-          // Garantir que o iframe tenha permissões de fullscreen
-          const iframe = container.querySelector('iframe');
-          if (iframe) {
-            iframe.setAttribute('allowfullscreen', 'true');
-            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
-          }
-          isMuted = player.isMuted?.() || false;
-          isPlaying = true;
-          playPause.innerHTML = getThemeIcon('pause');
-          muteToggle.innerHTML = isMuted ? getThemeIcon('volume-off') : getThemeIcon('volume');
-          startProgress();
+    try {
+      player = new window.YT.Player('videoContainer', {
+        videoId,
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          modestbranding: 1,
+          rel: 0,
+          enablejsapi: 1,
+          fs: 1
         },
-        onStateChange: (e) => {
-          if (e.data === window.YT.PlayerState.PLAYING) {
+        events: {
+          onReady: () => {
+            // Garantir que o iframe tenha permissões de fullscreen
+            const iframe = container.querySelector('iframe');
+            if (iframe) {
+              iframe.setAttribute('allowfullscreen', 'true');
+              iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+            }
+            isMuted = player.isMuted?.() || false;
             isPlaying = true;
             playPause.innerHTML = getThemeIcon('pause');
-          } else if (e.data === window.YT.PlayerState.PAUSED) {
-            isPlaying = false;
-            playPause.innerHTML = getThemeIcon('play');
+            muteToggle.innerHTML = isMuted ? getThemeIcon('volume-off') : getThemeIcon('volume');
+            startProgress();
+          },
+          onStateChange: (e) => {
+            if (e.data === window.YT.PlayerState.PLAYING) {
+              isPlaying = true;
+              playPause.innerHTML = getThemeIcon('pause');
+            } else if (e.data === window.YT.PlayerState.PAUSED) {
+              isPlaying = false;
+              playPause.innerHTML = getThemeIcon('play');
+            }
           }
         }
-      }
-    });
+      });
+    } catch (error) {
+      throw new Error(`Erro ao inicializar o player: ${error.message}`);
+    }
   }
 
   playPause.addEventListener('click', togglePlay);
@@ -271,7 +259,18 @@ export async function init() {
     if (titleEl) titleEl.textContent = escapeHTML(details?.title || 'Sem título');
   } catch {}
 
-  await loadYTAPI();
-  initPlayer();
+  // Carrega a API do YouTube e inicializa o player com tratamento de erro
+  try {
+    await loadYouTubeAPI();
+    initPlayer();
+  } catch (error) {
+    console.error('Erro ao carregar o player do YouTube:', error);
+    Toast.error('Erro ao carregar o vídeo. Redirecionando...', 3000);
+    
+    // Redireciona para o Dashboard após 3 segundos
+    setTimeout(() => {
+      navigateTo('/dashboard');
+    }, 3000);
+  }
 }
 
