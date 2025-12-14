@@ -13,6 +13,7 @@ import * as AccountPage from '../pages/account/AccountPage.js';
 import * as DashboardPage from '../pages/dashboard/DashboardPage.js';
 import * as PlayerPage from '../pages/player/PlayerPage.js';
 import * as AdminMoviesPage from '../pages/admin/AdminMoviesPage.js';
+import * as AdminUsersPage from '../pages/admin/AdminUsersPage.js';
 import * as AdminDashboardPage from '../pages/admin/AdminDashboardPage.js';
 import * as MyListPage from '../pages/MyListPage.js';
 
@@ -238,6 +239,16 @@ export const routes = [
     component: AdminMoviesPage,
     meta: {
       title: 'Gerenciar Filmes - PetFlix',
+      requiresAuth: true,
+      layout: 'admin',
+      middleware: [requireAuth, requireAdmin]
+    }
+  },
+  {
+    path: '/admin/users',
+    component: AdminUsersPage,
+    meta: {
+      title: 'Gerenciar Usuários - PetFlix',
       requiresAuth: true,
       layout: 'admin',
       middleware: [requireAuth, requireAdmin]
