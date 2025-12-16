@@ -1,8 +1,9 @@
 /**
  * AuthState - Estado global de autenticação
  */
-import { auth } from '../config/firebase.js';
+import { auth, db } from '../config/firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { getUserRole } from '../services/user.service.js';
 
 let state = {
@@ -19,7 +20,7 @@ const subscribers = new Set();
  */
 function createState(initialState) {
   let currentState = { ...initialState };
-  
+
   return {
     getState: () => ({ ...currentState }),
     setState: (updates) => {
@@ -69,20 +70,28 @@ function subscribe(callback) {
   subscribers.add(callback);
   // Chama imediatamente com estado atual
   callback(state);
-  
+
   // Retorna função de unsubscribe
   return () => {
     subscribers.delete(callback);
   };
 }
 
+let userStatusUnsubscribe = null; // Armazena o unsubscribe do listener de status
+
 /**
  * Inicializa AuthState e observa mudanças no Firebase Auth
  */
 export function initAuthState() {
   onAuthStateChanged(auth, async (user) => {
+    // Limpa listener anterior se existir
+    if (userStatusUnsubscribe) {
+      userStatusUnsubscribe();
+      userStatusUnsubscribe = null;
+    }
+
     let serialized = null;
-    
+
     if (user) {
       // Carrega a role do usuário do Firestore
       let role = 'user';
@@ -91,7 +100,7 @@ export function initAuthState() {
       } catch (error) {
         console.warn('Erro ao carregar role do usuário:', error);
       }
-      
+
       serialized = {
         uid: user.uid,
         email: user.email,
@@ -99,11 +108,48 @@ export function initAuthState() {
         displayName: user.displayName || '',
         role: role
       };
+
+      // 🔒 REAL-TIME BAN ENFORCEMENT
+      // Monitora o documento do usuário para detectar banimento em tempo real
+      const userDocRef = doc(db, 'users', user.uid);
+      userStatusUnsubscribe = onSnapshot(userDocRef, async (docSnap) => {
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          const status = userData.status || 'active';
+
+          // Se o usuário foi banido, força logout imediato
+          if (status === 'banned') {
+            console.warn('⚠️ Usuário banido detectado. Forçando logout...');
+
+            // Limpa listener antes de fazer logout
+            if (userStatusUnsubscribe) {
+              userStatusUnsubscribe();
+              userStatusUnsubscribe = null;
+            }
+
+            // Força logout
+            try {
+              const { authService } = await import('../services/auth/auth.service.js');
+              await authService.signOut();
+
+              // Mostra alerta ao usuário
+              alert('Sua conta foi suspensa. Entre em contato com o suporte.');
+
+              // Redireciona para login
+              window.location.hash = '#/login';
+            } catch (error) {
+              console.error('Erro ao fazer logout de usuário banido:', error);
+            }
+          }
+        }
+      }, (error) => {
+        console.error('Erro no listener de status do usuário:', error);
+      });
     }
 
     try {
       localStorage.setItem('currentUser', JSON.stringify(serialized));
-    } catch {}
+    } catch { }
 
     setState({
       user: serialized,
