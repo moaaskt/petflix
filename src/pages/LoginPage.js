@@ -2,7 +2,6 @@
  * LoginPage - Página de Login estilo Netflix
  */
 import { authService } from '../services/auth/auth.service.js';
-import { getUserRole } from '../services/user.service.js';
 import { navigateTo } from '../router/navigator.js';
 import { LoadingSpinner } from '../components/ui/Loading/LoadingSpinner.js';
 import { Toast } from '../utils/toast.js';
@@ -90,25 +89,11 @@ export function init() {
         failedAttempts = 0;
         Toast.success('Login realizado com sucesso!');
 
-        // Verifica a role do usuário para redirecionar corretamente
-        try {
-          const role = await getUserRole(user.user.uid);
-
-          // Pequeno delay para mostrar o toast de sucesso antes de navegar
-          setTimeout(() => {
-            if (role === 'admin') {
-              navigateTo('/admin');
-            } else {
-              navigateTo('/home');
-            }
-          }, 500);
-        } catch (error) {
-          console.error('Erro ao obter role do usuário:', error);
-          // Em caso de erro, redireciona para home (fallback seguro)
-          setTimeout(() => {
-            navigateTo('/home');
-          }, 500);
-        }
+        // Redireciona todos os usuários para /home (seleção de perfis)
+        // O Admin acessará o dashboard através do botão "Gerenciar" ou link no menu
+        setTimeout(() => {
+          navigateTo('/home');
+        }, 500);
       }
     } catch (error) {
       console.error('Erro no login:', error);

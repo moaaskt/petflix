@@ -127,18 +127,20 @@ export function initAuthState() {
               userStatusUnsubscribe = null;
             }
 
-            // Força logout
+            // Força logout e recarrega a página para limpar estado
             try {
               const { authService } = await import('../services/auth/auth.service.js');
               await authService.signOut();
 
-              // Mostra alerta ao usuário
               alert('Sua conta foi suspensa. Entre em contato com o suporte.');
 
-              // Redireciona para login
-              window.location.hash = '#/login';
+              // Redireciona para login e recarrega para garantir limpeza total
+              window.location.href = '/#/login';
+              window.location.reload();
             } catch (error) {
               console.error('Erro ao fazer logout de usuário banido:', error);
+              // Fallback de emergência
+              window.location.reload();
             }
           }
         }
