@@ -15,9 +15,20 @@ export async function render() {
   return `
     <div class="p-8">
       <!-- Header -->
-      <div class="mb-6">
-        <h1 class="text-3xl font-bold text-white">Dashboard Administrativo</h1>
-        <p class="text-zinc-400 mt-2">Visão geral do sistema Petflix</p>
+      <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-white">Dashboard Administrativo</h1>
+          <p class="text-zinc-400 mt-2">Visão geral do sistema Petflix</p>
+        </div>
+        <button 
+          id="btn-seed"
+          class="flex items-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-md transition-all shadow-lg text-sm"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+            <path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z" clip-rule="evenodd" />
+          </svg>
+          Popular Banco
+        </button>
       </div>
       
       <!-- KPIs Cards -->
@@ -145,14 +156,58 @@ export async function render() {
 export async function init() {
   // Aguarda um pouco para garantir que o DOM está pronto
   await new Promise(resolve => setTimeout(resolve, 100));
-  
+
+  // Configurar botão de seed
+  const btnSeed = document.getElementById('btn-seed');
+  if (btnSeed) {
+    btnSeed.addEventListener('click', async () => {
+      if (!confirm('Tem certeza que deseja popular o banco? Isso pode gerar duplicatas se já existirem dados.')) return;
+
+      try {
+        // Importação dinâmica para não pesar no bundle inicial
+        const { seedDatabase } = await import('../../utils/seeder.js');
+        const { Toast } = await import('../../utils/toast.js');
+
+        const originalText = btnSeed.innerHTML;
+        btnSeed.disabled = true;
+        btnSeed.innerHTML = `
+          <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Populando...
+        `;
+
+        const result = await seedDatabase();
+
+        if (result.success) {
+          Toast.success(result.message);
+        } else {
+          Toast.error((result.error || 'Erro desconhecido'));
+        }
+
+        // Restaurar botão após 2s
+        setTimeout(() => {
+          btnSeed.disabled = false;
+          btnSeed.innerHTML = originalText;
+        }, 2000);
+
+      } catch (err) {
+        console.error(err);
+        alert('Erro ao executar seeder: ' + err.message);
+        btnSeed.disabled = false;
+        btnSeed.textContent = 'Erro ao popular';
+      }
+    });
+  }
+
   try {
     // Busca estatísticas do Firestore
     dashboardStats = await getDashboardStats();
-    
+
     // Atualiza os KPIs com dados reais
     updateKPIs();
-    
+
     // Inicializa os gráficos com dados reais
     initGrowthChart();
     initSpeciesChart();
@@ -179,26 +234,26 @@ export async function init() {
  */
 function updateKPIs() {
   if (!dashboardStats) return;
-  
+
   // Atualiza Total Usuários
   const usersEl = document.getElementById('kpi-users');
   if (usersEl) {
     usersEl.textContent = dashboardStats.totalUsers.toLocaleString('pt-BR');
   }
-  
+
   // Atualiza Total Filmes (conteúdo)
   const moviesEl = document.getElementById('kpi-movies');
   if (moviesEl) {
     moviesEl.textContent = dashboardStats.totalContent.toLocaleString('pt-BR');
   }
-  
+
   // Atualiza Perfis (mantém fictício por enquanto, pois requer query complexa)
   const profilesEl = document.getElementById('kpi-profiles');
   if (profilesEl) {
     // TODO: Implementar contagem real de perfis ativos
     profilesEl.textContent = '2,890';
   }
-  
+
   // Atualiza Status Server
   const statusEl = document.getElementById('kpi-status');
   if (statusEl) {
@@ -282,7 +337,7 @@ function initSpeciesChart() {
   // Usa dados reais do Firestore
   const dogCount = dashboardStats?.contentBySpecies?.dog || 0;
   const catCount = dashboardStats?.contentBySpecies?.cat || 0;
-  
+
   const options = {
     series: [dogCount, catCount],
     chart: {
@@ -339,7 +394,7 @@ function initContentChart() {
   const movieCount = dashboardStats?.contentByCategory?.movie || 0;
   const seriesCount = dashboardStats?.contentByCategory?.series || 0;
   const docCount = dashboardStats?.contentByCategory?.doc || 0;
-  
+
   const options = {
     series: [{
       name: 'Quantidade',
