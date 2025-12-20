@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { FALLBACK_HERO } from '../utils/imageFallback.js';
 // import PropTypes from 'prop-types';
 
 /**
@@ -8,6 +9,7 @@ import React from 'react';
  * metadata badges (rating, duration, quality, stars), e call-to-action premium.
  * 
  * Suporta múltiplas ações opcionais além do botão Play padrão.
+ * Inclui fallback automático para imagens quebradas.
  * 
  * @component
  * @example
@@ -38,6 +40,17 @@ const HeroFeatured = ({
     onTrailer,
     actions
 }) => {
+    const [bgImage, setBgImage] = useState(image);
+
+    /**
+     * Handle background image error
+     */
+    const handleBgImageError = () => {
+        if (bgImage !== FALLBACK_HERO) {
+            setBgImage(FALLBACK_HERO);
+        }
+    };
+
     /**
      * Retorna classes CSS baseadas na variante do botão
      */
@@ -94,11 +107,13 @@ const HeroFeatured = ({
 
     return (
         <div className="relative w-full h-[70vh] min-h-[500px] overflow-hidden">
-            {/* Background Image */}
-            <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${image})` }}
-                aria-hidden="true"
+            {/* Background Image with Fallback */}
+            <img
+                src={bgImage}
+                alt={title}
+                className="absolute inset-0 w-full h-full object-cover"
+                onError={handleBgImageError}
+                style={{ objectFit: 'cover' }}
             />
 
             {/* Enhanced Gradient Overlays - More aggressive for premium feel */}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FALLBACK_POSTER, handleImageError } from '../utils/imageFallback.js';
 // import PropTypes from 'prop-types';
 
 /**
@@ -6,6 +7,8 @@ import React, { useState } from 'react';
  * 
  * Card visual para exibição de conteúdo com imagem de destaque.
  * Revela botão Play ao passar o mouse (hover).
+ * 
+ * Inclui fallback automático para imagens quebradas e efeito zoom no hover.
  * 
  * @component
  * @example
@@ -41,6 +44,8 @@ const ContentCard = ({ title, image, onPlay }) => {
                     alt={title}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     loading="lazy"
+                    onError={(e) => handleImageError(e, FALLBACK_POSTER)}
+                    style={{ objectFit: 'cover' }}
                 />
 
                 {/* Hover Overlay with Play Button */}
