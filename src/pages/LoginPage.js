@@ -66,10 +66,10 @@ export function init() {
   console.log('LoginPage: Tentando anexar listener ao form...');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const email = emailInput.value.trim();
     const password = passwordInput.value;
-    
+
     // Validação básica
     if (!email || !password) {
       Toast.error('Por favor, preencha todos os campos.');
@@ -88,7 +88,9 @@ export function init() {
         // Reset do contador em caso de sucesso
         failedAttempts = 0;
         Toast.success('Login realizado com sucesso!');
-        // Pequeno delay para mostrar o toast de sucesso antes de navegar
+
+        // Redireciona todos os usuários para /home (seleção de perfis)
+        // O Admin acessará o dashboard através do botão "Gerenciar" ou link no menu
         setTimeout(() => {
           navigateTo('/home');
         }, 500);
@@ -96,10 +98,10 @@ export function init() {
     } catch (error) {
       console.error('Erro no login:', error);
       console.log('Auth: Erro capturado', error);
-      
+
       // Incrementa contador de tentativas falhas
       failedAttempts++;
-      
+
       // Verifica se atingiu 3 tentativas
       if (failedAttempts >= 3) {
         Toast.warning('Muitas tentativas falhas. Vamos redefinir sua senha?');
@@ -109,10 +111,10 @@ export function init() {
         }, 2000);
         return;
       }
-      
+
       // Tradução de erros do Firebase para português
       let message = 'Ocorreu um erro ao fazer login. Tente novamente.';
-      
+
       switch (error.code) {
         case 'auth/invalid-login-credentials':
         case 'auth/invalid-credential':
@@ -146,7 +148,7 @@ export function init() {
           }
           break;
       }
-      
+
       Toast.error(message);
     } finally {
       setLoading(false);
