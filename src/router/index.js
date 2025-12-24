@@ -13,15 +13,18 @@ let appContainer = null;
 function findRoute(path) {
   // Remove query params e hash
   const cleanPath = path.split('?')[0].split('#')[0];
-  
+
+  console.log('🚦 Router verificando rota:', cleanPath);
+
   // Procura rota exata
   let route = routes.find(r => r.path === cleanPath);
-  
+
   // Se não encontrou, procura rota com redirect
   if (!route) {
     route = routes.find(r => r.redirect);
   }
-  
+
+  console.log('🗺️ Rota encontrada:', route ? route.path : 'NENHUMA');
   return route;
 }
 
@@ -32,32 +35,37 @@ async function executeMiddlewares(route, from) {
   if (!route.meta || !route.meta.middleware) {
     return true;
   }
-  
+
+  console.log('🔒 Executando middlewares para:', route.path);
+
   const middlewares = route.meta.middleware;
-  
+
   for (const middleware of middlewares) {
     let nextCalled = false;
     let nextPath = null;
-    
+
     const next = (path) => {
       nextCalled = true;
       nextPath = path;
     };
-    
+
     const result = await middleware(route.path, from, next);
-    
+
+    console.log('🔐 Middleware retornou:', result, '| Next chamado:', nextCalled, '| Next path:', nextPath);
+
     if (nextCalled) {
       if (nextPath) {
+        console.log('⚠️ Middleware redirecionando para:', nextPath);
         navigateTo(nextPath);
       }
       return false;
     }
-    
+
     if (result === false) {
       return false;
     }
   }
-  
+
   return true;
 }
 
@@ -68,7 +76,7 @@ async function renderRoute(route) {
   // Remove overlay de busca se ainda existir (segurança extra)
   const overlay = document.getElementById('searchOverlay');
   if (overlay) overlay.remove();
-  
+
   if (!appContainer) {
     appContainer = document.getElementById('app');
     if (!appContainer) {
@@ -76,18 +84,18 @@ async function renderRoute(route) {
       return;
     }
   }
-  
+
   // Executa middlewares
   const canProceed = await executeMiddlewares(route, currentRoute?.path);
   if (!canProceed) {
     return;
   }
-  
+
   // Atualiza título da página
   if (route.meta && route.meta.title) {
     document.title = route.meta.title;
   }
-  
+
   // Renderiza componente
   try {
     const component = route.component;
@@ -194,7 +202,7 @@ async function renderRoute(route) {
     }
 
     currentRoute = route;
-    
+
     console.log(`✅ Rota renderizada: ${route.path}`);
   } catch (error) {
     console.error(`❌ Erro ao renderizar rota ${route.path}:`, error);
@@ -212,7 +220,7 @@ async function renderRoute(route) {
  */
 export function navigateTo(path) {
   const route = findRoute(path);
-  
+
   if (!route) {
     console.warn(`Rota não encontrada: ${path}, redirecionando para /home`);
     // Evita loop infinito - redireciona para /home se rota não encontrada
@@ -221,13 +229,13 @@ export function navigateTo(path) {
     }
     return;
   }
-  
+
   // Se tem redirect, navega para a rota de destino
   if (route.redirect) {
     window.location.hash = `#${route.redirect}`;
     return;
   }
-  
+
   renderRoute(route);
 }
 
@@ -237,22 +245,29 @@ export function navigateTo(path) {
 export function initRouter() {
   // Obtém container
   appContainer = document.getElementById('app');
-  
+
   if (!appContainer) {
     console.error('Container #app não encontrado no DOM');
     return;
   }
-  
+
   // Listener para mudanças no hash
-  window.addEventListener('hashchange', () => {
+  window.addEventListener('hashchange', async () => {
     const path = getCurrentPath();
+    console.log('📍 Hash mudou para:', path);
+
+    // Log do AuthState no momento da navegação
+    const { AuthState } = await import('../state/AuthState.js');
+    const authState = AuthState.getState();
+    console.log('👤 Usuário no AuthState durante rota:', authState.user ? authState.user.email : 'NULL');
+
     navigateTo(path);
   });
-  
+
   // Renderiza rota inicial
   const initialPath = getCurrentPath() || '/';
   navigateTo(initialPath);
-  
+
   console.log('✅ Router inicializado');
 }
 

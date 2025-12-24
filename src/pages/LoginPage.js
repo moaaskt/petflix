@@ -5,6 +5,34 @@ import { authService } from '../services/auth/auth.service.js';
 import { navigateTo } from '../router/navigator.js';
 import { LoadingSpinner } from '../components/ui/Loading/LoadingSpinner.js';
 import { Toast } from '../utils/toast.js';
+import { AuthState } from '../state/AuthState.js';
+
+/**
+ * Helper: Aguarda o AuthState sincronizar com o Firebase Auth
+ * Resolve quando AuthState.user for diferente de null
+ * @returns {Promise<Object>} User object do AuthState
+ */
+function waitForAuth() {
+  return new Promise((resolve) => {
+    // Verifica imediatamente se já está no estado
+    const currentState = AuthState.getState();
+    if (currentState.user) {
+      console.log('✅ AuthState já sincronizado:', currentState.user);
+      resolve(currentState.user);
+      return;
+    }
+
+    // Se não, aguarda a atualização
+    console.log('⏳ Aguardando sincronização do AuthState...');
+    const unsubscribe = AuthState.subscribe((state) => {
+      if (state.user) {
+        console.log('✅ AuthState sincronizado!', state.user);
+        unsubscribe();
+        resolve(state.user);
+      }
+    });
+  });
+}
 
 /**
  * Renderiza a página de login
@@ -89,11 +117,13 @@ export function init() {
         failedAttempts = 0;
         Toast.success('Login realizado com sucesso!');
 
-        // Redireciona todos os usuários para /home (seleção de perfis)
-        // O Admin acessará o dashboard através do botão "Gerenciar" ou link no menu
-        setTimeout(() => {
-          navigateTo('/home');
-        }, 500);
+        // 🔒 CORREÇÃO DO BUG DE RACE CONDITION
+        // Aguarda o AuthState sincronizar antes de redirecionar
+        await waitForAuth();
+
+        // 🚀 FORCE ENTRY: Navegação direta via hash (bypass router)
+        console.log('🚀 Forçando navegação para Home via window.location...');
+        window.location.hash = '#/home';
       }
     } catch (error) {
       console.error('Erro no login:', error);
