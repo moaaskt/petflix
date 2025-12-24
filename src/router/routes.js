@@ -5,7 +5,7 @@ import * as LoginPage from '../pages/LoginPage.js';
 import * as RegisterPage from '../pages/RegisterPage.js';
 import * as ForgotPasswordPage from '../pages/ForgotPasswordPage.js';
 import * as HomePage from '../pages/home/HomePage.js';
-import * as MoviesPage from '../pages/categories/MoviesPage.js';
+import * as MoviesPage from '../pages/movies/MoviesPage.jsx';
 import * as SeriesPage from '../pages/categories/SeriesPage.js';
 import * as DocumentariesPage from '../pages/categories/DocumentariesPage.js';
 import * as ProfilePage from '../pages/ProfilePage.js';
@@ -22,12 +22,38 @@ import * as MyListPage from '../pages/MyListPage.js';
  */
 async function requireAuth(to, from, next) {
   const { AuthState } = await import('../state/AuthState.js');
-  const state = AuthState.getState();
+  let state = AuthState.getState();
+
+  console.log(`🛡️ [requireAuth] Iniciando verificação para: ${to}`);
+
+  // 1. SE ESTIVER CARREGANDO, ESPERE!
+  if (state.loading) {
+    console.log('⏳ [requireAuth] Firebase está inicializando... Aguardando...');
+
+    await new Promise((resolve) => {
+      const unsubscribe = AuthState.subscribe((newState) => {
+        if (!newState.loading) {
+          console.log('✅ [requireAuth] Inicialização concluída!');
+          unsubscribe();
+          resolve();
+        }
+      });
+    });
+
+    // Atualiza o estado local após a espera
+    state = AuthState.getState();
+  }
+
+  // 2. AGORA VERIFICA SE TEM USUÁRIO (Decisão Final)
+  console.log(`🛡️ [requireAuth] Decisão final. Usuário:`, state.user ? state.user.email : 'NULL');
 
   if (!state.user) {
-    next('/login');
+    console.log('⛔ [requireAuth] Acesso negado. Redirecionando para /login');
+    if (next) next('/login');
     return false;
   }
+
+  console.log('✅ [requireAuth] Acesso permitido!');
   return true;
 }
 
