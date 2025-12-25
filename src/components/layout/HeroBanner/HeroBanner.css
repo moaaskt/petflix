@@ -50,5 +50,8 @@
   .btn {
     transition: none;
   }
+  .pf-hero-slide {
+    transition: none !important;
+  }
 }
 

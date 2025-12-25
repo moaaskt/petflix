@@ -36,6 +36,33 @@
   /* Transition Duration */
   --duration-200: 200ms;
   --duration-300: 300ms;
+
+  /* ========================================
+     🎞 Motion - Hero Carousel
+     ======================================== */
+  --motion-hero-slide-duration: 700ms;
+  --motion-hero-fade-duration: 500ms;
+  --motion-hero-scale-duration: 600ms;
+
+  --motion-hero-ease-enter: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-hero-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* ========================================
+     📐 Transform - Hero Carousel
+     ======================================== */
+  --motion-hero-scale-active: 1;
+  --motion-hero-scale-inactive: 0.96;
+
+  --motion-hero-translate-active: 0%;
+  --motion-hero-translate-next: 100%;
+  --motion-hero-translate-prev: -100%;
+
+  /* ========================================
+     🧱 Z-Index - Hero Carousel
+     ======================================== */
+  --z-hero-active: 30;
+  --z-hero-adjacent: 20;
+  --z-hero-hidden: 10;
 }
 
 /* ========================================
@@ -66,6 +93,18 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+}
+
+/* ========================================
+   ♿ Reduced Motion Support - Hero Carousel
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-hero-slide-duration: 0ms;
+    --motion-hero-fade-duration: 0ms;
+    --motion-hero-scale-duration: 0ms;
   }
 }
 
@@ -273,6 +312,87 @@
     gap: 0.125rem;
     color: #FFD700;
     font-size: 1rem;
+  }
+
+  /* ========================================
+     🎬 Hero Carousel - Container
+     ======================================== */
+
+  .pf-hero-carousel {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    min-height: 500px;
+    overflow: hidden;
+  }
+
+  /* ========================================
+     🎬 Hero Carousel - Slide Base
+     ======================================== */
+
+  .pf-hero-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+
+    transition:
+      transform var(--motion-hero-slide-duration) var(--motion-hero-ease-enter),
+      opacity var(--motion-hero-fade-duration) var(--motion-hero-ease-enter);
+
+    will-change: transform, opacity;
+  }
+
+  /* ========================================
+     🎬 Hero Carousel - Slide States
+     ======================================== */
+
+  /* 🟢 Slide Ativo */
+  .pf-hero-slide--active {
+    transform: translateX(var(--motion-hero-translate-active))
+               scale(var(--motion-hero-scale-active));
+    opacity: 1;
+    z-index: var(--z-hero-active);
+  }
+
+  /* ⚪ Slide Próximo */
+  .pf-hero-slide--next {
+    transform: translateX(var(--motion-hero-translate-next))
+               scale(var(--motion-hero-scale-inactive));
+    opacity: 0;
+    z-index: var(--z-hero-adjacent);
+  }
+
+  /* ⚪ Slide Anterior */
+  .pf-hero-slide--prev {
+    transform: translateX(var(--motion-hero-translate-prev))
+               scale(var(--motion-hero-scale-inactive));
+    opacity: 0;
+    z-index: var(--z-hero-adjacent);
+  }
+
+  /* ========================================
+     🎬 Hero Carousel - Overlay Cinematográfico
+     ======================================== */
+
+  .pf-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%),
+      linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 60%);
+    z-index: 5;
+    pointer-events: none;
+    transition: opacity var(--motion-hero-fade-duration)
+    var(--motion-hero-ease-enter);
+  }
+
+  /* ========================================
+     ♿ Hero Carousel - Acessibilidade (Base)
+     ======================================== */
+
+  .pf-hero-carousel[aria-live] {
+    outline: none;
   }
 }
 
