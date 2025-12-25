@@ -3,7 +3,7 @@
 Plataforma de streaming voltada para animais de estimação, oferecendo vídeos do YouTube organizados em categorias (filmes, séries, documentários) para entreter cães e gatos.
 
 ---
-![Tela de Login Petflix](https://github.com/moaaskt/petflix/blob/main/assets/PetFlix%20-%20Login%20-%20%5Bflixpet.netlify.app%5D%20(2).png)
+![Tela de Login Petflix](https://raw.githubusercontent.com/moaaskt/petflix/refs/heads/main/public/assets/FireShot%20Capture%20089%20-%20PetFlix%20-%20Login%20-%20%5Bflixpet.netlify.app%5D.png)
 ## 📋 Resumo
 
 O Petflix é uma aplicação web que simula um serviço de streaming para pets. Utiliza Firebase para autenticação e YouTube Data API para buscar e exibir vídeos adequados para animais de estimação. A interface permite seleção de perfil (Cachorro/Gato) e navegação por diferentes categorias de conteúdo.
