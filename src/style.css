@@ -63,6 +63,7 @@
   --z-hero-active: 30;
   --z-hero-adjacent: 20;
   --z-hero-hidden: 10;
+  --z-hero-controls: 40;
 }
 
 /* ========================================
@@ -371,6 +372,14 @@
     z-index: var(--z-hero-adjacent);
   }
 
+  /* ⚫ Slide Oculto (não adjacente) */
+  .pf-hero-slide:not(.pf-hero-slide--active):not(.pf-hero-slide--next):not(.pf-hero-slide--prev) {
+    transform: translateX(100%) scale(var(--motion-hero-scale-inactive));
+    opacity: 0;
+    z-index: var(--z-hero-hidden);
+    pointer-events: none;
+  }
+
   /* ========================================
      🎬 Hero Carousel - Overlay Cinematográfico
      ======================================== */
@@ -393,6 +402,73 @@
 
   .pf-hero-carousel[aria-live] {
     outline: none;
+  }
+
+  /* ========================================
+     🎬 Hero Carousel - Navigation Buttons
+     ======================================== */
+
+  .pf-carousel-prev,
+  .pf-carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: var(--z-hero-controls);
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: var(--color-pf-text-primary);
+    cursor: pointer;
+    transition: all var(--duration-300) ease;
+    backdrop-filter: blur(8px);
+    pointer-events: auto;
+  }
+
+  .pf-carousel-prev {
+    left: 1rem;
+  }
+
+  .pf-carousel-next {
+    right: 1rem;
+  }
+
+  .pf-carousel-prev:hover,
+  .pf-carousel-next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-color: var(--color-pf-primary);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .pf-carousel-prev:active,
+  .pf-carousel-next:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  .pf-carousel-prev:focus,
+  .pf-carousel-next:focus {
+    outline: 2px solid var(--color-pf-primary);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .pf-carousel-prev,
+    .pf-carousel-next {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .pf-carousel-prev {
+      left: 0.5rem;
+    }
+
+    .pf-carousel-next {
+      right: 0.5rem;
+    }
   }
 }
 

@@ -98,6 +98,58 @@ export async function getFeatured(species) {
 }
 
 /**
+ * Retorna múltiplos conteúdos em destaque (featured) de uma espécie
+ * @param {string} species - Espécie do animal
+ * @param {number} limit - Número máximo de itens a retornar (padrão: 5)
+ * @returns {Promise<Array>}
+ */
+export async function getFeaturedMultiple(species, limit = 5) {
+  const all = await getBySpecies(species);
+  console.log('[getFeaturedMultiple] Total items for species:', species, ':', all.length);
+  
+  const featuredList = all.filter(i => i.featured);
+  console.log('[getFeaturedMultiple] Featured items:', featuredList.length);
+  
+  // Se houver itens featured, usar eles; senão, usar todos
+  let sourceList = featuredList.length > 0 ? featuredList : all;
+  
+  // CORREÇÃO: Se sourceList tem menos que limit, usar TODOS os itens disponíveis
+  // Isso garante que sempre teremos o máximo possível de itens para o carrossel
+  if (sourceList.length < limit && all.length > sourceList.length) {
+    console.log('[getFeaturedMultiple] Expanding sourceList: featured items < limit, using all items');
+    sourceList = all; // Usar todos os itens se não houver featured suficientes
+  }
+  
+  console.log('[getFeaturedMultiple] Source list size:', sourceList.length);
+  
+  // Embaralhar e pegar os primeiros 'limit' itens
+  const shuffled = [...sourceList].sort(() => Math.random() - 0.5);
+  const selected = shuffled.slice(0, Math.min(limit, shuffled.length));
+  
+  console.log('[getFeaturedMultiple] Selected items:', selected.length);
+  
+  // Se não houver itens, retornar array com item padrão
+  if (selected.length === 0) {
+    return [{
+      id: 'error',
+      title: 'Conteúdo Indisponível',
+      description: 'Tente outro perfil.',
+      thumbnail: '/assets/hero-fallback.jpg',
+      image: '/assets/hero-fallback.jpg',
+      type: 'movie',
+      species: (species || 'dog'),
+      genre: 'drama',
+      videoId: '',
+      featured: false,
+      trending: false,
+      original: false
+    }];
+  }
+  
+  return selected;
+}
+
+/**
  * Filtra conteúdos por categoria (type)
  * @param {string} species - Espécie do animal
  * @param {string} type - Tipo do conteúdo (movie, series, doc)
@@ -284,4 +336,4 @@ export const ALL_CONTENT = [
   { id: 'CAT-ORG-020', title: 'O Império dos Miaus', description: 'Original Petflix sobre a ascensão felina.', image: 'https://images.unsplash.com/photo-1495360010541-32531be3b5c9?w=1200&auto=format&fit=crop', type: 'series', species: 'cat', genre: 'drama', videoId: 'CAT-ORG-020-VID', featured: true, trending: true, original: true }
 ];
 
-export default { getAll, getBySpecies, getFeatured, getByCategory, getByGenre, getTrending, getOriginals, searchContent, create, update, deleteMovie };
+export default { getAll, getBySpecies, getFeatured, getFeaturedMultiple, getByCategory, getByGenre, getTrending, getOriginals, searchContent, create, update, deleteMovie };

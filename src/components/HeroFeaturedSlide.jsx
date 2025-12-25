@@ -125,6 +125,7 @@ const HeroFeaturedSlide = ({
         } else if (isPrev) {
             stateClasses.push('pf-hero-slide--prev');
         }
+        // Slides não adjacentes receberão a classe padrão via CSS :not()
 
         return `${baseClasses} ${stateClasses.join(' ')}`.trim();
     };

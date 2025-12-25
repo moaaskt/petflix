@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import HeroFeaturedSlide from './HeroFeaturedSlide.jsx';
 
 /**
@@ -24,9 +24,11 @@ import HeroFeaturedSlide from './HeroFeaturedSlide.jsx';
  */
 const HeroFeaturedCarousel = ({ items = [] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const intervalRef = useRef(null);
 
   const normalizedItems = useMemo(() => {
-    return items.map(item => ({
+    const mapped = items.map(item => ({
       id: item.id || item.videoId || '',
       title: item.title || '',
       description: item.description || item.synopsis || '',
@@ -40,19 +42,93 @@ const HeroFeaturedCarousel = ({ items = [] }) => {
       onTrailer: item.onTrailer || null,
       actions: item.actions || null
     }));
+    console.log('[Carousel] Normalized items:', mapped.length);
+    return mapped;
   }, [items]);
 
   const slideStates = useMemo(() => {
-    return normalizedItems.map((_, index) => ({
-      isActive: index === currentIndex,
-      isNext: index === currentIndex + 1,
-      isPrev: index === currentIndex - 1
-    }));
+    const total = normalizedItems.length;
+    if (total === 0) return [];
+
+    return normalizedItems.map((_, index) => {
+      // Calcular índices com looping
+      const nextIndex = (currentIndex + 1) % total;
+      const prevIndex = (currentIndex - 1 + total) % total;
+
+      return {
+        isActive: index === currentIndex,
+        isNext: index === nextIndex,
+        isPrev: index === prevIndex
+      };
+    });
   }, [normalizedItems, currentIndex]);
+
+  const handleNext = useCallback((e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setCurrentIndex(prevIndex => {
+      const total = normalizedItems.length;
+      if (total <= 1) {
+        console.log('[Carousel] Cannot navigate: only', total, 'item(s)');
+        return prevIndex;
+      }
+      const nextIndex = (prevIndex + 1) % total;
+      console.log('[Carousel] Next:', { prevIndex, total, nextIndex });
+      return nextIndex;
+    });
+  }, [normalizedItems]);
+
+  const handlePrev = useCallback((e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setCurrentIndex(prevIndex => {
+      const total = normalizedItems.length;
+      if (total <= 1) {
+        console.log('[Carousel] Cannot navigate: only', total, 'item(s)');
+        return prevIndex;
+      }
+      const prevIndexValue = (prevIndex - 1 + total) % total;
+      console.log('[Carousel] Prev:', { prevIndex, total, prevIndexValue });
+      return prevIndexValue;
+    });
+  }, [normalizedItems]);
+
+  useEffect(() => {
+    if (!isPlaying || normalizedItems.length <= 1) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
+    }
+
+    intervalRef.current = setInterval(() => {
+      handleNext();
+    }, 70000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [isPlaying, normalizedItems, handleNext]);
 
   if (!normalizedItems || normalizedItems.length === 0) {
     return null;
   }
+
+  const handleMouseEnter = useCallback(() => {
+    setIsPlaying(false);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsPlaying(true);
+  }, []);
 
   return (
     <div
@@ -61,26 +137,73 @@ const HeroFeaturedCarousel = ({ items = [] }) => {
       aria-label="Destaques em destaque"
       aria-roledescription="carousel"
       aria-live="polite"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      {normalizedItems.map((item, index) => (
-        <HeroFeaturedSlide
-          key={item.id || index}
-          title={item.title}
-          description={item.description}
-          image={item.image}
-          category={item.category}
-          rating={item.rating}
-          duration={item.duration}
-          quality={item.quality}
-          stars={item.stars}
-          isActive={slideStates[index].isActive}
-          isNext={slideStates[index].isNext}
-          isPrev={slideStates[index].isPrev}
-          actions={item.actions}
-          onPlay={item.onPlay}
-          onTrailer={item.onTrailer}
-        />
-      ))}
+      {normalizedItems.map((item, index) => {
+        const state = slideStates[index] || { isActive: false, isNext: false, isPrev: false };
+        return (
+          <HeroFeaturedSlide
+            key={item.id || `slide-${index}`}
+            title={item.title}
+            description={item.description}
+            image={item.image}
+            category={item.category}
+            rating={item.rating}
+            duration={item.duration}
+            quality={item.quality}
+            stars={item.stars}
+            isActive={state.isActive}
+            isNext={state.isNext}
+            isPrev={state.isPrev}
+            actions={item.actions}
+            onPlay={item.onPlay}
+            onTrailer={item.onTrailer}
+          />
+        );
+      })}
+
+      <button
+        className="pf-carousel-prev"
+        onClick={(e) => {
+          console.log('[Carousel] Prev button clicked!');
+          handlePrev(e);
+        }}
+        aria-label="Previous slide"
+        type="button"
+        style={{ pointerEvents: 'auto', zIndex: 9999 }}
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <button
+        className="pf-carousel-next"
+        onClick={(e) => {
+          console.log('[Carousel] Next button clicked!');
+          handleNext(e);
+        }}
+        aria-label="Next slide"
+        type="button"
+        style={{ pointerEvents: 'auto', zIndex: 9999 }}
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
     </div>
   );
 };
