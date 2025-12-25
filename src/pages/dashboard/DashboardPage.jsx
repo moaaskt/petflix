@@ -7,92 +7,63 @@ import { createRoot } from 'react-dom/client';
 import { useAuth } from '../../hooks/useAuth.js';
 import { navigateTo } from '../../router/navigator.js';
 import HeroFeatured from '../../components/HeroFeatured.jsx';
+import HeroFeaturedCarousel from '../../components/HeroFeaturedCarousel.jsx';
 import ContentRail from '../../components/ContentRail.jsx';
 import ContentCard from '../../components/ContentCard.jsx';
 import { LoadingSpinner } from '../../components/ui/Loading/LoadingSpinner.js';
-import { getFeatured, getByCategory, getByGenre, getTrending } from '../../services/content.service.js';
+import { getFeatured, getFeaturedMultiple, getByCategory, getByGenre, getTrending } from '../../services/content.service.js';
 import { toggleItem, isInList } from '../../services/list.service.js';
 import { Toast } from '../../utils/toast.js';
 
 // --- React Components ---
 
-const DashboardHero = ({ item }) => {
-  const [inList, setInList] = useState(false);
-
-  useEffect(() => {
-    let mounted = true;
-    if (item?.id) {
-      isInList(item.id).then(result => {
-        if (mounted) setInList(result);
-      });
-    }
-    return () => { mounted = false; };
-  }, [item]);
-
-  const handleToggleList = async () => {
-    if (!item) return;
-    try {
-      // Mapear dados para formato esperado pelo list.service
-      const movieData = {
-        id: item.id || item.videoId,
-        videoId: item.id || item.videoId,
-        title: item.title,
-        thumbnail: item.thumbnail || item.image,
-        image: item.thumbnail || item.image
-      };
-
-      const added = await toggleItem(movieData);
-      setInList(added);
-
-      if (added) {
-        Toast.success(`${item.title} adicionado à lista`);
-      } else {
-        Toast.info(`${item.title} removido da lista`);
-      }
-    } catch (error) {
-      console.error('Erro ao atualizar lista:', error);
-      Toast.error('Erro ao atualizar lista');
-    }
-  };
-
-  const handleMoreInfo = () => {
-    // Placeholder para futuro modal
-    console.log('Mais info:', item);
-    Toast.info('Mais informações em breve');
-  };
-
-  const handleTrailer = () => {
-    console.log('Trailer:', item);
-    Toast.info('🎬 Trailer em breve!');
-  };
-
-  if (!item) return null;
-
-  return (
-    <HeroFeatured
-      title={item.title}
-      description={item.description || ''} // Garantir string vazia se undefined
-      image={item.thumbnail || item.image}
-      category="NOVO"
-      rating="16+"
-      duration="2h 15m"
-      quality="4K"
-      stars={4.5}
-      onPlay={() => navigateTo(`/player?videoId=${item.id}`)}
-      onTrailer={handleTrailer}
-      actions={[
+const DashboardHeroCarousel = ({ items }) => {
+  console.log('[DashboardHeroCarousel] Received items:', items?.length, items);
+  const normalizedItems = items.map(item => {
+    const itemId = item.id || item.videoId;
+    
+    return {
+      id: itemId,
+      title: item.title || '',
+      description: item.description || item.synopsis || '',
+      image: item.thumbnail || item.image || '',
+      category: item.category || 'NOVO',
+      rating: item.rating || '16+',
+      duration: item.duration || '2h 15m',
+      quality: item.quality || '4K',
+      stars: item.stars || 4.5,
+      onPlay: () => navigateTo(`/player?videoId=${itemId}`),
+      onTrailer: () => {
+        Toast.info('🎬 Trailer em breve!');
+      },
+      actions: [
         {
-          label: inList ? 'Remover da Lista' : 'Minha Lista',
+          label: 'Minha Lista',
           icon: (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {inList ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              )}
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
           ),
-          onClick: handleToggleList,
+          onClick: async () => {
+            try {
+              const movieData = {
+                id: itemId,
+                videoId: itemId,
+                title: item.title,
+                thumbnail: item.thumbnail || item.image,
+                image: item.thumbnail || item.image
+              };
+              const added = await toggleItem(movieData);
+              if (added) {
+                Toast.success(`${item.title} adicionado à lista`);
+              } else {
+                Toast.info(`${item.title} removido da lista`);
+              }
+            } catch (error) {
+              console.error('Erro ao atualizar lista:', error);
+              Toast.error('Erro ao atualizar lista');
+            }
+          },
           variant: 'secondary'
         },
         {
@@ -102,18 +73,28 @@ const DashboardHero = ({ item }) => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           ),
-          onClick: handleMoreInfo,
+          onClick: () => {
+            Toast.info('Mais informações em breve');
+          },
           variant: 'ghost'
         }
-      ]}
-    />
-  );
+      ]
+    };
+  });
+
+  console.log('[DashboardHeroCarousel] Normalized items:', normalizedItems?.length, normalizedItems);
+  
+  if (!normalizedItems || normalizedItems.length === 0) {
+    return null;
+  }
+
+  return <HeroFeaturedCarousel items={normalizedItems} />;
 };
 
 const DashboardApp = () => {
   const auth = useAuth();
   const [loading, setLoading] = useState(true);
-  const [featured, setFeatured] = useState(null);
+  const [featuredItems, setFeaturedItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [species, setSpecies] = useState('dog');
 
@@ -137,10 +118,13 @@ const DashboardApp = () => {
       try {
         setLoading(true);
 
-        // Carregar destaque
-        const featuredData = await getFeatured(species);
-        if (featuredData) {
-          setFeatured(mapHero(featuredData));
+        // Carregar destaques para o carrossel
+        const featuredData = await getFeaturedMultiple(species, 5);
+        console.log('[Dashboard] getFeaturedMultiple returned:', featuredData?.length, 'items', featuredData);
+        if (featuredData && featuredData.length > 0) {
+          const mappedItems = featuredData.map(mapHero).filter(item => item !== null);
+          console.log('[Dashboard] After mapHero and filter:', mappedItems.length, 'items', mappedItems);
+          setFeaturedItems(mappedItems);
         }
 
         // Carregar categorias em paralelo
@@ -210,13 +194,13 @@ const DashboardApp = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (loading && !featured) {
+  if (loading && featuredItems.length === 0) {
     return <div className="min-h-screen bg-[#141414]"></div>;
   }
 
   return (
     <div className="min-h-screen bg-[#141414] pb-20">
-      {featured && <DashboardHero item={featured} />}
+      {featuredItems.length > 0 && <DashboardHeroCarousel items={featuredItems} />}
 
       {/* Spacer gradient similar ao original */}
       <div className="h-12 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent relative z-10 -mt-12"></div>
