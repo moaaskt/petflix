@@ -2,13 +2,91 @@ import React, { useState, useEffect } from 'react';
 import { getByCategory } from '../../services/content.service';
 import MovieCard from '../../components/features/MovieCard/MovieCard';
 import FilterSidebar from '../../components/features/FilterSidebar/FilterSidebar';
-import HeroFeatured from '../../components/HeroFeatured';
+import HeroFeaturedCarousel from '../../components/HeroFeaturedCarousel.jsx';
+import { navigateTo } from '../../router/navigator.js';
+import { toggleItem } from '../../services/list.service.js';
+import { Toast } from '../../utils/toast.js';
 import { createRoot } from 'react-dom/client';
+
+// --- React Components ---
+
+const MoviesHeroCarousel = ({ items }) => {
+  const normalizedItems = items
+    .filter(item => item.type === 'movie') // Garantir apenas filmes
+    .map(item => {
+      const itemId = item.id || item.videoId;
+      
+      return {
+        id: itemId,
+        title: item.title || '',
+        description: item.description || item.synopsis || '',
+        image: item.thumbnail || item.image || '',
+        category: item.category || 'FILME',
+        rating: item.rating || '16+',
+        duration: item.duration || '2h 15m',
+        quality: item.quality || '4K',
+        stars: item.stars || 4.5,
+        onPlay: () => navigateTo(`/player?videoId=${itemId}`),
+        onTrailer: () => {
+          Toast.info('🎬 Trailer em breve!');
+        },
+        actions: [
+          {
+            label: 'Minha Lista',
+            icon: (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            ),
+            onClick: async () => {
+              try {
+                const movieData = {
+                  id: itemId,
+                  videoId: itemId,
+                  title: item.title,
+                  thumbnail: item.thumbnail || item.image,
+                  image: item.thumbnail || item.image
+                };
+                const added = await toggleItem(movieData);
+                if (added) {
+                  Toast.success(`${item.title} adicionado à lista`);
+                } else {
+                  Toast.info(`${item.title} removido da lista`);
+                }
+              } catch (error) {
+                console.error('Erro ao atualizar lista:', error);
+                Toast.error('Erro ao atualizar lista');
+              }
+            },
+            variant: 'secondary'
+          },
+          {
+            label: 'Mais Info',
+            icon: (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            ),
+            onClick: () => {
+              Toast.info('Mais informações em breve');
+            },
+            variant: 'ghost'
+          }
+        ]
+      };
+    });
+
+  if (!normalizedItems || normalizedItems.length === 0) {
+    return null;
+  }
+
+  return <HeroFeaturedCarousel items={normalizedItems} />;
+};
 
 const MoviesPageApp = () => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [featuredMovie, setFeaturedMovie] = useState(null);
+    const [featuredMovies, setFeaturedMovies] = useState([]);
 
     // Detecta tema (Gato ou Cachorro) baseado na classe do body
     const species = document.body.classList.contains('theme-cat') ? 'cat' : 'dog';
@@ -17,14 +95,16 @@ const MoviesPageApp = () => {
         const fetchMovies = async () => {
             try {
                 setLoading(true);
-                // Busca filmes reais do Firebase
-                const data = await getByCategory(species, 'movie');
-                setMovies(data);
+                
+                // Buscar apenas filmes do catálogo (garante filmes diferentes da Dashboard)
+                const moviesData = await getByCategory(species, 'movie');
+                setMovies(moviesData);
 
-                // Escolhe um filme aleatório para ser o Destaque (Hero)
-                if (data.length > 0) {
-                    const random = data[Math.floor(Math.random() * data.length)];
-                    setFeaturedMovie(random);
+                // Embaralhar e pegar primeiros 5 para o carrossel
+                if (moviesData.length > 0) {
+                    const shuffled = [...moviesData].sort(() => Math.random() - 0.5);
+                    const featuredMovies = shuffled.slice(0, Math.min(5, shuffled.length));
+                    setFeaturedMovies(featuredMovies);
                 }
             } catch (err) {
                 console.error('Erro ao carregar filmes:', err);
@@ -46,20 +126,9 @@ const MoviesPageApp = () => {
 
     return (
         <div className="min-h-screen bg-[#141414] text-white">
-            {/* 1. HERO SECTION (Topo da Página com Filme Destaque) */}
-            {featuredMovie && (
-                <HeroFeatured
-                    movie={featuredMovie}
-                    title={featuredMovie.title}
-                    description={featuredMovie.description}
-                    image={featuredMovie.thumbnail || featuredMovie.image}
-                    // Dados visuais para manter o padrão premium
-                    category={featuredMovie.category || "Destaque"}
-                    rating="16+"
-                    duration="2h 15m"
-                    quality="4K"
-                    stars={5}
-                />
+            {/* 1. HERO SECTION (Topo da Página com Carrossel de Filmes Destaque) */}
+            {featuredMovies.length > 0 && (
+                <MoviesHeroCarousel items={featuredMovies} />
             )}
 
             {/* 2. LAYOUT PRINCIPAL (Sidebar + Grid) */}
