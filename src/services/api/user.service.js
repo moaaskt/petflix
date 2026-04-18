@@ -87,7 +87,6 @@ export async function updateUserStatus(uid, status) {
       updatedAt: new Date()
     });
 
-    console.log(`✅ Status do usuário ${uid} atualizado para: ${status}`);
   } catch (error) {
     console.error('❌ Erro ao atualizar status do usuário:', error);
     throw error;

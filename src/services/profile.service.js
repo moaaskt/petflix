@@ -225,11 +225,9 @@ export async function initializeDefaultProfiles(userId = null) {
     // Verifica se já existem perfis
     const existingProfiles = await getProfiles(uid);
     if (existingProfiles.length > 0) {
-      console.log('✅ Perfis já existem, pulando inicialização');
       return existingProfiles;
     }
 
-    console.log('🔄 Inicializando perfis padrão...');
 
     // Cria perfil Cachorro (padrão)
     const dogProfile = await createProfile({
@@ -247,7 +245,6 @@ export async function initializeDefaultProfiles(userId = null) {
       isDefault: false
     }, uid);
 
-    console.log('✅ Perfis padrão criados com sucesso');
 
     return [dogProfile, catProfile];
   } catch (error) {

@@ -26,7 +26,6 @@ class App {
       // Configurações adicionais podem ser feitas aqui
       
       this.initialized = true;
-      console.log('App inicializado com sucesso');
     } catch (error) {
       errorHandler.handleError(error);
     }

@@ -160,7 +160,6 @@ export function initAuthState() {
     });
   });
 
-  console.log('✅ AuthState inicializado');
 }
 
 /**

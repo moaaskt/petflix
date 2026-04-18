@@ -42,7 +42,6 @@ const HeroFeaturedCarousel = ({ items = [] }) => {
       onTrailer: item.onTrailer || null,
       actions: item.actions || null
     }));
-    console.log('[Carousel] Normalized items:', mapped.length);
     return mapped;
   }, [items]);
 
@@ -71,11 +70,9 @@ const HeroFeaturedCarousel = ({ items = [] }) => {
     setCurrentIndex(prevIndex => {
       const total = normalizedItems.length;
       if (total <= 1) {
-        console.log('[Carousel] Cannot navigate: only', total, 'item(s)');
         return prevIndex;
       }
       const nextIndex = (prevIndex + 1) % total;
-      console.log('[Carousel] Next:', { prevIndex, total, nextIndex });
       return nextIndex;
     });
   }, [normalizedItems]);
@@ -88,11 +85,9 @@ const HeroFeaturedCarousel = ({ items = [] }) => {
     setCurrentIndex(prevIndex => {
       const total = normalizedItems.length;
       if (total <= 1) {
-        console.log('[Carousel] Cannot navigate: only', total, 'item(s)');
         return prevIndex;
       }
       const prevIndexValue = (prevIndex - 1 + total) % total;
-      console.log('[Carousel] Prev:', { prevIndex, total, prevIndexValue });
       return prevIndexValue;
     });
   }, [normalizedItems]);
@@ -166,7 +161,6 @@ const HeroFeaturedCarousel = ({ items = [] }) => {
       <button
         className="pf-carousel-prev"
         onClick={(e) => {
-          console.log('[Carousel] Prev button clicked!');
           handlePrev(e);
         }}
         aria-label="Previous slide"
@@ -187,7 +181,6 @@ const HeroFeaturedCarousel = ({ items = [] }) => {
       <button
         className="pf-carousel-next"
         onClick={(e) => {
-          console.log('[Carousel] Next button clicked!');
           handleNext(e);
         }}
         aria-label="Next slide"

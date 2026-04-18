@@ -12,7 +12,6 @@ import { ALL_CONTENT } from '../services/content.service.js';
  */
 export async function seedDatabase() {
   try {
-    console.log('🌱 Iniciando migração de dados para o Firestore...');
 
     const contentRef = collection(db, 'content');
     
@@ -20,23 +19,19 @@ export async function seedDatabase() {
     const snapshot = await getDocs(contentRef);
     
     if (!snapshot.empty) {
-      console.log('✅ Banco de dados já populado. Pulando migração.');
       return;
     }
 
-    console.log('📦 Banco vazio detectado. Iniciando upload dos dados...');
 
     // Loop através do ALL_CONTENT e adiciona cada item ao Firestore
     for (const movie of ALL_CONTENT) {
       try {
         await addDoc(contentRef, movie);
-        console.log(`✅ Filme "${movie.title}" salvo com sucesso!`);
       } catch (error) {
         console.error(`❌ Erro ao salvar filme "${movie.title}":`, error);
       }
     }
 
-    console.log('🎉 Migração concluída! Total de filmes migrados:', ALL_CONTENT.length);
   } catch (error) {
     console.error('❌ Erro durante a migração do banco de dados:', error);
     // Não lança o erro para não quebrar a aplicação caso o Firebase esteja offline

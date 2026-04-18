@@ -54,5 +54,4 @@ export function initGlobalErrorHandling() {
     event.preventDefault();
   });
 
-  console.log('✅ Global Error Handler inicializado');
 }
