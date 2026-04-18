@@ -14,7 +14,6 @@ function findRoute(path) {
   // Remove query params e hash
   const cleanPath = path.split('?')[0].split('#')[0];
 
-  console.log('🚦 Router verificando rota:', cleanPath);
 
   // Procura rota exata
   let route = routes.find(r => r.path === cleanPath);
@@ -24,7 +23,6 @@ function findRoute(path) {
     route = routes.find(r => r.redirect);
   }
 
-  console.log('🗺️ Rota encontrada:', route ? route.path : 'NENHUMA');
   return route;
 }
 
@@ -36,7 +34,6 @@ async function executeMiddlewares(route, from) {
     return true;
   }
 
-  console.log('🔒 Executando middlewares para:', route.path);
 
   const middlewares = route.meta.middleware;
 
@@ -51,11 +48,9 @@ async function executeMiddlewares(route, from) {
 
     const result = await middleware(route.path, from, next);
 
-    console.log('🔐 Middleware retornou:', result, '| Next chamado:', nextCalled, '| Next path:', nextPath);
 
     if (nextCalled) {
       if (nextPath) {
-        console.log('⚠️ Middleware redirecionando para:', nextPath);
         navigateTo(nextPath);
       }
       return false;
@@ -123,10 +118,8 @@ async function renderRoute(route) {
       contentEl.innerHTML = pageHtml;
       await layoutInit();
       if (component && typeof component.afterRender === 'function') {
-        console.log('Router: Chamando afterRender para', route.path);
         await component.afterRender();
       } else if (component && typeof component.init === 'function') {
-        console.log('Router: Chamando init para', route.path);
         await component.init();
       }
     } else if (useAppLayout) {
@@ -149,10 +142,8 @@ async function renderRoute(route) {
       contentEl.innerHTML = pageHtml;
       await layoutInit();
       if (component && typeof component.afterRender === 'function') {
-        console.log('Router: Chamando afterRender para', route.path);
         await component.afterRender();
       } else if (component && typeof component.init === 'function') {
-        console.log('Router: Chamando init para', route.path);
         await component.init();
       }
     } else if (useAdminLayout) {
@@ -175,10 +166,8 @@ async function renderRoute(route) {
       contentEl.innerHTML = pageHtml;
       await layoutInit();
       if (component && typeof component.afterRender === 'function') {
-        console.log('Router: Chamando afterRender para', route.path);
         await component.afterRender();
       } else if (component && typeof component.init === 'function') {
-        console.log('Router: Chamando init para', route.path);
         await component.init();
       }
     } else {
@@ -193,17 +182,14 @@ async function renderRoute(route) {
       }
       appContainer.innerHTML = html;
       if (component && typeof component.afterRender === 'function') {
-        console.log('Router: Chamando afterRender para', route.path);
         await component.afterRender();
       } else if (component && typeof component.init === 'function') {
-        console.log('Router: Chamando init para', route.path);
         await component.init();
       }
     }
 
     currentRoute = route;
 
-    console.log(`✅ Rota renderizada: ${route.path}`);
   } catch (error) {
     console.error(`❌ Erro ao renderizar rota ${route.path}:`, error);
     appContainer.innerHTML = `
@@ -254,12 +240,10 @@ export function initRouter() {
   // Listener para mudanças no hash
   window.addEventListener('hashchange', async () => {
     const path = getCurrentPath();
-    console.log('📍 Hash mudou para:', path);
 
     // Log do AuthState no momento da navegação
     const { AuthState } = await import('../state/AuthState.js');
     const authState = AuthState.getState();
-    console.log('👤 Usuário no AuthState durante rota:', authState.user ? authState.user.email : 'NULL');
 
     navigateTo(path);
   });
@@ -268,7 +252,6 @@ export function initRouter() {
   const initialPath = getCurrentPath() || '/';
   navigateTo(initialPath);
 
-  console.log('✅ Router inicializado');
 }
 
 export default {

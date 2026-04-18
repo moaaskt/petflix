@@ -17,16 +17,13 @@ function waitForAuth() {
     // Verifica imediatamente se já está no estado
     const currentState = AuthState.getState();
     if (currentState.user) {
-      console.log('✅ AuthState já sincronizado:', currentState.user);
       resolve(currentState.user);
       return;
     }
 
     // Se não, aguarda a atualização
-    console.log('⏳ Aguardando sincronização do AuthState...');
     const unsubscribe = AuthState.subscribe((state) => {
       if (state.user) {
-        console.log('✅ AuthState sincronizado!', state.user);
         unsubscribe();
         resolve(state.user);
       }
@@ -39,7 +36,6 @@ function waitForAuth() {
  * @returns {string} HTML da página
  */
 export function render() {
-  console.log('LoginPage: Renderizando HTML');
   return `
     <div class="relative min-h-screen w-full overflow-hidden">
       <div class="absolute inset-0 w-full h-full bg-cover bg-center z-0" style="background-image: url('/assets/background-index.jpg');"></div>
@@ -91,7 +87,6 @@ export function init() {
     });
   }
 
-  console.log('LoginPage: Tentando anexar listener ao form...');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -109,10 +104,8 @@ export function init() {
       const spinner = new LoadingSpinner({ type: 'default' });
       spinner.show();
       await new Promise((r) => setTimeout(r, 1500));
-      console.log('Auth: Tentando logar com email...', email);
       const user = await authService.signIn(email, password);
       if (user) {
-        console.log('Auth: Sucesso');
         // Reset do contador em caso de sucesso
         failedAttempts = 0;
         Toast.success('Login realizado com sucesso!');
@@ -122,12 +115,10 @@ export function init() {
         await waitForAuth();
 
         // 🚀 FORCE ENTRY: Navegação direta via hash (bypass router)
-        console.log('🚀 Forçando navegação para Home via window.location...');
         window.location.hash = '#/home';
       }
     } catch (error) {
       console.error('Erro no login:', error);
-      console.log('Auth: Erro capturado', error);
 
       // Incrementa contador de tentativas falhas
       failedAttempts++;
@@ -186,7 +177,6 @@ export function init() {
       if (overlay) overlay.remove();
     }
   });
-  console.log('LoginPage: Listener anexado com sucesso');
 
   function setLoading(isLoading) {
     if (button) {

@@ -62,7 +62,6 @@ export function initAppState() {
     setState({ petType: savedPetType });
   }
   
-  console.log('✅ AppState inicializado');
 }
 
 /**

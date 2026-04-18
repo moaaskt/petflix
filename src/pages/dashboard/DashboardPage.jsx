@@ -18,7 +18,6 @@ import { Toast } from '../../utils/toast.js';
 // --- React Components ---
 
 const DashboardHeroCarousel = ({ items }) => {
-  console.log('[DashboardHeroCarousel] Received items:', items?.length, items);
   const normalizedItems = items.map(item => {
     const itemId = item.id || item.videoId;
     
@@ -82,7 +81,6 @@ const DashboardHeroCarousel = ({ items }) => {
     };
   });
 
-  console.log('[DashboardHeroCarousel] Normalized items:', normalizedItems?.length, normalizedItems);
   
   if (!normalizedItems || normalizedItems.length === 0) {
     return null;
@@ -120,10 +118,8 @@ const DashboardApp = () => {
 
         // Carregar destaques para o carrossel
         const featuredData = await getFeaturedMultiple(species, 5);
-        console.log('[Dashboard] getFeaturedMultiple returned:', featuredData?.length, 'items', featuredData);
         if (featuredData && featuredData.length > 0) {
           const mappedItems = featuredData.map(mapHero).filter(item => item !== null);
-          console.log('[Dashboard] After mapHero and filter:', mappedItems.length, 'items', mappedItems);
           setFeaturedItems(mappedItems);
         }
 

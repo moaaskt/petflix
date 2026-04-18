@@ -31,8 +31,6 @@ export async function setAdminRole(targetEmail) {
         role: 'admin'
       }, { merge: true });
 
-      console.log(`👑 Usuário [${targetEmail}] agora é um Administrador!`);
-      console.log(`📝 Document ID: ${currentUser.uid}`);
       return;
     }
 
@@ -59,8 +57,6 @@ export async function setAdminRole(targetEmail) {
       role: 'admin'
     }, { merge: true });
 
-    console.log(`👑 Usuário [${targetEmail}] agora é um Administrador!`);
-    console.log(`📝 Document ID: ${userDoc.id}`);
     
   } catch (error) {
     console.error('❌ Erro ao promover usuário a administrador:', error);
