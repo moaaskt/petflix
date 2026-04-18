@@ -207,7 +207,6 @@ const CURATED_CONTENT = [
  */
 export async function populateDatabase(force = false) {
   try {
-    console.log('🌱 Iniciando população do banco de dados com conteúdo curado...');
 
     const contentRef = collection(db, 'content');
     
@@ -215,15 +214,12 @@ export async function populateDatabase(force = false) {
     const snapshot = await getDocs(contentRef);
     
     if (!snapshot.empty && !force) {
-      console.log('✅ Banco de dados já populado. Use force=true para repopular.');
       return;
     }
 
     if (force && !snapshot.empty) {
-      console.log('⚠️ Modo force ativado. Repopulando banco de dados...');
     }
 
-    console.log('📦 Iniciando upload dos dados...');
 
     // Usa writeBatch para inserir múltiplos documentos de uma vez (mais eficiente)
     const BATCH_LIMIT = 500; // Limite do Firestore por batch
@@ -248,7 +244,6 @@ export async function populateDatabase(force = false) {
       // Se atingiu o limite do batch ou é o último item, commita o batch
       if (batchCount >= BATCH_LIMIT || i === CURATED_CONTENT.length - 1) {
         await batch.commit();
-        console.log(`✅ Batch commitado: ${batchCount} itens adicionados`);
         
         // Se ainda há itens, cria um novo batch
         if (i < CURATED_CONTENT.length - 1) {
@@ -258,7 +253,6 @@ export async function populateDatabase(force = false) {
       }
     }
 
-    console.log(`🎉 População concluída! Total de ${CURATED_CONTENT.length} itens adicionados à coleção 'content'.`);
   } catch (error) {
     console.error('❌ Erro durante a população do banco de dados:', error);
     // Não lança o erro para não quebrar a aplicação caso o Firebase esteja offline
@@ -274,7 +268,6 @@ export async function populateDatabase(force = false) {
  */
 export async function populateDatabaseSimple(force = false) {
   try {
-    console.log('🌱 Iniciando população do banco de dados (método simples)...');
 
     const contentRef = collection(db, 'content');
     
@@ -282,11 +275,9 @@ export async function populateDatabaseSimple(force = false) {
     const snapshot = await getDocs(contentRef);
     
     if (!snapshot.empty && !force) {
-      console.log('✅ Banco de dados já populado. Use force=true para repopular.');
       return;
     }
 
-    console.log('📦 Iniciando upload dos dados...');
 
     // Adiciona cada item individualmente
     for (const item of CURATED_CONTENT) {
@@ -299,13 +290,11 @@ export async function populateDatabaseSimple(force = false) {
         };
         
         await addDoc(contentRef, contentData);
-        console.log(`✅ "${item.title}" salvo com sucesso!`);
       } catch (error) {
         console.error(`❌ Erro ao salvar "${item.title}":`, error);
       }
     }
 
-    console.log(`🎉 População concluída! Total de ${CURATED_CONTENT.length} itens adicionados.`);
   } catch (error) {
     console.error('❌ Erro durante a população do banco de dados:', error);
     console.warn('⚠️ A aplicação continuará funcionando, mas os dados podem não estar disponíveis.');

@@ -49,14 +49,12 @@ export async function init() {
       if (vid) {
         navigateTo(`/player?videoId=${encodeURIComponent(vid)}`);
       } else {
-        console.log('Play acionado sem videoId');
       }
     });
   }
 
   if (infoBtn) {
     infoBtn.addEventListener('click', () => {
-      console.log('Mais info acionado');
     });
   }
 

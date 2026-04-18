@@ -8,7 +8,7 @@ Guia de deploy do Petflix na **Vercel** (plataforma de deploy configurada no pro
 
 ## Pré-requisitos
 
-- [ ] Conta em [vercel.com](https://vercel.com)
+- [ ] Conta em [vercel.com](https://petflix-neon.vercel.app/#/home)
 - [ ] Repositório no GitHub/GitLab/Bitbucket
 - [ ] Projeto Firebase configurado com Auth e Firestore
 - [ ] Build local funcionando (`npm run build`)

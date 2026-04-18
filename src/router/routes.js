@@ -24,16 +24,13 @@ async function requireAuth(to, from, next) {
   const { AuthState } = await import('../state/AuthState.js');
   let state = AuthState.getState();
 
-  console.log(`🛡️ [requireAuth] Iniciando verificação para: ${to}`);
 
   // 1. SE ESTIVER CARREGANDO, ESPERE!
   if (state.loading) {
-    console.log('⏳ [requireAuth] Firebase está inicializando... Aguardando...');
 
     await new Promise((resolve) => {
       const unsubscribe = AuthState.subscribe((newState) => {
         if (!newState.loading) {
-          console.log('✅ [requireAuth] Inicialização concluída!');
           unsubscribe();
           resolve();
         }
@@ -45,15 +42,12 @@ async function requireAuth(to, from, next) {
   }
 
   // 2. AGORA VERIFICA SE TEM USUÁRIO (Decisão Final)
-  console.log(`🛡️ [requireAuth] Decisão final. Usuário:`, state.user ? state.user.email : 'NULL');
 
   if (!state.user) {
-    console.log('⛔ [requireAuth] Acesso negado. Redirecionando para /login');
     if (next) next('/login');
     return false;
   }
 
-  console.log('✅ [requireAuth] Acesso permitido!');
   return true;
 }
 

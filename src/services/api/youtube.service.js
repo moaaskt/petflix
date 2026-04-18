@@ -15,18 +15,15 @@ async function fetchWithCache(key, fetchFn, ttl) {
   // 1. Verifica Cache
   const cached = getCache(key);
   if (cached) {
-    // console.log(`[YouTube] Cache hit: ${key}`);
     return cached;
   }
 
   // 2. Verifica requisições em andamento (Deduplicação)
   if (pendingRequests.has(key)) {
-    // console.log(`[YouTube] Dedup hit: ${key}`);
     return pendingRequests.get(key);
   }
 
   // 3. Executa a requisição
-  // console.log(`[YouTube] Fetching: ${key}`);
   const promise = fetchFn()
     .then(data => {
       setCache(key, data, ttl);

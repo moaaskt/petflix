@@ -100,7 +100,6 @@ async function loadAndRenderProfiles() {
 
     // Se não houver perfis, inicializa os padrão
     if (!profiles || profiles.length === 0) {
-      console.log('🔄 Nenhum perfil encontrado, inicializando perfis padrão...');
       await initializeDefaultProfiles();
       profiles = await getProfiles();
     }
@@ -209,11 +208,9 @@ async function handleSaveProfile(profileData, profileId) {
     if (profileId) {
       // Atualiza perfil existente
       await updateProfile(profileId, profileData);
-      console.log('✅ Perfil atualizado com sucesso');
     } else {
       // Cria novo perfil
       await createProfile(profileData);
-      console.log('✅ Perfil criado com sucesso');
     }
 
     // Recarrega a lista de perfis
@@ -234,7 +231,6 @@ async function handleSaveProfile(profileData, profileId) {
 async function handleDeleteProfile(profileId) {
   try {
     await deleteProfile(profileId);
-    console.log('✅ Perfil deletado com sucesso');
 
     // Recarrega a lista de perfis
     await loadAndRenderProfiles();
