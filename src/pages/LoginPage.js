@@ -47,6 +47,10 @@ export function render() {
             <input type="email" id="login-email" class="w-full bg-[#333] rounded px-4 py-3 mb-4 text-white placeholder-gray-500 focus:outline-none focus:bg-[#444]" placeholder="Email" required>
             <input type="password" id="login-password" class="w-full bg-[#333] rounded px-4 py-3 mb-2 text-white placeholder-gray-500 focus:outline-none focus:bg-[#444]" placeholder="Senha" required>
             <button type="submit" id="login-button" class="w-full bg-[#e50914] text-white font-bold py-3 rounded mt-6 hover:bg-[#f6121d] transition">Entrar</button>
+            <div class="flex gap-2 mt-3">
+              <button type="button" id="quick-visitor" class="flex-1 bg-[#333] text-gray-300 text-sm font-semibold py-2 rounded hover:bg-[#444] transition">Entrar como Visitante</button>
+              <button type="button" id="quick-admin" class="flex-1 bg-[#333] text-gray-300 text-sm font-semibold py-2 rounded hover:bg-[#444] transition">Entrar como Admin</button>
+            </div>
             <div class="flex items-center justify-between text-gray-400 text-sm mt-4">
               <label class="inline-flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" class="accent-[#e50914]" id="remember-me" />
@@ -73,6 +77,25 @@ export function init() {
   const passwordInput = document.getElementById('login-password');
   const button = document.getElementById('login-button');
   const helpLink = document.getElementById('help-link');
+
+  const quickVisitor = document.getElementById('quick-visitor');
+  const quickAdmin = document.getElementById('quick-admin');
+
+  if (quickVisitor) {
+    quickVisitor.addEventListener('click', () => {
+      emailInput.value = 'barih96834@tatefarm.com';
+      passwordInput.value = '11223344';
+      form.requestSubmit();
+    });
+  }
+
+  if (quickAdmin) {
+    quickAdmin.addEventListener('click', () => {
+      emailInput.value = 'jijopa9184@tatefarm.com';
+      passwordInput.value = '11223344';
+      form.requestSubmit();
+    });
+  }
 
   // Contador de tentativas falhas
   let failedAttempts = 0;
