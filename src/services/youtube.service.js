@@ -1,69 +1,61 @@
 /**
- * YouTube API Loading Service
- * Serviço robusto para carregar a API do YouTube IFrame de forma segura
- * Implementa padrão Singleton para evitar múltiplas cargas simultâneas
+ * YouTube Service
+ * Combina o carregamento da IFrame API e chamadas à YouTube Data API.
  */
+import { YOUTUBE_CONFIG } from '../config/constants.js';
+import { getCache, setCache, TTL } from './api/cache.service.js';
 
-// Promise singleton para garantir que múltiplas chamadas compartilhem a mesma Promise
+// ─── IFrame API Loader ───────────────────────────────────────────────────────
+
 let loadPromise = null;
 let scriptInjected = false;
 
 /**
- * Carrega a API do YouTube IFrame de forma segura
- * @returns {Promise<typeof window.YT>} Promise que resolve quando a API está pronta
+ * Carrega a API do YouTube IFrame de forma segura (Singleton)
+ * @returns {Promise<typeof window.YT>}
  */
 export function loadYouTubeAPI() {
-  // Se a API já está carregada, retorna imediatamente
   if (window.YT && window.YT.Player) {
     return Promise.resolve(window.YT);
   }
 
-  // Se já existe uma Promise de carregamento em andamento, retorna a mesma
   if (loadPromise) {
     return loadPromise;
   }
 
-  // Cria uma nova Promise para o carregamento
   loadPromise = new Promise((resolve, reject) => {
-    // Verifica se o script já foi injetado
     if (!scriptInjected) {
-      // Verifica se já existe um script do YouTube API no DOM
       const existingScript = document.querySelector('script[src*="youtube.com/iframe_api"]');
-      
+
       if (!existingScript) {
-        // Injeta o script do YouTube API
         const tag = document.createElement('script');
         tag.src = 'https://www.youtube.com/iframe_api';
         tag.async = true;
         tag.defer = true;
-        
+
         tag.onerror = () => {
           scriptInjected = false;
           loadPromise = null;
           reject(new Error('Falha ao carregar a API do YouTube'));
         };
-        
-        // Insere o script antes do primeiro script existente ou no head
+
         const firstScript = document.getElementsByTagName('script')[0];
         if (firstScript && firstScript.parentNode) {
           firstScript.parentNode.insertBefore(tag, firstScript);
         } else {
           document.head.appendChild(tag);
         }
-        
+
         scriptInjected = true;
       } else {
         scriptInjected = true;
       }
     }
 
-    // Polling de segurança: verifica periodicamente se a API já está disponível
-    // Isso é útil caso o callback não seja chamado (ex: script já carregado anteriormente)
     let pollCount = 0;
-    const maxPolls = 300; // 30 segundos (100ms * 300)
+    const maxPolls = 300;
     let pollInterval = null;
 
-    // Função auxiliar para verificar se a API está pronta e resolver
     const checkAndResolve = () => {
       if (window.YT && window.YT.Player) {
         if (pollInterval) {
@@ -77,34 +69,20 @@ export function loadYouTubeAPI() {
       return false;
     };
 
-    // Verifica imediatamente se a API já está disponível (caso o script já tenha sido carregado)
-    if (checkAndResolve()) {
-      return;
-    }
+    if (checkAndResolve()) return;
 
-    // Configura o callback global que será chamado quando a API estiver pronta
-    // Salva o callback anterior se existir
     const previousCallback = window.onYouTubeIframeAPIReady;
-    
     window.onYouTubeIframeAPIReady = () => {
-      // Restaura o callback anterior se existir
       if (previousCallback && typeof previousCallback === 'function') {
         previousCallback();
       }
-      
-      // Verifica se a API está realmente disponível
       checkAndResolve();
     };
 
-    // Inicia o polling de segurança
     pollInterval = setInterval(() => {
       pollCount++;
-      
-      if (checkAndResolve()) {
-        return;
-      }
-      
-      // Se excedeu o número máximo de tentativas, rejeita
+      if (checkAndResolve()) return;
+
       if (pollCount >= maxPolls) {
         if (pollInterval) {
           clearInterval(pollInterval);
@@ -116,7 +94,6 @@ export function loadYouTubeAPI() {
       }
     }, 100);
 
-    // Timeout de segurança adicional (30 segundos)
     setTimeout(() => {
       if (pollInterval) {
         clearInterval(pollInterval);
@@ -132,3 +109,141 @@ export function loadYouTubeAPI() {
 
   return loadPromise;
 }
+
+// ─── YouTube Data API ────────────────────────────────────────────────────────
+
+const pendingRequests = new Map();
+
+async function fetchWithCache(key, fetchFn, ttl) {
+  const cached = getCache(key);
+  if (cached) return cached;
+
+  if (pendingRequests.has(key)) {
+    return pendingRequests.get(key);
+  }
+
+  const promise = fetchFn()
+    .then(data => {
+      setCache(key, data, ttl);
+      return data;
+    })
+    .catch(err => {
+      console.error(`[YouTube] Error fetching ${key}:`, err);
+      throw err;
+    })
+    .finally(() => {
+      pendingRequests.delete(key);
+    });
+
+  pendingRequests.set(key, promise);
+  return promise;
+}
+
+function buildUrl(endpoint, params) {
+  const url = new URL(`${YOUTUBE_CONFIG.BASE_URL}/${endpoint}`);
+  url.searchParams.append('key', YOUTUBE_CONFIG.API_KEY);
+  Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+  return url.toString();
+}
+
+function normalizeVideo(item) {
+  const id = item.id?.videoId || item.id || item.snippet?.resourceId?.videoId;
+  const snippet = item.snippet;
+  if (!id || !snippet) return null;
+
+  return {
+    videoId: id,
+    title: snippet.title,
+    thumbnail:
+      snippet.thumbnails?.high?.url ||
+      snippet.thumbnails?.medium?.url ||
+      snippet.thumbnails?.default?.url,
+    channelTitle: snippet.channelTitle,
+    publishedAt: snippet.publishedAt
+  };
+}
+
+function normalizeVideoDetails(item) {
+  const base = normalizeVideo(item);
+  if (!base) return null;
+  return {
+    ...base,
+    description: item.snippet?.description || ''
+  };
+}
+
+export const youtubeService = {
+  async search(query, maxResults = YOUTUBE_CONFIG.DEFAULT_MAX_RESULTS) {
+    const params = {
+      part: 'snippet',
+      q: query,
+      type: 'video',
+      maxResults,
+      safeSearch: YOUTUBE_CONFIG.SAFE_SEARCH,
+      videoEmbeddable: YOUTUBE_CONFIG.VIDEO_EMBEDDABLE ? 'true' : 'false',
+      regionCode: YOUTUBE_CONFIG.REGION_CODE || 'BR',
+      relevanceLanguage: YOUTUBE_CONFIG.RELEVANCE_LANGUAGE || 'pt'
+    };
+    const cacheKey = `search_${query}_${maxResults}`;
+    return fetchWithCache(cacheKey, async () => {
+      const res = await fetch(buildUrl('search', params));
+      if (!res.ok) throw new Error(`YouTube API Error: ${res.statusText}`);
+      const data = await res.json();
+      return data.items.map(normalizeVideo).filter(Boolean);
+    }, TTL.SEARCH);
+  },
+
+  async getPlaylistVideos(playlistId, maxResults = YOUTUBE_CONFIG.DEFAULT_MAX_RESULTS) {
+    const params = { part: 'snippet', playlistId, maxResults };
+    const cacheKey = `playlist_${playlistId}_${maxResults}`;
+    return fetchWithCache(cacheKey, async () => {
+      const res = await fetch(buildUrl('playlistItems', params));
+      if (!res.ok) throw new Error(`YouTube API Error: ${res.statusText}`);
+      const data = await res.json();
+      return data.items.map(normalizeVideo).filter(Boolean);
+    }, TTL.PLAYLISTS);
+  },
+
+  async getVideosByIds(videoIds) {
+    const idsString = Array.isArray(videoIds) ? videoIds.join(',') : videoIds;
+    const params = { part: 'snippet,statistics', id: idsString };
+    const cacheKey = `videos_${idsString}`;
+    return fetchWithCache(cacheKey, async () => {
+      const res = await fetch(buildUrl('videos', params));
+      if (!res.ok) throw new Error(`YouTube API Error: ${res.statusText}`);
+      const data = await res.json();
+      return data.items.map(normalizeVideo).filter(Boolean);
+    }, TTL.VIDEOS);
+  },
+
+  async getVideoDetails(id) {
+    const params = { part: 'snippet,statistics', id };
+    const cacheKey = `video_${id}`;
+    return fetchWithCache(cacheKey, async () => {
+      const res = await fetch(buildUrl('videos', params));
+      if (!res.ok) throw new Error(`YouTube API Error: ${res.statusText}`);
+      const data = await res.json();
+      return normalizeVideoDetails(data.items?.[0]);
+    }, TTL.VIDEOS);
+  },
+
+  async searchRelated(id, maxResults = YOUTUBE_CONFIG.DEFAULT_MAX_RESULTS) {
+    const params = {
+      part: 'snippet',
+      type: 'video',
+      relatedToVideoId: id,
+      maxResults,
+      safeSearch: YOUTUBE_CONFIG.SAFE_SEARCH,
+      videoEmbeddable: YOUTUBE_CONFIG.VIDEO_EMBEDDABLE ? 'true' : 'false',
+      regionCode: YOUTUBE_CONFIG.REGION_CODE || 'BR',
+      relevanceLanguage: YOUTUBE_CONFIG.RELEVANCE_LANGUAGE || 'pt'
+    };
+    const cacheKey = `related_${id}_${maxResults}`;
+    return fetchWithCache(cacheKey, async () => {
+      const res = await fetch(buildUrl('search', params));
+      if (!res.ok) throw new Error(`YouTube API Error: ${res.statusText}`);
+      const data = await res.json();
+      return data.items.map(normalizeVideo).filter(Boolean);
+    }, TTL.SEARCH);
+  }
+};

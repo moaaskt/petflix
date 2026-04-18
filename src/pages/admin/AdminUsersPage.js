@@ -1,7 +1,7 @@
 /**
  * AdminUsersPage - Página de gerenciamento de usuários (CRM)
  */
-import { getAllUsers, updateUserStatus } from '../../services/api/user.service.js';
+import { getAllUsers, updateUserStatus } from '../../services/user.service.js';
 import { getProfiles } from '../../services/profile.service.js';
 import { authService } from '../../services/auth/auth.service.js';
 import { Toast } from '../../utils/toast.js';
