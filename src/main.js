@@ -36,7 +36,6 @@ async function init() {
     // 4. Inicializa router
     initRouter();
     
-    console.log('✅ Petflix SPA inicializado com sucesso');
   } catch (error) {
     console.error('❌ Erro ao inicializar aplicação:', error);
     // O GlobalErrorHandler capturará este erro automaticamente

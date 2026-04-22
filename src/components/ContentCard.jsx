@@ -15,7 +15,6 @@ import { FALLBACK_POSTER, handleImageError } from '../utils/imageFallback.js';
  * <ContentCard
  *   title="Breaking Bad"
  *   image="https://example.com/poster.jpg"
- *   onPlay={() => console.log('Play clicked')}
  * />
  */
 const ContentCard = ({ title, image, onPlay }) => {

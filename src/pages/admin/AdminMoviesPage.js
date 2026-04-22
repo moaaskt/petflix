@@ -332,7 +332,6 @@ async function handleConfirmDelete() {
   
   try {
     await deleteMovie(itemToDeleteId);
-    console.log('✅ Filme excluído com sucesso');
     
     // Recarrega a lista
     await loadMovies();
@@ -410,11 +409,9 @@ async function handleSaveMovie(data, movieId = null) {
     if (movieId) {
       // Edição
       await update(movieId, data);
-      console.log('✅ Filme atualizado com sucesso');
     } else {
       // Criação
       await create(data);
-      console.log('✅ Filme criado com sucesso');
     }
     
     // Recarrega a lista

@@ -105,10 +105,8 @@ export async function getFeatured(species) {
  */
 export async function getFeaturedMultiple(species, limit = 5) {
   const all = await getBySpecies(species);
-  console.log('[getFeaturedMultiple] Total items for species:', species, ':', all.length);
   
   const featuredList = all.filter(i => i.featured);
-  console.log('[getFeaturedMultiple] Featured items:', featuredList.length);
   
   // Se houver itens featured, usar eles; senão, usar todos
   let sourceList = featuredList.length > 0 ? featuredList : all;
@@ -116,17 +114,14 @@ export async function getFeaturedMultiple(species, limit = 5) {
   // CORREÇÃO: Se sourceList tem menos que limit, usar TODOS os itens disponíveis
   // Isso garante que sempre teremos o máximo possível de itens para o carrossel
   if (sourceList.length < limit && all.length > sourceList.length) {
-    console.log('[getFeaturedMultiple] Expanding sourceList: featured items < limit, using all items');
     sourceList = all; // Usar todos os itens se não houver featured suficientes
   }
   
-  console.log('[getFeaturedMultiple] Source list size:', sourceList.length);
   
   // Embaralhar e pegar os primeiros 'limit' itens
   const shuffled = [...sourceList].sort(() => Math.random() - 0.5);
   const selected = shuffled.slice(0, Math.min(limit, shuffled.length));
   
-  console.log('[getFeaturedMultiple] Selected items:', selected.length);
   
   // Se não houver itens, retornar array com item padrão
   if (selected.length === 0) {
@@ -237,7 +232,6 @@ export async function create(data) {
     // Limpa o cache para forçar recarregamento
     cachedContent = null;
     
-    console.log('✅ Filme criado com sucesso:', docRef.id);
     return docRef.id;
   } catch (error) {
     console.error('❌ Erro ao criar filme:', error);
@@ -262,7 +256,6 @@ export async function update(id, data) {
     // Limpa o cache para forçar recarregamento
     cachedContent = null;
     
-    console.log('✅ Filme atualizado com sucesso:', id);
   } catch (error) {
     console.error('❌ Erro ao atualizar filme:', error);
     throw error;
@@ -282,7 +275,6 @@ export async function deleteMovie(id) {
     // Limpa o cache para forçar recarregamento
     cachedContent = null;
     
-    console.log('✅ Filme deletado com sucesso:', id);
   } catch (error) {
     console.error('❌ Erro ao deletar filme:', error);
     throw error;

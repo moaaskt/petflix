@@ -196,7 +196,6 @@ export async function seedDatabase() {
         // Vamos verificar se já existem filmes para não duplicar excessivamente
         const snapshot = await getDocs(moviesCollection);
         if (!snapshot.empty && snapshot.size > 5) {
-            console.log('Banco já parece populado. Pulando seed massivo.');
             return { success: true, added: 0, message: 'Banco já populado' };
         }
 
@@ -214,7 +213,6 @@ export async function seedDatabase() {
         });
 
         await batch.commit();
-        console.log(`Sucesso! ${count} filmes adicionados.`);
         return { success: true, added: count, message: `${count} filmes adicionados com sucesso!` };
 
     } catch (error) {

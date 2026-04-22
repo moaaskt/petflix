@@ -1,179 +1,111 @@
 # 🐾 Petflix
 
-Plataforma de streaming voltada para animais de estimação, oferecendo vídeos do YouTube organizados em categorias (filmes, séries, documentários) para entreter cães e gatos.
-
----
-![Tela de Login Petflix](https://github.com/moaaskt/petflix/blob/main/assets/PetFlix%20-%20Login%20-%20%5Bflixpet.netlify.app%5D%20(2).png)
-## 📋 Resumo
-
-O Petflix é uma aplicação web que simula um serviço de streaming para pets. Utiliza Firebase para autenticação e YouTube Data API para buscar e exibir vídeos adequados para animais de estimação. A interface permite seleção de perfil (Cachorro/Gato) e navegação por diferentes categorias de conteúdo.
+> Plataforma de streaming dedicada a pets — filmes, séries e documentários selecionados para cães e gatos, com autenticação, painel admin e player integrado.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Demo
 
-- **HTML5** - Estrutura das páginas
-- **CSS3** - Estilização
-- **JavaScript (ES6+)** - Lógica da aplicação
-- **Bootstrap 5.3.2** - Framework CSS
-- **Font Awesome 6.4.2** - Ícones
-- **Firebase 9.6.0** - Autenticação e Realtime Database
-- **YouTube Data API v3** - Busca de vídeos
-- **YouTube IFrame API** - Player de vídeos
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)](https://petflix.vercel.app)
+
+> Link de deploy via Vercel (configure suas variáveis de ambiente conforme o [guia de deploy](docs/DEPLOYMENT.md)).
 
 ---
 
-## 📁 Estrutura de Pastas
+## 📸 Screenshots
 
+| Login                                                                                   | Dashboard                               |
+| --------------------------------------------------------------------------------------- | --------------------------------------- |
+| ![Login](<public/assets/PetFlix%20-%20Login%20-%20%5Bflixpet.netlify.app%5D%20(2).png>) | ![Dashboard](public/assets/capaPet.png) |
+
+---
+
+## 💡 Proposta
+
+Petflix resolve um problema real para donos de pets: **entreter animais de estimação** enquanto o tutor está ocupado. A plataforma oferece um catálogo curado de vídeos do YouTube (filmes, séries e documentários) organizados por espécie (cão ou gato), com uma experiência visual inspirada em grandes serviços de streaming.
+
+---
+
+## ✨ Funcionalidades
+
+- 🔐 **Autenticação completa** — cadastro, login, recuperação de senha e verificação de e-mail (Firebase Auth)
+- 🐶🐱 **Seleção de perfil por espécie** — cada sessão é personalizada para cão ou gato
+- 🎬 **Catálogo por categoria** — Filmes (`/filmes`), Séries (`/series`) e Documentários (`/docs`)
+- ▶️ **Player integrado** — reprodução de vídeos do YouTube via rota `/player`
+- ❤️ **Minha Lista** — favoritos do usuário salvos no Firestore (`/my-list`)
+- 🔍 **Busca no catálogo** — busca por título e descrição via `searchContent()`
+- 👤 **Gerenciamento de conta** — perfil e dados do usuário (`/conta`)
+- 🛡️ **Painel Administrativo** (rota `/admin`, acesso restrito):
+  - Dashboard com métricas (ApexCharts)
+  - CMS de conteúdo — CRUD completo de filmes/séries/documentários
+  - CRM de usuários — listagem, banimento/desbanimento e reset de senha
+- ⚡ **Banimento em tempo real** — listener Firestore detecta mudança de status e desconecta o usuário instantaneamente
+- 🔒 **Route guards** — `requireAuth`, `requireEmailVerified` e `requireAdmin` via middleware de rota
+
+---
+
+## 🛠️ Stack
+
+| Camada           | Tecnologia            | Versão |
+| ---------------- | --------------------- | ------ |
+| UI Framework     | React                 | 19.x   |
+| Build Tool       | Vite                  | 5.x    |
+| Estilização      | Tailwind CSS          | 4.x    |
+| Autenticação     | Firebase Auth         | 9.x    |
+| Banco de Dados   | Firestore (NoSQL)     | 9.x    |
+| Gráficos (Admin) | ApexCharts            | 5.x    |
+| Deploy           | Vercel                | —      |
+| Linguagem        | JavaScript ES Modules | —      |
+
+> Sem React Router — o roteamento é implementado com um **custom router** próprio baseado em History API (`src/router/`).
+
+---
+
+## 🏗️ Arquitetura 
+
+```mermaid
+graph TD
+    subgraph Browser
+        A[index.html] --> B[main.js]
+        B --> C[initAuthState]
+        B --> D[initAppState]
+        B --> E[initRouter]
+    end
+
+    subgraph Router ["src/router/"]
+        E --> F{Route Guard}
+        F -->|requireAuth| G[Página Protegida]
+        F -->|requireAdmin| H[Painel Admin]
+        F -->|público| I[Login / Register]
+    end
+
+    subgraph State ["src/state/"]
+        C --> J[AuthState.js]
+        J -->|onSnapshot| K[(Firestore: users)]
+        K -->|status=banned| L[Logout forçado]
+    end
+
+    subgraph Services ["src/services/"]
+        G --> M[content.service.js]
+        G --> N[list.service.js]
+        G --> O[profile.service.js]
+        H --> P[user.service.js]
+        M --> K
+    end
+
+    subgraph Firebase
+        K
+        Q[(Firebase Auth)]
+    end
+
+    J --> Q
 ```
-petflix/
-├── assets/              # Imagens, logos e recursos visuais
-├── css/                 # Folhas de estilo
-├── JS/                  # Scripts JavaScript
-│   ├── firebase-config.js
-│   ├── firebase-auth.js
-│   ├── youtube-api.js
-│   ├── youtube-render.js
-│   ├── index.js
-│   ├── register.js
-│   └── loading*.js
-├── pagesFooter/         # Páginas informativas
-├── index.html           # Login
-├── register.html        # Cadastro
-├── home.html            # Seleção de perfil
-├── indexcach.html       # Dashboard cachorros
-├── indexgato.html       # Dashboard gatos
-├── filmes.html          # Filmes
-├── series.html          # Séries
-└── docs.html            # Documentários
-```
-
----
-
-## 🚀 Como Rodar Localmente
-
-### Pré-requisitos
-
-- Navegador moderno
-- Servidor HTTP local (opcional)
-- Conta Firebase
-- Chave da API do YouTube (opcional)
-
-### Passos
-
-1. **Clone o repositório**
-   ```bash
-   git clone <url-do-repositorio>
-   cd petflix
-   ```
-
-2. **Configure o Firebase**
-   - Crie um projeto no [Firebase Console](https://console.firebase.google.com/)
-   - Ative Authentication (Email/Password) e Realtime Database
-   - Copie `JS/firebase-config.local.example.js` para `JS/firebase-config.local.js`
-   - Preencha suas credenciais no arquivo criado
-
-3. **Configure YouTube API (opcional)**
-   - Crie uma chave no [Google Cloud Console](https://console.cloud.google.com/)
-   - Ative YouTube Data API v3
-   - Adicione a chave em `JS/firebase-config.local.js`:
-     ```javascript
-     window.__PETFLIX_KEYS = {
-       youtube: { apiKey: "SUA_CHAVE" }
-     };
-     ```
-
-4. **Execute o servidor**
-   ```bash
-   # Python
-   python -m http.server 8000
-   
-   # Node.js
-   npx http-server -p 8000
-   
-   # PHP
-   php -S localhost:8000
-   ```
-
-5. **Acesse**
-   ```
-   http://localhost:8000
-   ```
-
----
-
-## 📦 Deploy
-
-### GitHub Pages
-
-1. Faça push do código para o GitHub
-2. Vá em Settings > Pages
-3. Selecione branch `main` e pasta `/root`
-4. Acesse `https://seu-usuario.github.io/petflix/`
-
-### Netlify
-
-1. Instale o CLI: `npm install -g netlify-cli`
-2. Faça login: `netlify login`
-3. Deploy: `netlify deploy --prod`
-
-### Firebase Hosting
-
-1. Instale o CLI: `npm install -g firebase-tools`
-2. Login: `firebase login`
-3. Inicialize: `firebase init hosting`
-4. Deploy: `firebase deploy --only hosting`
-
----
-
-## 📄 Arquivos Principais
-
-### `index.html`
-Página de login com autenticação Firebase. Valida credenciais e redireciona para seleção de perfil.
-
-### `home.html`
-Tela de seleção de perfil (Cachorro/Gato). Protegida por autenticação.
-
-### `indexcach.html` / `indexgato.html`
-Dashboards específicos por espécie. Integram YouTube API para buscar e exibir vídeos.
-
-### `filmes.html` / `series.html` / `docs.html`
-Páginas de categorias com carrosséis de conteúdo. Exibem vídeos em modais.
-
-### `JS/firebase-config.js`
-Inicializa Firebase e expõe `window.auth` e `window.db` para uso global.
-
-### `JS/firebase-auth.js`
-Gerencia autenticação e proteção de rotas. Funções: `checkAuth()`, `logout()`.
-
-### `JS/youtube-api.js`
-Função `searchVideos()` que busca vídeos na YouTube Data API com filtros de segurança.
-
-### `JS/youtube-render.js`
-Renderiza player (`renderPlayer()`) e grid de vídeos (`renderGrid()`) na interface.
-
-### `JS/index.js`
-Lógica do formulário de login: validação, autenticação Firebase, recuperação de senha.
-
-### `JS/register.js`
-Lógica de cadastro: criação de usuário, envio de verificação de email, salvamento no database.
-
----
-
-## 🔧 Possíveis Melhorias
-
-- **Refatoração**: Consolidar código duplicado entre páginas de cachorro/gato em módulos compartilhados
-- **Performance**: Implementar lazy loading de imagens e minificação de assets
-- **Funcionalidades**: Adicionar busca global, favoritos e sistema de recomendações
-- **Acessibilidade**: Melhorar navegação por teclado e suporte a leitores de tela
-- **Testes**: Adicionar testes automatizados (unitários e E2E)
-- **Modularização**: Separar lógica de dados dos arquivos HTML para arquivos JS dedicados
 
 ---
 
 ## 📄 Licença
 
-MIT
+[MIT](LICENSE)
 
 ---
 
