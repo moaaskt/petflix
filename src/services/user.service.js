@@ -1,96 +1,50 @@
 /**
- * User Service - Serviço de usuário
- * Mantém apenas lógica, sem UI
+ * User Service
+ * Operações do usuário atual e operações administrativas de usuários.
  */
 import { AuthState } from '../state/AuthState.js';
 import { firebaseService } from './api/firebase.service.js';
+import { db } from '../config/firebase.js';
+import { collection, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 
-/**
- * Salva dados do usuário
- */
+// ─── Usuário atual ────────────────────────────────────────────────────────────
+
 export async function saveUserData(userData) {
   try {
     const state = AuthState.getState();
-    if (!state.user) {
-      return {
-        success: false,
-        error: 'Usuário não autenticado'
-      };
-    }
-    
+    if (!state.user) return { success: false, error: 'Usuário não autenticado' };
     await firebaseService.set(`users/${state.user.uid}`, userData);
-    
-    return {
-      success: true
-    };
+    return { success: true };
   } catch (error) {
-    return {
-      success: false,
-      error: error.message
-    };
+    return { success: false, error: error.message };
   }
 }
 
-/**
- * Obtém dados do usuário
- */
 export async function getUserData() {
   try {
     const state = AuthState.getState();
-    if (!state.user) {
-      return {
-        success: false,
-        error: 'Usuário não autenticado'
-      };
-    }
-    
+    if (!state.user) return { success: false, error: 'Usuário não autenticado' };
     const data = await firebaseService.get(`users/${state.user.uid}`);
     return { success: true, data: data || {} };
   } catch (error) {
-    return {
-      success: false,
-      error: error.message
-    };
+    return { success: false, error: error.message };
   }
 }
 
-/**
- * Atualiza dados do usuário
- */
 export async function updateUserData(updates) {
   try {
     const state = AuthState.getState();
-    if (!state.user) {
-      return {
-        success: false,
-        error: 'Usuário não autenticado'
-      };
-    }
-    
+    if (!state.user) return { success: false, error: 'Usuário não autenticado' };
     await firebaseService.update(`users/${state.user.uid}`, updates);
-    
-    return {
-      success: true
-    };
+    return { success: true };
   } catch (error) {
-    return {
-      success: false,
-      error: error.message
-    };
+    return { success: false, error: error.message };
   }
 }
 
-/**
- * Obtém a role do usuário
- * @param {string} uid - ID do usuário
- * @returns {Promise<string>} Role do usuário ('admin' ou 'user', padrão: 'user')
- */
 export async function getUserRole(uid) {
   try {
-    if (!uid) {
-      return 'user';
-    }
-    
+    if (!uid) return 'user';
     const data = await firebaseService.get(`users/${uid}`);
     return data?.role || 'user';
   } catch (error) {
@@ -99,10 +53,52 @@ export async function getUserRole(uid) {
   }
 }
 
+// ─── Operações administrativas ────────────────────────────────────────────────
+
+export async function getAllUsers() {
+  try {
+    const snapshot = await getDocs(collection(db, 'users'));
+    const users = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    return users.sort((a, b) => {
+      const toDate = v => v?.toDate ? v.toDate() : (v instanceof Date ? v : new Date(0));
+      return toDate(b.createdAt) - toDate(a.createdAt);
+    });
+  } catch (error) {
+    console.error('Erro ao buscar usuários:', error);
+    throw error;
+  }
+}
+
+export async function getUser(uid) {
+  try {
+    if (!uid) throw new Error('UID do usuário é obrigatório');
+    const snap = await getDoc(doc(db, 'users', uid));
+    return snap.exists() ? { id: snap.id, ...snap.data() } : null;
+  } catch (error) {
+    console.error('Erro ao buscar usuário:', error);
+    throw error;
+  }
+}
+
+export async function updateUserStatus(uid, status) {
+  try {
+    if (!uid) throw new Error('UID do usuário é obrigatório');
+    if (status !== 'active' && status !== 'banned') {
+      throw new Error('Status deve ser "active" ou "banned"');
+    }
+    await updateDoc(doc(db, 'users', uid), { status, updatedAt: new Date() });
+  } catch (error) {
+    console.error('Erro ao atualizar status do usuário:', error);
+    throw error;
+  }
+}
+
 export default {
   saveUserData,
   getUserData,
   updateUserData,
-  getUserRole
+  getUserRole,
+  getAllUsers,
+  getUser,
+  updateUserStatus
 };
-

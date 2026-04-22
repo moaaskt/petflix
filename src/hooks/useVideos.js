@@ -1,7 +1,7 @@
 /**
  * useVideos Hook - Hook para buscar e gerenciar vídeos
  */
-import { youtubeService } from '../services/api/youtube.service.js';
+import { youtubeService } from '../services/youtube.service.js';
 
 export function useVideos() {
   let videos = [];
