@@ -72,6 +72,13 @@ export function render() {
  * Inicializa o comportamento da página
  */
 export function init() {
+  // Se já estiver logado, redireciona para seleção de perfis
+  const state = AuthState.getState();
+  if (state.user) {
+    window.location.hash = '#/home';
+    return;
+  }
+
   const form = document.getElementById('login-form');
   const emailInput = document.getElementById('login-email');
   const passwordInput = document.getElementById('login-password');
@@ -126,8 +133,10 @@ export function init() {
       setLoading(true);
       const spinner = new LoadingSpinner({ type: 'default' });
       spinner.show();
-      await new Promise((r) => setTimeout(r, 1500));
+      
+      // Removido o delay artificial de 1.5s para login imediato
       const user = await authService.signIn(email, password);
+      
       if (user) {
         // Reset do contador em caso de sucesso
         failedAttempts = 0;
@@ -137,7 +146,7 @@ export function init() {
         // Aguarda o AuthState sincronizar antes de redirecionar
         await waitForAuth();
 
-        // 🚀 FORCE ENTRY: Navegação direta via hash (bypass router)
+        // 🚀 FORCE ENTRY: Navegação direta para seleção de perfis
         window.location.hash = '#/home';
       }
     } catch (error) {
