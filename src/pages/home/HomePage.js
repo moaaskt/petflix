@@ -253,9 +253,13 @@ function selectProfile(profile) {
     return;
   }
 
-  // Salva o perfil selecionado
-  localStorage.setItem('selectedProfile', profile.species);
-  localStorage.setItem('selectedProfileId', profile.id);
+  // Salva o perfil selecionado com chaves padronizadas
+  localStorage.setItem('petflix_selected_species', profile.species);
+  localStorage.setItem('petflix_selected_profile_id', profile.id);
+  
+  // Atualiza o estado global da aplicação
+  const { AppState } = await import('../../state/AppState.js');
+  AppState.setState({ petType: profile.species });
   
   // Aplica o tema baseado na espécie
   const species = profile.species || 'dog';

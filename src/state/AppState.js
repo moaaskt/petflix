@@ -55,13 +55,20 @@ function subscribe(callback) {
 /**
  * Inicializa AppState
  */
-export function initAppState() {
-  // Carrega petType do localStorage se existir
-  const savedPetType = localStorage.getItem('petflixPetType');
+export async function initAppState() {
+  // Carrega petType do localStorage se existir (usando chave padronizada)
+  const savedPetType = localStorage.getItem('petflix_selected_species');
   if (savedPetType) {
     setState({ petType: savedPetType });
+    
+    // Reaplica o tema visual automaticamente no carregamento
+    try {
+      const { applyTheme } = await import('./AuthState.js');
+      applyTheme(savedPetType);
+    } catch (e) {
+      console.warn('Erro ao aplicar tema inicial:', e);
+    }
   }
-  
 }
 
 /**
