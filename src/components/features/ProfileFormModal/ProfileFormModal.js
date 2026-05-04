@@ -47,185 +47,183 @@ export class ProfileFormModal {
       : 'assets/avataresPerfis/gato-siames-1.jpg';
     
     const avatarUrl = this.formData.avatar || defaultAvatar;
-    const defaultColor = this.formData.species === 'dog' ? 'blue' : 'red';
-    const colorValue = this.formData.color || defaultColor;
     
     return `
-      <div id="${modalId}" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 hidden">
-        <div class="bg-zinc-800 rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto m-4">
+      <div id="${modalId}" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden animate-fade-in">
+        <div class="glass-panel backdrop-blur-3xl rounded-[2.5rem] shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto m-4 border border-white/10 animate-fade-in-up">
           <!-- Header -->
-          <div class="flex items-center justify-between p-6 border-b border-zinc-700">
-            <h2 class="text-2xl font-bold text-white">
-              ${isEditMode ? 'Editar Perfil' : 'Novo Perfil'}
+          <div class="flex items-center justify-between p-8 border-b border-white/5">
+            <h2 class="text-3xl font-black text-white tracking-tight">
+              ${isEditMode ? 'Editar <span class="text-zinc-500">Perfil</span>' : 'Novo <span class="text-zinc-500">Perfil</span>'}
             </h2>
             <button 
               id="closeModalBtn"
-              class="text-zinc-400 hover:text-white transition-colors"
+              class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 transition-all"
               aria-label="Fechar"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
           
           <!-- Form -->
-          <form id="profileForm" class="p-6 space-y-4">
-            <!-- Preview do Avatar -->
-            <div class="flex justify-center mb-4">
-              <div class="relative w-32 h-32 rounded-md overflow-hidden border-2 border-zinc-700">
-                ${avatarUrl ? `
-                  <img 
-                    src="${avatarUrl}" 
-                    alt="Avatar" 
-                    class="w-full h-full object-cover"
-                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
-                  />
-                ` : ''}
-                <div 
-                  class="${avatarUrl ? 'hidden' : 'flex'} w-full h-full items-center justify-center ${
-                    colorValue === 'red' ? 'bg-red-600' : 'bg-blue-600'
-                  }"
-                >
-                  <span class="text-white text-4xl">
-                    ${this.formData.icon || (this.formData.name ? this.formData.name.charAt(0).toUpperCase() : '?')}
+          <form id="profileForm" class="p-8 space-y-8">
+            <!-- Preview do Avatar Principal -->
+            <div class="flex justify-center relative group">
+              <div class="absolute inset-0 bg-red-600/20 blur-3xl rounded-full opacity-50 group-hover:opacity-80 transition-opacity"></div>
+              <div class="relative w-40 h-40 rounded-3xl overflow-hidden border-4 border-white/10 shadow-2xl transition-transform duration-500 group-hover:scale-105">
+                <img 
+                  src="${avatarUrl}" 
+                  alt="Avatar" 
+                  class="w-full h-full object-cover animate-fade-in"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                />
+                <div class="hidden w-full h-full items-center justify-center bg-gradient-to-br from-red-500 to-red-700">
+                  <span class="text-white text-5xl font-black">
+                    ${this.formData.name ? this.formData.name.charAt(0).toUpperCase() : '?'}
                   </span>
                 </div>
               </div>
             </div>
 
-            <!-- Nome -->
-            <div>
-              <label for="profileName" class="block text-sm font-medium text-zinc-300 mb-2">
-                Nome *
-              </label>
-              <input
-                type="text"
-                id="profileName"
-                name="name"
-                required
-                minlength="3"
-                maxlength="20"
-                value="${this.formData.name}"
-                class="w-full px-4 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-red-600"
-                placeholder="Digite o nome do perfil"
-              />
-              <p class="mt-1 text-xs text-zinc-500">Mínimo 3 caracteres</p>
-            </div>
-            
-            <!-- Espécie -->
-            <div>
-              <label for="profileSpecies" class="block text-sm font-medium text-zinc-300 mb-2">
-                Espécie *
-              </label>
-              <select
-                id="profileSpecies"
-                name="species"
-                required
-                class="w-full px-4 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-red-600"
-              >
-                <option value="dog" ${this.formData.species === 'dog' ? 'selected' : ''}>Cachorro</option>
-                <option value="cat" ${this.formData.species === 'cat' ? 'selected' : ''}>Gato</option>
-              </select>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Nome -->
+              <div class="space-y-2">
+                <label for="profileName" class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">
+                  Nome do Pet
+                </label>
+                <input
+                  type="text"
+                  id="profileName"
+                  name="name"
+                  required
+                  minlength="3"
+                  maxlength="20"
+                  value="${this.formData.name}"
+                  class="w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-bold placeholder-zinc-600 focus:outline-none focus:border-red-600/50 focus:bg-white/10 transition-all"
+                  placeholder="Ex: Totó"
+                />
+              </div>
+              
+              <!-- Espécie -->
+              <div class="space-y-2">
+                <label for="profileSpecies" class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">
+                  Espécie
+                </label>
+                <div class="relative">
+                  <select
+                    id="profileSpecies"
+                    name="species"
+                    required
+                    class="w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-bold appearance-none focus:outline-none focus:border-red-600/50 focus:bg-white/10 transition-all cursor-pointer"
+                  >
+                    <option value="dog" ${this.formData.species === 'dog' ? 'selected' : ''}>Cachorro</option>
+                    <option value="cat" ${this.formData.species === 'cat' ? 'selected' : ''}>Gato</option>
+                  </select>
+                  <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                      <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 011.06 0L10 11.94l3.72-3.72a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- Seletor de Avatares -->
-            <div>
-              <label class="block text-sm font-medium text-zinc-300 mb-3">
-                Escolha um Avatar *
+            <div class="space-y-4">
+              <label class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">
+                Escolha o Avatar do seu Pet
               </label>
-              <div id="avatars-grid" class="grid grid-cols-4 gap-4 justify-center mb-4">
+              <div id="avatars-grid" class="grid grid-cols-5 gap-3">
                 ${DEFAULT_AVATARS.map((avatarUrl, index) => {
                   const isSelected = this.formData.avatar === avatarUrl;
                   return `
                     <button
                       type="button"
-                      class="avatar-option relative w-20 h-20 rounded-full overflow-hidden border-2 transition-all cursor-pointer ${
+                      class="avatar-option relative aspect-square rounded-xl overflow-hidden border-2 transition-all duration-300 group/avatar ${
                         isSelected 
-                          ? 'ring-4 ring-green-500 border-green-500 scale-110' 
-                          : 'border-zinc-600 hover:border-zinc-400 hover:scale-105'
+                          ? 'border-red-600 scale-105 shadow-[0_0_15px_rgba(229,9,20,0.3)]' 
+                          : 'border-white/5 hover:border-white/20 hover:scale-105'
                       }"
                       data-avatar-url="${avatarUrl}"
-                      aria-label="Selecionar avatar ${index + 1}"
                     >
                       <img 
                         src="${avatarUrl}" 
                         alt="Avatar ${index + 1}"
                         class="w-full h-full object-cover"
-                        onerror="this.parentElement.style.display='none'"
+                        loading="lazy"
                       />
                       ${isSelected ? `
-                        <div class="absolute inset-0 bg-green-500/20 flex items-center justify-center z-10">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6 text-green-500">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                          </svg>
+                        <div class="absolute inset-0 bg-red-600/20 flex items-center justify-center backdrop-blur-[1px]">
+                          <div class="bg-red-600 rounded-full p-1 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3 h-3 text-white">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                          </div>
                         </div>
                       ` : ''}
                     </button>
                   `;
                 }).join('')}
               </div>
-              <p class="text-xs text-zinc-500 text-center">Selecione um avatar da galeria acima</p>
             </div>
 
-            <!-- Mensagem de erro (se houver) -->
-            <div id="errorMessage" class="hidden text-red-400 text-sm"></div>
+            <!-- Mensagem de erro -->
+            <div id="errorMessage" class="hidden p-4 bg-red-600/10 border border-red-600/20 rounded-xl text-red-500 text-xs font-bold animate-fade-in"></div>
 
-            <!-- Mensagem de confirmação de exclusão -->
+            <!-- Exclusão -->
             ${isEditMode && canDelete ? `
-              <div id="deleteConfirmation" class="hidden p-4 bg-red-900/20 border border-red-700 rounded-lg">
-                <p class="text-red-400 text-sm font-semibold mb-2">Tem certeza que deseja excluir este perfil?</p>
-                <p class="text-zinc-400 text-xs mb-3">Esta ação não pode ser desfeita.</p>
-                <div class="flex gap-2">
+              <div id="deleteConfirmation" class="hidden p-6 bg-red-600/5 border border-red-600/10 rounded-2xl animate-fade-in">
+                <p class="text-red-500 text-sm font-black uppercase tracking-wider mb-2">Excluir Perfil?</p>
+                <p class="text-zinc-500 text-xs font-medium mb-4">Esta ação é irreversível. Todos os dados do pet serão perdidos.</p>
+                <div class="flex gap-3">
                   <button
                     type="button"
                     id="confirmDeleteBtn"
-                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors text-sm"
+                    class="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl transition-all text-xs"
                   >
-                    Sim, excluir
+                    SIM, EXCLUIR
                   </button>
                   <button
                     type="button"
                     id="cancelDeleteBtn"
-                    class="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-colors text-sm"
+                    class="flex-1 px-4 py-3 bg-white/5 hover:bg-white/10 text-white font-black rounded-xl transition-all text-xs"
                   >
-                    Cancelar
+                    CANCELAR
                   </button>
                 </div>
               </div>
             ` : ''}
             
             <!-- Footer Actions -->
-            <div class="flex items-center justify-between gap-4 pt-4 border-t border-zinc-700">
-              <div>
+            <div class="flex items-center justify-between gap-4 pt-6 border-t border-white/5">
+              <div class="flex-1">
                 ${isEditMode && canDelete ? `
                   <button
                     type="button"
                     id="deleteBtn"
-                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors text-sm"
+                    class="w-full px-6 py-4 bg-white/5 hover:bg-red-600/10 text-zinc-500 hover:text-red-500 font-black rounded-2xl transition-all text-xs tracking-widest border border-white/5 hover:border-red-600/20"
                   >
-                    Excluir
+                    EXCLUIR
                   </button>
-                ` : ''}
-                ${isEditMode && !canDelete ? `
-                  <p class="text-xs text-zinc-500">Você não pode excluir o último perfil</p>
                 ` : ''}
               </div>
               
-              <div class="flex gap-3">
+              <div class="flex gap-3 flex-[2]">
                 <button
                   type="button"
                   id="cancelBtn"
-                  class="px-6 py-2 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-colors"
+                  class="flex-1 px-6 py-4 bg-white/5 hover:bg-white/10 text-white font-black rounded-2xl transition-all text-xs tracking-widest border border-white/5"
                 >
-                  Cancelar
+                  CANCELAR
                 </button>
                 <button
                   type="submit"
                   id="saveBtn"
-                  class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors"
+                  class="flex-1 px-6 py-4 bg-red-600 hover:bg-red-700 text-white font-black rounded-2xl transition-all text-xs tracking-widest shadow-lg shadow-red-600/20 active:scale-95"
                 >
-                  ${isEditMode ? 'Salvar' : 'Criar'}
+                  ${isEditMode ? 'SALVAR' : 'CRIAR'}
                 </button>
               </div>
             </div>
@@ -234,6 +232,7 @@ export class ProfileFormModal {
       </div>
     `;
   }
+
 
   /**
    * Inicializa event listeners do modal
@@ -410,31 +409,34 @@ export class ProfileFormModal {
       const isSelected = optionUrl === selectedUrl;
       
       if (isSelected) {
-        option.classList.add('ring-4', 'ring-green-500', 'border-green-500', 'scale-110');
-        option.classList.remove('border-zinc-600', 'hover:border-zinc-400');
+        option.classList.add('border-red-600', 'scale-105', 'shadow-[0_0_15px_rgba(229,9,20,0.3)]');
+        option.classList.remove('border-white/5', 'hover:border-white/20');
         
         // Adiciona ícone de check se não existir
-        if (!option.querySelector('svg')) {
+        if (!option.querySelector('.bg-red-600')) {
           const checkIcon = document.createElement('div');
-          checkIcon.className = 'absolute inset-0 bg-green-500/20 flex items-center justify-center z-10';
+          checkIcon.className = 'absolute inset-0 bg-red-600/20 flex items-center justify-center backdrop-blur-[1px]';
           checkIcon.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-6 h-6 text-green-500">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-            </svg>
+            <div class="bg-red-600 rounded-full p-1 shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-3 h-3 text-white">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+              </svg>
+            </div>
           `;
           option.appendChild(checkIcon);
         }
       } else {
-        option.classList.remove('ring-4', 'ring-green-500', 'border-green-500', 'scale-110');
-        option.classList.add('border-zinc-600', 'hover:border-zinc-400');
+        option.classList.remove('border-red-600', 'scale-105', 'shadow-[0_0_15px_rgba(229,9,20,0.3)]');
+        option.classList.add('border-white/5', 'hover:border-white/20');
         
         // Remove ícone de check
-        const checkIcon = option.querySelector('svg')?.parentElement;
+        const checkIcon = option.querySelector('.bg-red-600')?.parentElement;
         if (checkIcon && checkIcon.classList.contains('absolute')) {
           checkIcon.remove();
         }
       }
     });
+
   }
 
   /**
