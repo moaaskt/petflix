@@ -81,55 +81,78 @@ export class Navbar {
     ` : '';
     
     const html = `
-      <nav class="fixed top-0 w-full z-50 transition-colors duration-300 bg-gradient-to-b from-black/80 to-transparent relative">
-        <div class="h-16 px-4 md:px-12 flex items-center justify-between">
-          <a href="#/dashboard" class="flex items-center gap-3">
-            <img src="${logoImg}" alt="Petflix" class="h-8 hidden md:block" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'" />
-            <span class="text-red-600 text-2xl font-bold tracking-widest" style="display:none">PETFLIX</span>
-          </a>
-          <div class="flex items-center gap-6">
-            <ul class="hidden md:flex items-center gap-6">
-              <li><a href="#/dashboard" class="text-gray-200 hover:text-white">Início</a></li>
-              <li><a href="#/series" class="text-gray-200 hover:text-white">Séries</a></li>
-              <li><a href="#/filmes" class="text-gray-200 hover:text-white">Filmes</a></li>
-              <li><a href="#/docs" class="text-gray-200 hover:text-white">Bombando</a></li>
-              <li><a href="#/my-list" class="text-gray-200 hover:text-white">Minha Lista</a></li>
+      <nav class="navbar-petflix">
+        <div class="h-16 flex items-center justify-between">
+          <div class="flex items-center gap-8">
+            <a href="#/dashboard" class="flex items-center gap-3 transition-transform hover:scale-105 active:scale-95">
+              <img src="${logoImg}" alt="Petflix" class="h-8 hidden md:block" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'" />
+              <span class="text-red-600 text-3xl font-black tracking-tighter" style="display:none">PETFLIX</span>
+            </a>
+            
+            <ul class="hidden lg:flex items-center gap-6">
+              <li><a href="#/dashboard" class="nav-link-custom nav-link-active">Início</a></li>
+              <li><a href="#/series" class="nav-link-custom">Séries</a></li>
+              <li><a href="#/filmes" class="nav-link-custom">Filmes</a></li>
+              <li><a href="#/bombando" class="nav-link-custom">Bombando</a></li>
+              <li><a href="#/my-list" class="nav-link-custom">Minha Lista</a></li>
             </ul>
-            <button id="mobileMenuBtn" class="flex md:hidden text-gray-200 hover:text-white" aria-label="Menu" aria-expanded="false">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-            </button>
-            <div id="searchContainer" class="flex items-center gap-2">
-              <button id="searchIcon" class="text-gray-200 hover:text-white" aria-label="Buscar">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          </div>
+
+          <div class="flex items-center gap-5">
+            <div id="searchContainer" class="relative flex items-center">
+              <button id="searchIcon" class="text-gray-200 hover:text-white z-10 p-2 transition-colors" aria-label="Buscar">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 3.5a7.5 7.5 0 0013.15 13.15z" />
                 </svg>
               </button>
-              <input id="searchInput" type="text" placeholder="Buscar" class="w-0 opacity-0 border border-white bg-black/80 px-4 py-1 text-white rounded transition-all duration-300" />
-              <button id="searchClear" class="opacity-0 pointer-events-none text-gray-300 hover:text-white" aria-label="Limpar">✕</button>
+              <input id="searchInput" type="text" placeholder="Títulos, pets, gêneros..." 
+                class="absolute right-0 w-0 opacity-0 bg-black/60 backdrop-blur-md border border-white/20 py-2 pr-10 text-sm text-white rounded-full transition-all duration-500 ease-out focus:outline-none focus:ring-2 focus:ring-red-600/50" />
+              <button id="searchClear" class="absolute right-10 opacity-0 pointer-events-none text-gray-400 hover:text-white transition-opacity" aria-label="Limpar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                  <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                </svg>
+              </button>
             </div>
-            <a href="#/conta" class="flex items-center justify-center w-8 h-8 rounded-full overflow-hidden hover:ring-2 hover:ring-white/50 transition-all" aria-label="Minha Conta" title="Minha Conta" id="userAvatarLink">
-              ${avatarHTML}
-            </a>
-            ${adminLinkHTML}
-            <button id="logoutBtn" class="text-gray-200 hover:text-white" aria-label="Sair">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H12" />
-              </svg>
-            </button>
+
+            <div class="flex items-center gap-4">
+              ${adminLinkHTML}
+              
+              <a href="#/conta" class="group relative flex items-center justify-center" aria-label="Minha Conta" title="Minha Conta" id="userAvatarLink">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-red-600 to-orange-600 rounded-full blur opacity-0 group-hover:opacity-60 transition duration-300"></div>
+                <div class="relative w-8 h-8 rounded-md overflow-hidden ring-1 ring-white/20">
+                  ${avatarHTML}
+                </div>
+              </a>
+
+              <button id="logoutBtn" class="text-gray-400 hover:text-white transition-colors" aria-label="Sair">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H12" />
+                </svg>
+              </button>
+
+              <button id="mobileMenuBtn" class="lg:hidden text-gray-200 hover:text-white" aria-label="Menu" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
-        <div id="mobileMenu" class="absolute top-16 left-0 w-full bg-black border-t border-gray-800 flex flex-col p-4 gap-4 transition-transform duration-300 origin-top scale-y-0 hidden z-40">
-          <a href="#/dashboard" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Início</a>
-          <a href="#/series" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Séries</a>
-          <a href="#/filmes" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Filmes</a>
-          <a href="#/docs" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Bombando</a>
-          <a href="#/my-list" class="mobile-menu-link text-gray-200 hover:text-white py-2 block">Minha Lista</a>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobileMenu" class="fixed inset-0 top-16 bg-black/95 backdrop-blur-xl lg:hidden transition-all duration-500 ease-in-out transform translate-x-full z-40">
+          <div class="flex flex-col p-8 gap-6 text-xl font-bold">
+            <a href="#/dashboard" class="mobile-menu-link text-gray-400 hover:text-white hover:pl-2 transition-all">Início</a>
+            <a href="#/series" class="mobile-menu-link text-gray-400 hover:text-white hover:pl-2 transition-all">Séries</a>
+            <a href="#/filmes" class="mobile-menu-link text-gray-400 hover:text-white hover:pl-2 transition-all">Filmes</a>
+            <a href="#/bombando" class="mobile-menu-link text-gray-400 hover:text-white hover:pl-2 transition-all">Bombando</a>
+            <a href="#/my-list" class="mobile-menu-link text-gray-400 hover:text-white hover:pl-2 transition-all">Minha Lista</a>
+          </div>
         </div>
       </nav>
     `;
     this.container.innerHTML = html;
+
   }
 
   attach() {
@@ -184,13 +207,15 @@ export class Navbar {
       mobileMenuBtn.addEventListener('click', () => {
         this.isMobileMenuOpen = !this.isMobileMenuOpen;
         if (this.isMobileMenuOpen) {
-          mobileMenu.classList.remove('scale-y-0', 'hidden');
-          mobileMenu.classList.add('scale-y-100', 'flex');
+          mobileMenu.classList.remove('translate-x-full');
+          mobileMenu.classList.add('translate-x-0');
           mobileMenuBtn.setAttribute('aria-expanded', 'true');
+          document.body.style.overflow = 'hidden'; // Bloqueia scroll ao abrir menu
         } else {
-          mobileMenu.classList.remove('scale-y-100', 'flex');
-          mobileMenu.classList.add('scale-y-0', 'hidden');
+          mobileMenu.classList.remove('translate-x-0');
+          mobileMenu.classList.add('translate-x-full');
           mobileMenuBtn.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = ''; // Restaura scroll
         }
       });
     }
@@ -200,14 +225,16 @@ export class Navbar {
       link.addEventListener('click', () => {
         this.isMobileMenuOpen = false;
         if (mobileMenu) {
-          mobileMenu.classList.remove('scale-y-100', 'flex');
-          mobileMenu.classList.add('scale-y-0', 'hidden');
+          mobileMenu.classList.remove('translate-x-0');
+          mobileMenu.classList.add('translate-x-full');
         }
         if (mobileMenuBtn) {
           mobileMenuBtn.setAttribute('aria-expanded', 'false');
         }
+        document.body.style.overflow = '';
       });
     });
+
 
     if (logoutBtn) {
       logoutBtn.addEventListener('click', async (e) => {
@@ -232,16 +259,19 @@ export class Navbar {
     function expandInput(open) {
       if (!searchInput || !searchClear) return;
       if (open) {
-        searchInput.className = 'w-64 opacity-100 border border-white bg-black/80 px-4 py-1 text-white rounded transition-all duration-300';
+        searchInput.classList.add('w-64', 'opacity-100');
+        searchInput.classList.remove('w-0', 'opacity-0');
         searchInput.focus();
       } else {
-        searchInput.className = 'w-0 opacity-0 border border-white bg-black/80 px-4 py-1 text-white rounded transition-all duration-300';
+        searchInput.classList.remove('w-64', 'opacity-100');
+        searchInput.classList.add('w-0', 'opacity-0');
         searchInput.value = '';
         removeOverlay();
       }
       const hasText = searchInput.value.trim().length > 0;
-      searchClear.className = (hasText ? '' : 'opacity-0 pointer-events-none ') + 'text-gray-300 hover:text-white';
+      searchClear.className = 'absolute right-3 transition-opacity ' + (hasText ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none') + ' text-gray-400 hover:text-white';
     }
+
 
     function removeOverlay() {
       const overlay = document.getElementById('searchOverlay');
