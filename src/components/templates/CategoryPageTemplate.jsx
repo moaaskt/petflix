@@ -92,6 +92,7 @@ const CategoryPageTemplate = ({ category, title, genres = [] }) => {
             renderItem={(item) => (
               <ContentCard
                 key={item.id}
+                id={item.id}
                 title={item.title}
                 image={item.thumbnail}
                 onPlay={() => navigateTo(`/player?videoId=${item.id}`)}

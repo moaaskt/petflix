@@ -75,6 +75,7 @@ const MyListPageApp = () => {
           {items.map((item) => (
             <div key={item.id || item.videoId} className="relative group">
               <ContentCard
+                id={item.id || item.videoId}
                 title={item.title}
                 image={item.thumbnail || item.image}
                 onPlay={() => navigateTo(`/player?videoId=${item.videoId || item.id}`)}

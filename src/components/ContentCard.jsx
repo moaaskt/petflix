@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FALLBACK_POSTER, handleImageError } from '../utils/imageFallback.js';
-// import PropTypes from 'prop-types';
+import RatingStars from './RatingStars.jsx';
 
 /**
  * ContentCard - Card padrão de conteúdo (filme/série)
@@ -17,7 +17,7 @@ import { FALLBACK_POSTER, handleImageError } from '../utils/imageFallback.js';
  *   image="https://example.com/poster.jpg"
  * />
  */
-const ContentCard = ({ title, image, onPlay }) => {
+const ContentCard = ({ id, title, image, onPlay }) => {
     return (
         <div
             className="group cursor-pointer relative flex flex-col gap-3 transition-all duration-500"
@@ -68,10 +68,13 @@ const ContentCard = ({ title, image, onPlay }) => {
                 <h3 className="text-zinc-200 font-bold text-sm md:text-base line-clamp-1 group-hover:text-white transition-colors tracking-tight">
                     {title}
                 </h3>
-                <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">4K Ultra HD</span>
-                    <span class="w-1 h-1 rounded-full bg-zinc-700"></span>
-                    <span className="text-[10px] font-black text-red-600 uppercase tracking-widest">Premium</span>
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">4K Ultra HD</span>
+                        <span className="w-1 h-1 rounded-full bg-zinc-700"></span>
+                        <span className="text-[10px] font-black text-red-600 uppercase tracking-widest">Premium</span>
+                    </div>
+                    {id && <RatingStars contentId={id} />}
                 </div>
             </div>
         </div>

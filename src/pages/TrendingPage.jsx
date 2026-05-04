@@ -52,6 +52,7 @@ const TrendingPageApp = () => {
             </div>
             <div className="relative z-10">
               <ContentCard
+                id={item.id || item.videoId}
                 title={item.title}
                 image={item.thumbnail || item.image}
                 onPlay={() => navigateTo(`/player?videoId=${item.videoId || item.id}`)}
