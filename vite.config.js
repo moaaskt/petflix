@@ -29,6 +29,12 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html')
       }
     }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.js'],
+    include: ['src/**/*.{test,spec}.{js,jsx}']
   }
 });
 

@@ -265,7 +265,7 @@ async function handleDeleteProfile(profileId) {
  * Seleciona um perfil e redireciona para o dashboard
  * @param {Object} profile - Objeto do perfil
  */
-function selectProfile(profile) {
+async function selectProfile(profile) {
   if (!profile || !profile.id) {
     console.error('Perfil inválido:', profile);
     return;
