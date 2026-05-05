@@ -44,13 +44,21 @@ const TrendingPageApp = () => {
         <p className="text-gray-400 text-lg">Os títulos mais assistidos pelos {species === 'dog' ? 'cães' : 'gatos'} esta semana.</p>
       </header>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-12 gap-x-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-16 gap-x-12 px-8">
         {items.map((item, index) => (
-          <div key={item.id || item.videoId} className="relative group">
-            <div className="absolute -left-6 -top-4 text-8xl font-black text-white/10 group-hover:text-red-600/20 transition-colors z-0 select-none">
+          <div key={item.id || item.videoId} className="relative group flex items-end">
+            {/* Número de Ranking Cinematográfico */}
+            <div className="absolute -left-12 -bottom-6 text-[12rem] font-black leading-none select-none z-0 transition-all duration-700 
+              text-transparent stroke-zinc-700 group-hover:stroke-red-600/50 group-hover:-translate-y-2"
+              style={{ 
+                WebkitTextStroke: '2px rgba(255,255,255,0.1)',
+                fontFamily: "'Inter', sans-serif"
+              }}>
               {index + 1}
             </div>
-            <div className="relative z-10">
+            
+            {/* Card com Sombra e Elevação */}
+            <div className="relative z-10 w-full transform transition-all duration-500 group-hover:translate-x-4">
               <ContentCard
                 id={item.id || item.videoId}
                 title={item.title}
@@ -61,6 +69,7 @@ const TrendingPageApp = () => {
           </div>
         ))}
       </div>
+
 
       {items.length === 0 && (
         <div className="text-center py-40">
