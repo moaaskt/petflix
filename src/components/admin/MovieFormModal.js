@@ -21,6 +21,31 @@ export class MovieFormModal {
   }
 
   /**
+   * Mapeia IDs de gênero para labels legíveis
+   */
+  getGenreLabel(id) {
+    const labels = {
+      comedy: 'Comédia',
+      action: 'Ação',
+      drama: 'Drama',
+      adventure: 'Aventura'
+    };
+    return labels[id] || id;
+  }
+
+  /**
+   * Mapeia IDs de tipo para labels legíveis
+   */
+  getTypeLabel(id) {
+    const labels = {
+      movie: 'Filme',
+      series: 'Série',
+      doc: 'Documentário'
+    };
+    return labels[id] || id;
+  }
+
+  /**
    * Renderiza o modal
    */
   render() {
@@ -85,36 +110,72 @@ export class MovieFormModal {
                   </div>
                 </div>
 
-                <!-- Seção: Categorização -->
+                <!-- Seção: Categorização (Custom Dropdowns) -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div class="space-y-2">
-                    <label for="movieSpecies" class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Público Pet</label>
-                    <select id="movieSpecies" name="species" required
-                      class="w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-bold appearance-none focus:outline-none focus:border-red-600/50 focus:bg-white/10 transition-all cursor-pointer">
-                      <option value="dog" ${this.formData.species === 'dog' ? 'selected' : ''}>Cachorro</option>
-                      <option value="cat" ${this.formData.species === 'cat' ? 'selected' : ''}>Gato</option>
+                  <!-- Custom Select: Espécie -->
+                  <div class="space-y-2 relative custom-select-container" data-select-id="movieSpecies">
+                    <label class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Público Pet</label>
+                    <div class="select-trigger w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-bold flex items-center justify-between cursor-pointer hover:bg-white/10 transition-all">
+                      <span class="selected-value">${this.formData.species === 'dog' ? 'Cachorro' : 'Gato'}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-zinc-500 transition-transform duration-300">
+                        <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 011.06 0L10 11.94l3.72-3.72a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                    <div class="select-options absolute z-[60] left-0 right-0 mt-2 py-2 glass-panel backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl opacity-0 scale-95 pointer-events-none transition-all duration-300 origin-top">
+                      <div class="option px-5 py-3 hover:bg-red-600/20 text-white font-bold cursor-pointer transition-colors" data-value="dog">Cachorro</div>
+                      <div class="option px-5 py-3 hover:bg-red-600/20 text-white font-bold cursor-pointer transition-colors" data-value="cat">Gato</div>
+                    </div>
+                    <select id="movieSpecies" name="species" class="hidden">
+                      <option value="dog" ${this.formData.species === 'dog' ? 'selected' : ''}>dog</option>
+                      <option value="cat" ${this.formData.species === 'cat' ? 'selected' : ''}>cat</option>
                     </select>
                   </div>
-                  <div class="space-y-2">
-                    <label for="movieGenre" class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Gênero</label>
-                    <select id="movieGenre" name="genre" required
-                      class="w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-bold appearance-none focus:outline-none focus:border-red-600/50 focus:bg-white/10 transition-all cursor-pointer">
-                      <option value="comedy" ${this.formData.genre === 'comedy' ? 'selected' : ''}>Comédia</option>
-                      <option value="action" ${this.formData.genre === 'action' ? 'selected' : ''}>Ação</option>
-                      <option value="drama" ${this.formData.genre === 'drama' ? 'selected' : ''}>Drama</option>
-                      <option value="adventure" ${this.formData.genre === 'adventure' ? 'selected' : ''}>Aventura</option>
+
+                  <!-- Custom Select: Gênero -->
+                  <div class="space-y-2 relative custom-select-container" data-select-id="movieGenre">
+                    <label class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Gênero</label>
+                    <div class="select-trigger w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-bold flex items-center justify-between cursor-pointer hover:bg-white/10 transition-all">
+                      <span class="selected-value">${this.getGenreLabel(this.formData.genre)}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-zinc-500 transition-transform duration-300">
+                        <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 011.06 0L10 11.94l3.72-3.72a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                    <div class="select-options absolute z-[60] left-0 right-0 mt-2 py-2 glass-panel backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl opacity-0 scale-95 pointer-events-none transition-all duration-300 origin-top">
+                      <div class="option px-5 py-3 hover:bg-red-600/20 text-white font-bold cursor-pointer transition-colors" data-value="comedy">Comédia</div>
+                      <div class="option px-5 py-3 hover:bg-red-600/20 text-white font-bold cursor-pointer transition-colors" data-value="action">Ação</div>
+                      <div class="option px-5 py-3 hover:bg-red-600/20 text-white font-bold cursor-pointer transition-colors" data-value="drama">Drama</div>
+                      <div class="option px-5 py-3 hover:bg-red-600/20 text-white font-bold cursor-pointer transition-colors" data-value="adventure">Aventura</div>
+                    </div>
+                    <select id="movieGenre" name="genre" class="hidden">
+                      <option value="comedy" ${this.formData.genre === 'comedy' ? 'selected' : ''}>comedy</option>
+                      <option value="action" ${this.formData.genre === 'action' ? 'selected' : ''}>action</option>
+                      <option value="drama" ${this.formData.genre === 'drama' ? 'selected' : ''}>drama</option>
+                      <option value="adventure" ${this.formData.genre === 'adventure' ? 'selected' : ''}>adventure</option>
                     </select>
                   </div>
-                  <div class="space-y-2">
-                    <label for="movieType" class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Tipo de Mídia</label>
-                    <select id="movieType" name="type" required
-                      class="w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-bold appearance-none focus:outline-none focus:border-red-600/50 focus:bg-white/10 transition-all cursor-pointer">
-                      <option value="movie" ${this.formData.type === 'movie' ? 'selected' : ''}>Filme</option>
-                      <option value="series" ${this.formData.type === 'series' ? 'selected' : ''}>Série</option>
-                      <option value="doc" ${this.formData.type === 'doc' ? 'selected' : ''}>Documentário</option>
+
+                  <!-- Custom Select: Tipo -->
+                  <div class="space-y-2 relative custom-select-container" data-select-id="movieType">
+                    <label class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Tipo de Mídia</label>
+                    <div class="select-trigger w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-bold flex items-center justify-between cursor-pointer hover:bg-white/10 transition-all">
+                      <span class="selected-value">${this.getTypeLabel(this.formData.type)}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-zinc-500 transition-transform duration-300">
+                        <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 011.06 0L10 11.94l3.72-3.72a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                    <div class="select-options absolute z-[60] left-0 right-0 mt-2 py-2 glass-panel backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl opacity-0 scale-95 pointer-events-none transition-all duration-300 origin-top">
+                      <div class="option px-5 py-3 hover:bg-red-600/20 text-white font-bold cursor-pointer transition-colors" data-value="movie">Filme</div>
+                      <div class="option px-5 py-3 hover:bg-red-600/20 text-white font-bold cursor-pointer transition-colors" data-value="series">Série</div>
+                      <div class="option px-5 py-3 hover:bg-red-600/20 text-white font-bold cursor-pointer transition-colors" data-value="doc">Documentário</div>
+                    </div>
+                    <select id="movieType" name="type" class="hidden">
+                      <option value="movie" ${this.formData.type === 'movie' ? 'selected' : ''}>movie</option>
+                      <option value="series" ${this.formData.type === 'series' ? 'selected' : ''}>series</option>
+                      <option value="doc" ${this.formData.type === 'doc' ? 'selected' : ''}>doc</option>
                     </select>
                   </div>
                 </div>
+
 
                 <!-- Seção: Tags / Status (Chips interativos) -->
                 <div class="space-y-4">
@@ -264,9 +325,66 @@ export class MovieFormModal {
 
     if (genreSelect && previewGenre) {
       genreSelect.addEventListener('change', (e) => {
-        previewGenre.textContent = e.target.value;
+        previewGenre.textContent = this.getGenreLabel(e.target.value);
       });
     }
+
+    // Lógica para Custom Selects
+    const customSelects = document.querySelectorAll('.custom-select-container');
+    customSelects.forEach(container => {
+      const trigger = container.querySelector('.select-trigger');
+      const optionsContainer = container.querySelector('.select-options');
+      const options = container.querySelectorAll('.option');
+      const hiddenSelect = container.querySelector('select');
+      const selectedValueSpan = container.querySelector('.selected-value');
+      const arrow = trigger.querySelector('svg');
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // Fecha outros selects abertos
+        document.querySelectorAll('.select-options').forEach(opt => {
+          if (opt !== optionsContainer) {
+            opt.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+            opt.parentElement.querySelector('svg').classList.remove('rotate-180');
+          }
+        });
+
+        const isOpen = !optionsContainer.classList.contains('opacity-0');
+        if (isOpen) {
+          optionsContainer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+          arrow.classList.remove('rotate-180');
+        } else {
+          optionsContainer.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+          arrow.classList.add('rotate-180');
+        }
+      });
+
+      options.forEach(option => {
+        option.addEventListener('click', () => {
+          const value = option.dataset.value;
+          const label = option.textContent;
+
+          // Atualiza UI
+          selectedValueSpan.textContent = label;
+          hiddenSelect.value = value;
+          
+          // Dispara evento para o Live Preview
+          hiddenSelect.dispatchEvent(new Event('change'));
+
+          // Fecha
+          optionsContainer.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+          arrow.classList.remove('rotate-180');
+        });
+      });
+    });
+
+    // Fecha selects ao clicar fora
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.select-options').forEach(opt => {
+        opt.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+        opt.parentElement.querySelector('svg').classList.remove('rotate-180');
+      });
+    });
 
     // Submit do formulário
     const form = document.getElementById('movieForm');
