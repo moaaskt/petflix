@@ -12,16 +12,17 @@ import ContentRail from '../../components/ContentRail.jsx';
 import ContentCard from '../../components/ContentCard.jsx';
 import { LoadingSpinner } from '../../components/ui/Loading/LoadingSpinner.js';
 import { getFeatured, getFeaturedMultiple, getByCategory, getByGenre, getTrending } from '../../services/content.service.js';
-import { toggleItem, isInList } from '../../services/list.service.js';
+import { toggleItem, isInList, getList } from '../../services/list.service.js';
 import { AppState } from '../../state/AppState.js';
 import { ratingService } from '../../services/rating.service.js';
 import { Toast } from '../../utils/toast.js';
 
 // --- React Components ---
 
-const DashboardHeroCarousel = ({ items }) => {
+const DashboardHeroCarousel = ({ items, myListIds, onToggleList }) => {
   const normalizedItems = items.map(item => {
     const itemId = item.id || item.videoId;
+    const isInList = myListIds.has(itemId);
     
     return {
       id: itemId,
@@ -39,33 +40,18 @@ const DashboardHeroCarousel = ({ items }) => {
       },
       actions: [
         {
-          label: 'Minha Lista',
-          icon: (
+          label: isInList ? 'Na Minha Lista' : 'Minha Lista',
+          icon: isInList ? (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+            </svg>
+          ) : (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
           ),
-          onClick: async () => {
-            try {
-              const movieData = {
-                id: itemId,
-                videoId: itemId,
-                title: item.title,
-                thumbnail: item.thumbnail || item.image,
-                image: item.thumbnail || item.image
-              };
-              const added = await toggleItem(movieData);
-              if (added) {
-                Toast.success(`${item.title} adicionado à lista`);
-              } else {
-                Toast.info(`${item.title} removido da lista`);
-              }
-            } catch (error) {
-              console.error('Erro ao atualizar lista:', error);
-              Toast.error('Erro ao atualizar lista');
-            }
-          },
-          variant: 'secondary'
+          onClick: () => onToggleList(item),
+          variant: isInList ? 'primary' : 'secondary'
         },
         {
           label: 'Mais Info',
@@ -96,6 +82,7 @@ const DashboardApp = () => {
   const [loading, setLoading] = useState(true);
   const [featuredItems, setFeaturedItems] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [myListIds, setMyListIds] = useState(new Set());
   
   // Inicializa com o tipo de pet do estado global ou localStorage
   const [species, setSpecies] = useState(() => {
@@ -139,6 +126,10 @@ const DashboardApp = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
+
+        // Carregar IDs da Minha Lista para o estado reativo
+        const currentList = await getList();
+        setMyListIds(new Set(currentList.map(i => i.id || i.videoId)));
 
         // Carregar destaques para o carrossel
         const featuredData = await getFeaturedMultiple(species, 5);
@@ -231,14 +222,54 @@ const DashboardApp = () => {
     return <div className="min-h-screen bg-[#141414]"></div>;
   }
 
+  const handleToggleList = async (item) => {
+    const itemId = item.id || item.videoId;
+    const wasAdded = myListIds.has(itemId);
+    
+    // Feedback instantâneo na UI
+    setMyListIds(prev => {
+      const next = new Set(prev);
+      if (wasAdded) next.delete(itemId);
+      else next.add(itemId);
+      return next;
+    });
+
+    try {
+      const movieData = {
+        id: itemId,
+        videoId: itemId,
+        title: item.title,
+        thumbnail: item.thumbnail || item.image,
+        backdrop: item.backdrop || item.thumbnail || item.image
+      };
+      const added = await toggleItem(movieData);
+      if (added) {
+        Toast.success(`"${item.title}" adicionado à lista`);
+      } else {
+        Toast.info(`"${item.title}" removido da lista`);
+      }
+    } catch (error) {
+      // Reverter em caso de erro
+      setMyListIds(prev => {
+        const next = new Set(prev);
+        if (wasAdded) next.add(itemId);
+        else next.delete(itemId);
+        return next;
+      });
+      console.error('Erro ao atualizar lista:', error);
+      Toast.error('Erro ao atualizar lista');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#141414] pb-20">
-      {featuredItems.length > 0 && <DashboardHeroCarousel items={featuredItems} />}
+      <DashboardHeroCarousel 
+        items={featuredItems} 
+        myListIds={myListIds} 
+        onToggleList={handleToggleList} 
+      />
 
-      {/* Spacer gradient similar ao original */}
-      <div className="h-12 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent relative z-10 -mt-12"></div>
-
-      <div className="space-y-4 relative z-20">
+      <div className="space-y-12 relative z-20 -mt-24">
         {categories.map((category, index) => (
           <ContentRail
             key={index}
@@ -251,6 +282,8 @@ const DashboardApp = () => {
                 title={item.title}
                 image={item.thumbnail}
                 onPlay={() => navigateTo(`/player?videoId=${item.id}`)}
+                onAddToList={() => handleToggleList(item)}
+                isAdded={myListIds.has(item.id || item.videoId)}
               />
             )}
           />
