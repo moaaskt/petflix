@@ -25,6 +25,7 @@ const MOVIES = [
         featured: false,
         rating: 4.9
     },
+    
     {
         title: "DC Liga dos Superpets",
         description: "Krypto, o Supercão, e Superman são melhores amigos inseparáveis, compartilhando os mesmos superpoderes e lutando contra o crime em Metrópolis lado a lado.",
