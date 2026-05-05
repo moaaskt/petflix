@@ -14,6 +14,7 @@ import { LoadingSpinner } from '../../components/ui/Loading/LoadingSpinner.js';
 import { getFeatured, getFeaturedMultiple, getByCategory, getByGenre, getTrending } from '../../services/content.service.js';
 import { toggleItem, isInList } from '../../services/list.service.js';
 import { AppState } from '../../state/AppState.js';
+import { ratingService } from '../../services/rating.service.js';
 import { Toast } from '../../utils/toast.js';
 
 // --- React Components ---
@@ -110,6 +111,9 @@ const DashboardApp = () => {
     if (!state.petType && !savedSpecies) {
       console.warn('Nenhum perfil selecionado. Redirecionando para seleção...');
       navigateTo('/home');
+    } else {
+      // Pre-carrega todas as avaliações do perfil para performance
+      ratingService.preloadRatings();
     }
   }, []);
 

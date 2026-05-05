@@ -1,6 +1,10 @@
 import { db } from '../config/firebase.js';
-import { doc, setDoc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, setDoc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { authService } from './auth/auth.service.js';
+
+// Cache local para evitar múltiplas leituras ao Firestore
+let ratingsCache = {};
+let lastProfileId = null;
 
 /**
  * RatingService - Gerencia as avaliações de conteúdo
@@ -8,15 +12,13 @@ import { authService } from './auth/auth.service.js';
 export const ratingService = {
   /**
    * Salva uma avaliação para um conteúdo
-   * @param {string} contentId - ID do conteúdo (filme/série)
-   * @param {number} rating - Avaliação de 1 a 5
    */
   async saveRating(contentId, rating) {
     const user = authService.getCurrentUser();
-    if (!user) throw new Error('Usuário não autenticado');
+    if (!user) return;
 
     const profileId = localStorage.getItem('petflix_selected_profile_id');
-    if (!profileId) throw new Error('Nenhum perfil selecionado');
+    if (!profileId) return;
 
     try {
       const ratingRef = doc(db, 'users', user.uid, 'profiles', profileId, 'ratings', contentId);
@@ -25,35 +27,65 @@ export const ratingService = {
         updatedAt: new Date().toISOString()
       }, { merge: true });
       
+      // Atualiza o cache local
+      ratingsCache[contentId] = rating;
       return true;
     } catch (error) {
       console.error('Erro ao salvar avaliação:', error);
-      throw error;
     }
   },
 
   /**
-   * Obtém a avaliação de um conteúdo para o perfil atual
-   * @param {string} contentId - ID do conteúdo
+   * Obtém a avaliação de um conteúdo (usa cache se disponível)
    */
   async getRating(contentId) {
-    const user = authService.getCurrentUser();
-    if (!user) return null;
-
     const profileId = localStorage.getItem('petflix_selected_profile_id');
-    if (!profileId) return null;
+    
+    // Se mudou o perfil, limpa o cache
+    if (profileId !== lastProfileId) {
+      ratingsCache = {};
+      lastProfileId = profileId;
+    }
+
+    // Se já temos no cache, retorna
+    if (ratingsCache[contentId] !== undefined) {
+      return ratingsCache[contentId];
+    }
+
+    const user = authService.getCurrentUser();
+    if (!user || !profileId) return 0;
 
     try {
       const ratingRef = doc(db, 'users', user.uid, 'profiles', profileId, 'ratings', contentId);
       const docSnap = await getDoc(ratingRef);
       
-      if (docSnap.exists()) {
-        return docSnap.data().rating;
-      }
-      return 0;
+      const rating = docSnap.exists() ? docSnap.data().rating : 0;
+      ratingsCache[contentId] = rating;
+      return rating;
     } catch (error) {
-      console.error('Erro ao obter avaliação:', error);
       return 0;
+    }
+  },
+
+  /**
+   * Carrega todas as avaliações do perfil de uma vez (opcional para otimização)
+   */
+  async preloadRatings() {
+    const user = authService.getCurrentUser();
+    const profileId = localStorage.getItem('petflix_selected_profile_id');
+    if (!user || !profileId) return;
+
+    try {
+      const ratingsRef = collection(db, 'users', user.uid, 'profiles', profileId, 'ratings');
+      const snapshot = await getDocs(ratingsRef);
+      const newCache = {};
+      snapshot.forEach(doc => {
+        newCache[doc.id] = doc.data().rating;
+      });
+      ratingsCache = newCache;
+      lastProfileId = profileId;
+    } catch (error) {
+      console.error('Erro ao pre-carregar avaliações:', error);
     }
   }
 };

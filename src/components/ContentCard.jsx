@@ -35,11 +35,14 @@ const ContentCard = ({ id, title, image, onPlay }) => {
             {/* Image Container */}
             <div className="relative aspect-[2/3] overflow-hidden rounded-2xl bg-zinc-900 border border-white/5 group-hover:border-red-600/30 transition-all duration-500 shadow-lg group-hover:shadow-[0_10px_30px_rgba(229,9,20,0.15)]">
                 <img
-                    src={image}
+                    src={image || '/assets/poster-placeholder.jpg'}
                     alt={title}
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 group-hover:rotate-1"
                     loading="lazy"
-                    onError={(e) => handleImageError(e, FALLBACK_POSTER)}
+                    onError={(e) => {
+                        e.target.onerror = null; 
+                        e.target.src = 'https://images.unsplash.com/photo-1543466835-00a54d68f1f1?w=800&auto=format&fit=crop';
+                    }}
                     style={{ objectFit: 'cover' }}
                 />
 
