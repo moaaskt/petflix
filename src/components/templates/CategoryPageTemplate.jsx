@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { getByCategory, getByGenre } from '../../services/content.service.js';
+import { getByCategory, getByGenre, getAll } from '../../services/content.service.js';
 import HeroFeaturedCarousel from '../HeroFeaturedCarousel.jsx';
 import ContentRail from '../ContentRail.jsx';
 import ContentCard from '../ContentCard.jsx';
-import { LoadingSpinner } from '../ui/Loading/LoadingSpinner.js';
 import { navigateTo } from '../../router/navigator.js';
-import { AppState } from '../../state/AppState.js';
 
 const CategoryPageTemplate = ({ category, title, genres = [] }) => {
   const [loading, setLoading] = useState(true);
   const [featuredItems, setFeaturedItems] = useState([]);
   const [railData, setRailData] = useState([]);
-  const [species, setSpecies] = useState(() => {
-    const state = AppState.getState();
-    return state.petType || localStorage.getItem('petflix_selected_species') || 'dog';
+  
+  // Melhor detecção de espécie sincronizada com o body e localStorage
+  const [species] = useState(() => {
+    return localStorage.getItem('petflix_selected_species') || 
+           (document.body.classList.contains('theme-cat') ? 'cat' : 'dog');
   });
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const CategoryPageTemplate = ({ category, title, genres = [] }) => {
         // 1. Carregar todos os itens da categoria
         const allItems = await getByCategory(species, category);
         
-        // 2. Definir destaques (Hero) - Random 5
+        // 2. Definir destaques (Hero)
         if (allItems.length > 0) {
           const shuffled = [...allItems].sort(() => 0.5 - Math.random());
           setFeaturedItems(shuffled.slice(0, 5).map(mapHero));
@@ -33,55 +33,63 @@ const CategoryPageTemplate = ({ category, title, genres = [] }) => {
         // 3. Organizar rails
         const rails = [];
         
-        // Sempre adiciona o trilho "Todos os [Title]"
-        rails.push({
-          title: `Todos os ${title}`,
-          items: allItems.map(mapCard)
-        });
-
-        // Adiciona rails por gênero se fornecido
-        if (genres.length > 0) {
-          const genrePromises = genres.map(async (genre) => {
-            const items = await getByGenre(species, genre.id);
-            // Filtra para garantir que o conteúdo do gênero pertence à categoria (filme/série)
-            const filteredItems = items.filter(i => i.category === category || i.type === category);
-            if (filteredItems.length > 0) {
-              return {
-                title: genre.name,
-                items: filteredItems.map(mapCard)
-              };
-            }
-            return null;
+        // Sempre adiciona o trilho principal
+        if (allItems.length > 0) {
+          rails.push({
+            title: `Todos os ${title}`,
+            items: allItems.map(mapCard)
           });
+        }
 
-          const genreRails = await Promise.all(genrePromises);
-          rails.push(...genreRails.filter(r => r !== null));
+        // Adiciona rails por gênero
+        if (genres.length > 0) {
+          for (const genre of genres) {
+            const genreItems = await getByGenre(species, genre.id);
+            const filtered = genreItems.filter(i => i.type === category || i.category === category);
+            
+            if (filtered.length > 0) {
+              rails.push({
+                title: genre.name,
+                items: filtered.map(mapCard)
+              });
+            }
+          }
         }
 
         setRailData(rails);
       } catch (error) {
-        console.error(`Erro ao carregar categoria ${category}:`, error);
+        console.error(`[CategoryPage] Erro ao carregar ${category}:`, error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [species, category]);
+  }, [species, category, title]);
 
-  if (loading && featuredItems.length === 0) {
+  if (loading && railData.length === 0) {
     return (
       <div className="min-h-screen bg-[#141414] flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-gray-600 border-t-red-600 rounded-full animate-spin"></div>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-white/5 border-t-red-600 rounded-full animate-spin"></div>
+          <p className="text-zinc-500 text-xs font-bold uppercase tracking-widest">Sincronizando catálogo...</p>
+        </div>
       </div>
     );
   }
 
+  const hasFeatured = featuredItems.length > 0;
+
   return (
     <div className="min-h-screen bg-[#141414] pb-20">
-      {featuredItems.length > 0 && <HeroFeaturedCarousel items={featuredItems} />}
+      {hasFeatured && <HeroFeaturedCarousel items={featuredItems} />}
       
-      <div className="h-24 bg-gradient-to-t from-[#141414] via-[#141414]/60 to-transparent relative z-10 -mt-24"></div>
+      {/* Só aplica o degradê de sobreposição se houver um Hero */}
+      {hasFeatured ? (
+        <div className="h-24 bg-gradient-to-t from-[#141414] via-[#141414]/60 to-transparent relative z-10 -mt-24"></div>
+      ) : (
+        <div className="h-24"></div> /* Espaçador para não bater na Navbar */
+      )}
 
       <div className="space-y-12 relative z-20 px-4 md:px-0">
         {railData.map((rail, index) => (
@@ -103,13 +111,29 @@ const CategoryPageTemplate = ({ category, title, genres = [] }) => {
       </div>
       
       {railData.length === 0 && !loading && (
-        <div className="flex flex-col items-center justify-center py-40 text-center">
-          <p className="text-gray-500 text-xl">Nenhum conteúdo encontrado nesta categoria.</p>
+        <div className="flex flex-col items-center justify-center py-40 text-center animate-fade-in">
+          <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mb-6 border border-white/5">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10 text-zinc-600">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-2">Ops! Nenhum {title.toLowerCase().slice(0, -1)} encontrado.</h2>
+          <p className="text-gray-500 max-w-sm mb-8">
+            Parece que você ainda não cadastrou {title.toLowerCase()} para este pet no seu painel administrativo.
+          </p>
+          <button 
+            onClick={() => navigateTo('/admin')}
+            className="px-8 py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-all shadow-lg shadow-red-600/20"
+          >
+            Ir para Painel Administrativo
+          </button>
         </div>
       )}
     </div>
   );
 };
+
+
 
 // --- Mappers ---
 

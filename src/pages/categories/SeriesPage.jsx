@@ -4,9 +4,10 @@ import CategoryPageTemplate from '../../components/templates/CategoryPageTemplat
 
 const SeriesPageApp = () => {
   const genres = [
-    { id: 'action', name: 'Aventura' },
+    { id: 'adventure', name: 'Aventura' },
     { id: 'comedy', name: 'Diversão' },
-    { id: 'drama', name: 'Emocionantes' }
+    { id: 'drama', name: 'Emocionantes' },
+    { id: 'action', name: 'Ação' }
   ];
 
   return <CategoryPageTemplate category="series" title="Séries" genres={genres} />;
