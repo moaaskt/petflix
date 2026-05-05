@@ -48,7 +48,18 @@ Key services: `content.service.js` (content CRUD + in-memory cache), `profile.se
 
 - `users/{uid}` — `{ email, role: 'user'|'admin', status: 'active'|'banned', createdAt }`
 - `users/{uid}/profiles` — `{ name, species: 'dog'|'cat', avatar, isDefault }`
-- `content` — `{ title, type: 'movie'|'series'|'doc', species: 'dog'|'cat', videoId (YouTube), featured, trending, original }`
+- `content` — `{ title, description, thumbnail, videoUrl, category: 'movie'|'series'|'doc', genre, species: 'dog'|'cat', featured, trending, original, rating }`
+
+### Component Organization (`src/components/`)
+
+- `modals/` — `ContentDetailModal.jsx` (detail overlay triggered from cards)
+- `features/` — reusable feature blocks: `CategoryRow`, `FilterSidebar`, `MovieCard`, `ProfileCard`, `VideoCard`, `VideoGrid`, `VideoPlayer`, `ThumbnailCard`, `ProfileFormModal`
+- `templates/` — page-level layout templates (e.g. `CategoryPageTemplate`)
+- `layout/`, `common/`, `ui/` — structural and shared primitives
+
+### Pages (`src/pages/`)
+
+Organized by domain: `dashboard/`, `home/`, `categories/`, `movies/`, `player/`, `account/`, `admin/`. Flat pages (`LoginPage.js`, `RegisterPage.js`, etc.) sit directly under `pages/`.
 
 ## Environment
 

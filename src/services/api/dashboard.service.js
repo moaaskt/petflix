@@ -10,10 +10,16 @@ import { collection, getDocs, getCountFromServer, query, where } from 'firebase/
  */
 export async function getDashboardStats() {
   try {
-    // Contagem total de usuários
-    const usersRef = collection(db, 'users');
-    const usersCountSnapshot = await getCountFromServer(usersRef);
-    const totalUsers = usersCountSnapshot.data().count;
+    // Contagem total de usuários (Pode falhar por permissão)
+    let totalUsers = 0;
+    try {
+      const usersRef = collection(db, 'users');
+      const usersCountSnapshot = await getCountFromServer(usersRef);
+      totalUsers = usersCountSnapshot.data().count;
+    } catch (e) {
+      console.warn('⚠️ Sem permissão para ler coleção de usuários. Exibindo 0.');
+      totalUsers = 0;
+    }
 
     // Contagem total de conteúdo
     const contentRef = collection(db, 'content');
