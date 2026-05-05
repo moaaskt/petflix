@@ -39,3 +39,7 @@ firebase-debug.log
 # Vite
 .vite/
 node_modules
+
+# AI Tools
+.agents
+.planning

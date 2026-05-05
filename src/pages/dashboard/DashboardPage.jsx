@@ -13,6 +13,8 @@ import ContentCard from '../../components/ContentCard.jsx';
 import { LoadingSpinner } from '../../components/ui/Loading/LoadingSpinner.js';
 import { getFeatured, getFeaturedMultiple, getByCategory, getByGenre, getTrending } from '../../services/content.service.js';
 import { toggleItem, isInList } from '../../services/list.service.js';
+import { AppState } from '../../state/AppState.js';
+import { ratingService } from '../../services/rating.service.js';
 import { Toast } from '../../utils/toast.js';
 
 // --- React Components ---
@@ -94,12 +96,34 @@ const DashboardApp = () => {
   const [loading, setLoading] = useState(true);
   const [featuredItems, setFeaturedItems] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [species, setSpecies] = useState('dog');
+  
+  // Inicializa com o tipo de pet do estado global ou localStorage
+  const [species, setSpecies] = useState(() => {
+    const state = AppState.getState();
+    return state.petType || localStorage.getItem('petflix_selected_species') || 'dog';
+  });
 
-  // Determinar espécie
+  // Verificar se o perfil está selecionado, caso contrário volta para home
+  useEffect(() => {
+    const state = AppState.getState();
+    const savedSpecies = localStorage.getItem('petflix_selected_species');
+    
+    if (!state.petType && !savedSpecies) {
+      console.warn('Nenhum perfil selecionado. Redirecionando para seleção...');
+      navigateTo('/home');
+    } else {
+      // Pre-carrega todas as avaliações do perfil para performance
+      ratingService.preloadRatings();
+    }
+  }, []);
+
+  // Determinar espécie e sincronizar com o tema do body
   useEffect(() => {
     const isCat = document.body.classList.contains('theme-cat');
-    setSpecies(isCat ? 'cat' : 'dog');
+    const currentSpecies = isCat ? 'cat' : 'dog';
+    if (currentSpecies !== species) {
+      setSpecies(currentSpecies);
+    }
   }, []);
 
   // Verificar auth
@@ -147,11 +171,24 @@ const DashboardApp = () => {
         // Mapear dados das categorias
         const mapItems = (items) => items.map(mapCard);
 
+        // Função para remover duplicatas
+        const deduplicate = (items) => {
+          const seen = new Set();
+          return items.filter(item => {
+            const id = item.videoId || item.id;
+            if (seen.has(id)) return false;
+            seen.add(id);
+            return true;
+          });
+        };
+
+        const uniqueActionAdventure = deduplicate([...action, ...adventure]);
+
         // Definir categorias baseadas na espécie
         if (species === 'cat') {
           setCategories([
             { title: 'Populares na Petflix', items: mapItems(trending) },
-            { title: 'Gatos Planejando o Caos', items: mapItems([...action, ...adventure].slice(0, 20)) },
+            { title: 'Gatos Planejando o Caos', items: mapItems(uniqueActionAdventure.slice(0, 20)) },
             { title: 'Soneca da Tarde', items: mapItems(docs) },
             { title: 'Comédias Felinas', items: mapItems(comedy) },
             { title: 'Séries para Maratonar', items: mapItems(series) }
@@ -159,7 +196,7 @@ const DashboardApp = () => {
         } else {
           setCategories([
             { title: 'Em Alta Hoje', items: mapItems(trending) },
-            { title: 'Aventuras no Parque', items: mapItems([...action, ...adventure].slice(0, 20)) },
+            { title: 'Aventuras no Parque', items: mapItems(uniqueActionAdventure.slice(0, 20)) },
             { title: 'Bons Garotos', items: mapItems(drama) },
             { title: 'Histórias de Adoção', items: mapItems(docs) },
             { title: 'Filmes para toda a família', items: mapItems(movies) }
@@ -210,6 +247,7 @@ const DashboardApp = () => {
             renderItem={(item) => (
               <ContentCard
                 key={item.id}
+                id={item.id}
                 title={item.title}
                 image={item.thumbnail}
                 onPlay={() => navigateTo(`/player?videoId=${item.id}`)}

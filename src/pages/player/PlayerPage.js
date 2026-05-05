@@ -253,7 +253,7 @@ export async function init() {
   });
 
   try {
-    const { youtubeService } = await import('../../services/api/youtube.service.js');
+    const { youtubeService } = await import('../../services/youtube.service.js');
     const details = await youtubeService.getVideoDetails(videoId);
     const titleEl = document.getElementById('overlayTitle');
     if (titleEl) titleEl.textContent = escapeHTML(details?.title || 'Sem título');

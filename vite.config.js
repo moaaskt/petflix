@@ -1,5 +1,9 @@
-import { resolve } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 import { defineConfig } from 'vite';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default defineConfig({
   root: '.',
@@ -11,6 +15,10 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    allowedHosts: ['petflix.test'],
+    hmr: {
+      clientPort: 443,
+    },
     open: true
   },
   build: {
@@ -21,6 +29,12 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html')
       }
     }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.js'],
+    include: ['src/**/*.{test,spec}.{js,jsx}']
   }
 });
 

@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  petflix:
+    build: .
+    container_name: petflix_web
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: always

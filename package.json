@@ -4,21 +4,24 @@
   "type": "module",
   "description": "Plataforma de streaming para pets",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
     "apexcharts": "^5.3.6",
-    "firebase": "^9.23.0",
+    "firebase": "^12.12.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.17",
     "autoprefixer": "^10.4.22",
+    "jsdom": "^29.1.1",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.17",
-    "vite": "^5.0.0"
+    "vite": "^8.0.8",
+    "vitest": "^4.1.5"
   }
 }

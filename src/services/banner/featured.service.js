@@ -1,5 +1,5 @@
 import { getCache, setCache } from '../api/cache.service.js';
-import { youtubeService } from '../api/youtube.service.js';
+import { youtubeService } from '../youtube.service.js';
 import movies from '../../data/catalog/movies.json';
 import series from '../../data/catalog/series.json';
 
