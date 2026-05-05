@@ -23,12 +23,12 @@ export function ProfileCard({ profile, onClick, isEditing = false, className = '
 
   return `
     <button 
-      class="group cursor-pointer flex flex-col items-center gap-2 ${className}"
+      class="group cursor-pointer flex flex-col items-center gap-4 ${className} transition-all duration-300"
       aria-label="${name}"
       data-profile-id="${profile.id || ''}"
       ${onClick ? 'data-clickable="true"' : ''}
     >
-      <div class="relative w-24 h-24 md:w-32 md:h-32 rounded-md overflow-hidden border-2 border-transparent group-hover:border-white transition-all">
+      <div class="relative w-28 h-28 md:w-40 md:h-40 rounded-3xl overflow-hidden border-2 border-transparent group-hover:border-white group-hover:scale-105 transition-all duration-300 shadow-xl group-hover:shadow-white/10">
         ${avatar ? `
           <img 
             src="${avatar}" 
@@ -39,22 +39,25 @@ export function ProfileCard({ profile, onClick, isEditing = false, className = '
         ` : ''}
         <div 
           class="${avatar ? 'hidden' : 'flex'} w-full h-full items-center justify-center ${
-            fallbackColor === 'red' ? 'bg-red-600' : 'bg-blue-600'
+            fallbackColor === 'red' ? 'bg-gradient-to-br from-red-500 to-red-700' : 'bg-gradient-to-br from-blue-500 to-blue-700'
           }"
         >
-          <span class="text-white text-3xl">${fallbackIcon}</span>
+          <span class="text-white text-4xl font-black">${fallbackIcon}</span>
         </div>
         
         ${isEditing ? `
-          <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-white">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-            </svg>
+          <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-[2px]">
+            <div class="bg-white/20 p-3 rounded-full border border-white/20">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-white">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+              </svg>
+            </div>
           </div>
         ` : ''}
       </div>
-      <span class="text-gray-400 text-lg group-hover:text-white transition-colors">${name}</span>
+      <span class="text-zinc-500 text-lg font-bold group-hover:text-white transition-colors tracking-tight">${name}</span>
     </button>
+
   `;
 }
 

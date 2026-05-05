@@ -6,8 +6,8 @@ import * as RegisterPage from '../pages/RegisterPage.js';
 import * as ForgotPasswordPage from '../pages/ForgotPasswordPage.js';
 import * as HomePage from '../pages/home/HomePage.js';
 import * as MoviesPage from '../pages/movies/MoviesPage.jsx';
-import * as SeriesPage from '../pages/categories/SeriesPage.js';
-import * as DocumentariesPage from '../pages/categories/DocumentariesPage.js';
+import * as SeriesPage from '../pages/categories/SeriesPage.jsx';
+import * as TrendingPage from '../pages/TrendingPage.jsx';
 import * as ProfilePage from '../pages/ProfilePage.js';
 import * as AccountPage from '../pages/account/AccountPage.js';
 import * as DashboardPage from '../pages/dashboard/DashboardPage.jsx';
@@ -15,7 +15,7 @@ import * as PlayerPage from '../pages/player/PlayerPage.js';
 import * as AdminMoviesPage from '../pages/admin/AdminMoviesPage.js';
 import * as AdminUsersPage from '../pages/admin/AdminUsersPage.js';
 import * as AdminDashboardPage from '../pages/admin/AdminDashboardPage.js';
-import * as MyListPage from '../pages/MyListPage.js';
+import * as MyListPage from '../pages/MyListPage.jsx';
 
 /**
  * Middleware para verificar autenticação
@@ -196,10 +196,10 @@ export const routes = [
     }
   },
   {
-    path: '/docs',
-    component: DocumentariesPage,
+    path: '/bombando',
+    component: TrendingPage,
     meta: {
-      title: 'Documentários - PetFlix',
+      title: 'Bombando - PetFlix',
       requiresAuth: true,
       layout: 'app',
       middleware: [requireAuth, requireEmailVerified]

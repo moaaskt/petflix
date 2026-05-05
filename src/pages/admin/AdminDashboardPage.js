@@ -13,43 +13,41 @@ let dashboardStats = null;
 
 export async function render() {
   return `
-    <div class="p-8">
+    <div class="p-8 max-w-7xl mx-auto space-y-10 animate-fade-in">
       <!-- Header -->
-      <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/5">
         <div>
-          <h1 class="text-3xl font-bold text-white">Dashboard Administrativo</h1>
-          <p class="text-zinc-400 mt-2">Visão geral do sistema Petflix</p>
+          <h1 class="text-4xl font-black text-white tracking-tight">Admin <span class="text-red-600">Dashboard</span></h1>
+          <p class="text-zinc-500 mt-2 font-medium">Relatórios e insights da plataforma Petflix.</p>
         </div>
         <button 
           id="btn-seed"
-          class="flex items-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-md transition-all shadow-lg text-sm"
+          class="flex items-center gap-3 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(229,9,20,0.3)] hover:shadow-[0_0_30px_rgba(229,9,20,0.5)] active:scale-95 text-sm"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
             <path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z" clip-rule="evenodd" />
           </svg>
-          Popular Banco
+          Sincronizar Dados
         </button>
       </div>
       
       <!-- KPIs Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Total Usuários -->
-        <div class="bg-zinc-900 rounded-lg border border-zinc-800 p-6">
+        <div class="glass-panel group p-6 rounded-2xl border border-white/5 hover:border-red-600/30 transition-all duration-500">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-zinc-400 text-sm font-medium">Total Usuários</p>
-              <p class="text-3xl font-bold text-white mt-2" id="kpi-users">1,234</p>
-              <p class="text-green-400 text-sm mt-2">
-                <span class="inline-flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18m-8.25-4.5h16.5" />
-                  </svg>
-                  +12% este mês
-                </span>
-              </p>
+              <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest">Total Usuários</p>
+              <p class="text-4xl font-black text-white mt-2 tracking-tighter" id="kpi-users">0</p>
+              <div class="flex items-center gap-1 text-green-500 text-xs font-bold mt-3 bg-green-500/10 px-2 py-1 rounded-full w-fit">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3">
+                  <path fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z" clip-rule="evenodd" />
+                </svg>
+                12% ↑
+              </div>
             </div>
-            <div class="bg-red-600/20 p-3 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-red-600">
+            <div class="bg-red-600/10 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-500">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-red-600">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
               </svg>
             </div>
@@ -57,22 +55,20 @@ export async function render() {
         </div>
         
         <!-- Total Filmes -->
-        <div class="bg-zinc-900 rounded-lg border border-zinc-800 p-6">
+        <div class="glass-panel group p-6 rounded-2xl border border-white/5 hover:border-blue-600/30 transition-all duration-500">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-zinc-400 text-sm font-medium">Total Filmes</p>
-              <p class="text-3xl font-bold text-white mt-2" id="kpi-movies">456</p>
-              <p class="text-green-400 text-sm mt-2">
-                <span class="inline-flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18m-8.25-4.5h16.5" />
-                  </svg>
-                  +8% este mês
-                </span>
-              </p>
+              <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest">Total Conteúdo</p>
+              <p class="text-4xl font-black text-white mt-2 tracking-tighter" id="kpi-movies">0</p>
+              <div class="flex items-center gap-1 text-green-500 text-xs font-bold mt-3 bg-green-500/10 px-2 py-1 rounded-full w-fit">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3">
+                  <path fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z" clip-rule="evenodd" />
+                </svg>
+                8% ↑
+              </div>
             </div>
-            <div class="bg-blue-600/20 p-3 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-blue-600">
+            <div class="bg-blue-600/10 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-500">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-blue-600">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125z" />
               </svg>
             </div>
@@ -80,22 +76,20 @@ export async function render() {
         </div>
         
         <!-- Perfis -->
-        <div class="bg-zinc-900 rounded-lg border border-zinc-800 p-6">
+        <div class="glass-panel group p-6 rounded-2xl border border-white/5 hover:border-purple-600/30 transition-all duration-500">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-zinc-400 text-sm font-medium">Perfis Ativos</p>
-              <p class="text-3xl font-bold text-white mt-2" id="kpi-profiles">2,890</p>
-              <p class="text-green-400 text-sm mt-2">
-                <span class="inline-flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18m-8.25-4.5h16.5" />
-                  </svg>
-                  +15% este mês
-                </span>
-              </p>
+              <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest">Perfis Ativos</p>
+              <p class="text-4xl font-black text-white mt-2 tracking-tighter" id="kpi-profiles">0</p>
+              <div class="flex items-center gap-1 text-green-500 text-xs font-bold mt-3 bg-green-500/10 px-2 py-1 rounded-full w-fit">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3">
+                  <path fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z" clip-rule="evenodd" />
+                </svg>
+                15% ↑
+              </div>
             </div>
-            <div class="bg-purple-600/20 p-3 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-purple-600">
+            <div class="bg-purple-600/10 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-500">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-purple-600">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
               </svg>
             </div>
@@ -103,22 +97,18 @@ export async function render() {
         </div>
         
         <!-- Status Server -->
-        <div class="bg-zinc-900 rounded-lg border border-zinc-800 p-6">
+        <div class="glass-panel group p-6 rounded-2xl border border-white/5 hover:border-green-600/30 transition-all duration-500">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-zinc-400 text-sm font-medium">Status Server</p>
-              <p class="text-3xl font-bold text-white mt-2" id="kpi-status">Online</p>
-              <p class="text-green-400 text-sm mt-2">
-                <span class="inline-flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  Uptime: 99.9%
-                </span>
-              </p>
+              <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest">Status Server</p>
+              <p class="text-4xl font-black text-white mt-2 tracking-tighter" id="kpi-status">---</p>
+              <div class="flex items-center gap-1 text-green-500 text-xs font-bold mt-3 bg-green-500/10 px-2 py-1 rounded-full w-fit">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse mr-1"></span>
+                Estável
+              </div>
             </div>
-            <div class="bg-green-600/20 p-3 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-green-600">
+            <div class="bg-green-600/10 p-4 rounded-2xl group-hover:scale-110 transition-transform duration-500">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-green-600">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
               </svg>
             </div>
@@ -127,29 +117,36 @@ export async function render() {
       </div>
       
       <!-- Gráficos - Linha 1 -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Gráfico de Crescimento -->
-        <div class="bg-zinc-900 rounded-lg border border-zinc-800 p-4">
-          <h2 class="text-xl font-semibold text-white mb-4">Crescimento de Usuários</h2>
-          <div id="chart-growth"></div>
+        <div class="lg:col-span-2 glass-panel rounded-3xl p-8 border border-white/5 overflow-hidden">
+          <div class="flex items-center justify-between mb-8">
+            <h2 class="text-2xl font-black text-white tracking-tight">Crescimento <span class="text-zinc-500 font-medium">Histórico</span></h2>
+            <div class="flex gap-2">
+              <span class="px-3 py-1 bg-white/5 text-zinc-400 text-xs rounded-md font-bold">7D</span>
+              <span class="px-3 py-1 bg-red-600 text-white text-xs rounded-md font-bold">30D</span>
+            </div>
+          </div>
+          <div id="chart-growth" class="min-h-[300px]"></div>
         </div>
         
         <!-- Gráfico de Espécies -->
-        <div class="bg-zinc-900 rounded-lg border border-zinc-800 p-4">
-          <h2 class="text-xl font-semibold text-white mb-4">Distribuição por Espécie</h2>
-          <div id="chart-species"></div>
+        <div class="glass-panel rounded-3xl p-8 border border-white/5">
+          <h2 class="text-2xl font-black text-white tracking-tight mb-8">Espécies</h2>
+          <div id="chart-species" class="min-h-[300px]"></div>
         </div>
       </div>
       
       <!-- Gráficos - Linha 2 -->
       <div class="grid grid-cols-1 gap-6">
         <!-- Gráfico de Conteúdo por Categoria -->
-        <div class="bg-zinc-900 rounded-lg border border-zinc-800 p-4">
-          <h2 class="text-xl font-semibold text-white mb-4">Filmes por Categoria</h2>
-          <div id="chart-content"></div>
+        <div class="glass-panel rounded-3xl p-8 border border-white/5">
+          <h2 class="text-2xl font-black text-white tracking-tight mb-8">Categorias de Conteúdo</h2>
+          <div id="chart-content" class="min-h-[350px]"></div>
         </div>
       </div>
     </div>
+
   `;
 }
 
@@ -277,64 +274,58 @@ function updateKPIs() {
  * TODO: Implementar query complexa para buscar dados históricos de crescimento por data
  */
 function initGrowthChart() {
-  // Dados fictícios por enquanto (requer query complexa de datas no Firestore)
   const options = {
     series: [{
       name: 'Usuários',
       data: [120, 190, 300, 500, 800, 1000, dashboardStats?.totalUsers || 1234]
     }],
     chart: {
-      type: 'line',
+      type: 'area',
       height: 300,
-      toolbar: {
-        show: false
-      },
-      background: 'transparent'
+      toolbar: { show: false },
+      background: 'transparent',
+      fontFamily: 'Inter, sans-serif'
     },
     colors: [PETFLIX_RED],
-    theme: {
-      mode: 'dark'
-    },
-    dataLabels: {
-      enabled: false
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.45,
+        opacityTo: 0.05,
+        stops: [20, 100]
+      }
     },
     stroke: {
       curve: 'smooth',
-      width: 3
+      width: 4
     },
     xaxis: {
       categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+      axisBorder: { show: false },
+      axisTicks: { show: false },
       labels: {
-        style: {
-          colors: '#9ca3af'
-        }
+        style: { colors: '#71717a', fontWeight: 600 }
       }
     },
     yaxis: {
       labels: {
-        style: {
-          colors: '#9ca3af'
-        }
+        style: { colors: '#71717a', fontWeight: 600 }
       }
     },
     grid: {
-      borderColor: '#374151',
-      strokeDashArray: 4
+      borderColor: 'rgba(255,255,255,0.05)',
+      strokeDashArray: 4,
+      padding: { left: 20, right: 20 }
     },
-    tooltip: {
-      theme: 'dark'
-    }
+    tooltip: { theme: 'dark' }
   };
 
   const chart = new ApexCharts(document.querySelector('#chart-growth'), options);
   chart.render();
 }
 
-/**
- * Gráfico de Distribuição por Espécie (Donut)
- */
 function initSpeciesChart() {
-  // Usa dados reais do Firestore
   const dogCount = dashboardStats?.contentBySpecies?.dog || 0;
   const catCount = dashboardStats?.contentBySpecies?.cat || 0;
 
@@ -342,55 +333,47 @@ function initSpeciesChart() {
     series: [dogCount, catCount],
     chart: {
       type: 'donut',
-      height: 300
+      height: 300,
+      fontFamily: 'Inter, sans-serif'
     },
     labels: ['Cachorros', 'Gatos'],
-    colors: ['#3b82f6', '#f97316'],
-    theme: {
-      mode: 'dark'
-    },
+    colors: [PETFLIX_RED, '#2563EB'],
+    stroke: { show: false },
     legend: {
       position: 'bottom',
-      labels: {
-        colors: '#9ca3af'
-      }
-    },
-    dataLabels: {
-      enabled: true,
-      style: {
-        colors: ['#fff']
-      }
+      labels: { colors: '#a1a1aa', useSeriesColors: false },
+      markers: { radius: 12 }
     },
     plotOptions: {
       pie: {
         donut: {
-          size: '65%',
+          size: '75%',
           labels: {
             show: true,
             total: {
               show: true,
-              label: 'Total',
-              color: '#9ca3af',
-              formatter: () => '100%'
+              label: 'Distribuição',
+              color: '#71717a',
+              formatter: () => 'Pets'
+            },
+            value: {
+              show: true,
+              color: '#ffffff',
+              fontWeight: 900,
+              fontSize: '24px'
             }
           }
         }
       }
     },
-    tooltip: {
-      theme: 'dark'
-    }
+    tooltip: { theme: 'dark' }
   };
 
   const chart = new ApexCharts(document.querySelector('#chart-species'), options);
   chart.render();
 }
 
-/**
- * Gráfico de Filmes por Categoria (Bar)
- */
 function initContentChart() {
-  // Usa dados reais do Firestore
   const movieCount = dashboardStats?.contentByCategory?.movie || 0;
   const seriesCount = dashboardStats?.contentByCategory?.series || 0;
   const docCount = dashboardStats?.contentByCategory?.doc || 0;
@@ -398,59 +381,68 @@ function initContentChart() {
   const options = {
     series: [{
       name: 'Quantidade',
-      data: [movieCount, seriesCount, docCount, 0] // Último valor (Outros) mantido em 0
+      data: [movieCount, seriesCount, docCount]
     }],
     chart: {
       type: 'bar',
       height: 350,
-      toolbar: {
-        show: false
-      },
-      background: 'transparent'
+      toolbar: { show: false },
+      fontFamily: 'Inter, sans-serif'
     },
     colors: [PETFLIX_RED],
-    theme: {
-      mode: 'dark'
-    },
     plotOptions: {
       bar: {
-        borderRadius: 8,
-        horizontal: false,
-        columnWidth: '55%'
+        borderRadius: 12,
+        columnWidth: '40%',
+        distributed: false,
+        dataLabels: { position: 'top' }
+      }
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shade: 'dark',
+        type: "vertical",
+        shadeIntensity: 0.5,
+        gradientToColors: ['#B20710'],
+        inverseColors: true,
+        opacityFrom: 1,
+        opacityTo: 1,
+        stops: [0, 100]
       }
     },
     dataLabels: {
       enabled: true,
+      offsetY: -25,
       style: {
-        colors: ['#fff']
+        fontSize: '12px',
+        colors: ["#fff"],
+        fontWeight: 900
       }
     },
     xaxis: {
-      categories: ['Filmes', 'Séries', 'Documentários', 'Outros'],
+      categories: ['Filmes', 'Séries', 'Documentários'],
+      axisBorder: { show: false },
+      axisTicks: { show: false },
       labels: {
-        style: {
-          colors: '#9ca3af'
-        }
+        style: { colors: '#71717a', fontWeight: 600 }
       }
     },
     yaxis: {
       labels: {
-        style: {
-          colors: '#9ca3af'
-        }
+        style: { colors: '#71717a', fontWeight: 600 }
       }
     },
     grid: {
-      borderColor: '#374151',
+      borderColor: 'rgba(255,255,255,0.05)',
       strokeDashArray: 4
     },
-    tooltip: {
-      theme: 'dark'
-    }
+    tooltip: { theme: 'dark' }
   };
 
   const chart = new ApexCharts(document.querySelector('#chart-content'), options);
   chart.render();
 }
+
 
 export default { render, init };
