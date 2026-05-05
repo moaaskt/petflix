@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
 import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -8,6 +9,7 @@ const __dirname = dirname(__filename);
 export default defineConfig({
   root: '.',
   publicDir: 'public',
+  plugins: [react()],
   resolve: {
     alias: {
       '@': resolve(__dirname, './src')
@@ -15,10 +17,6 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    allowedHosts: ['petflix.test'],
-    hmr: {
-      clientPort: 443,
-    },
     open: true
   },
   build: {

@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { getByCategory, getByGenre, getAll } from '../../services/content.service.js';
+import { toggleItem, getList } from '../../services/list.service.js';
+import { Toast } from '../../utils/toast.js';
 import HeroFeaturedCarousel from '../HeroFeaturedCarousel.jsx';
 import ContentRail from '../ContentRail.jsx';
 import ContentCard from '../ContentCard.jsx';
+import ContentDetailModal from '../modals/ContentDetailModal.jsx';
 import { navigateTo } from '../../router/navigator.js';
 
 const CategoryPageTemplate = ({ category, title, genres = [] }) => {
   const [loading, setLoading] = useState(true);
   const [featuredItems, setFeaturedItems] = useState([]);
   const [railData, setRailData] = useState([]);
+  const [myListIds, setMyListIds] = useState(new Set());
+  
+  // Estado do Modal de Detalhes
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedContent, setSelectedContent] = useState(null);
   
   // Melhor detecção de espécie sincronizada com o body e localStorage
   const [species] = useState(() => {
@@ -20,6 +28,10 @@ const CategoryPageTemplate = ({ category, title, genres = [] }) => {
     const fetchData = async () => {
       try {
         setLoading(true);
+
+        // Carregar IDs da Minha Lista para o estado reativo
+        const currentList = await getList();
+        setMyListIds(new Set(currentList.map(i => i.id || i.videoId)));
 
         // 1. Carregar todos os itens da categoria
         const allItems = await getByCategory(species, category);
@@ -80,9 +92,84 @@ const CategoryPageTemplate = ({ category, title, genres = [] }) => {
 
   const hasFeatured = featuredItems.length > 0;
 
+  const handleToggleList = async (item) => {
+    const itemId = item.id || item.videoId;
+    const wasAdded = myListIds.has(itemId);
+    
+    // Feedback instantâneo na UI
+    setMyListIds(prev => {
+      const next = new Set(prev);
+      if (wasAdded) next.delete(itemId);
+      else next.add(itemId);
+      return next;
+    });
+
+    try {
+      const movieData = {
+        id: itemId,
+        videoId: itemId,
+        title: item.title,
+        thumbnail: item.thumbnail || item.image
+      };
+      const added = await toggleItem(movieData);
+      if (added) {
+        Toast.success(`"${item.title}" adicionado à lista`);
+      } else {
+        Toast.info(`"${item.title}" removido da lista`);
+      }
+    } catch (error) {
+      // Reverter em caso de erro
+      setMyListIds(prev => {
+        const next = new Set(prev);
+        if (wasAdded) next.add(itemId);
+        else next.delete(itemId);
+        return next;
+      });
+      console.error('Erro ao atualizar lista:', error);
+      Toast.error('Erro ao atualizar lista');
+    }
+  };
+
+  // Mapear itens do Hero com ações
+  const heroItems = featuredItems.map(item => {
+    const isInList = myListIds.has(item.id || item.videoId);
+    return {
+      ...item,
+      actions: [
+        {
+          label: isInList ? 'Na Minha Lista' : 'Minha Lista',
+          icon: isInList ? (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          ),
+          onClick: () => handleToggleList(item),
+          variant: isInList ? 'primary' : 'secondary'
+        },
+        {
+          label: 'Mais Info',
+          icon: (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          ),
+          onClick: () => {
+            setSelectedContent(item);
+            setIsDetailModalOpen(true);
+          },
+          variant: 'ghost'
+        }
+      ]
+    };
+  });
+
   return (
     <div className="min-h-screen bg-[#141414] pb-20">
-      {hasFeatured && <HeroFeaturedCarousel items={featuredItems} />}
+      {hasFeatured && <HeroFeaturedCarousel items={heroItems} />}
       
       {/* Só aplica o degradê de sobreposição se houver um Hero */}
       {hasFeatured ? (
@@ -104,6 +191,12 @@ const CategoryPageTemplate = ({ category, title, genres = [] }) => {
                 title={item.title}
                 image={item.thumbnail}
                 onPlay={() => navigateTo(`/player?videoId=${item.id}`)}
+                onAddToList={() => handleToggleList(item)}
+                onMoreInfo={() => {
+                  setSelectedContent(item);
+                  setIsDetailModalOpen(true);
+                }}
+                isAdded={myListIds.has(item.id || item.videoId)}
               />
             )}
           />
@@ -129,6 +222,16 @@ const CategoryPageTemplate = ({ category, title, genres = [] }) => {
           </button>
         </div>
       )}
+
+      {/* Modal de Detalhes */}
+      <ContentDetailModal 
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+        content={selectedContent}
+        onPlay={(c) => navigateTo(`/player?videoId=${c.id || c.videoId}`)}
+        onToggleList={handleToggleList}
+        isAdded={selectedContent ? myListIds.has(selectedContent.id || selectedContent.videoId) : false}
+      />
     </div>
   );
 };

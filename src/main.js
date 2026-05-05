@@ -27,7 +27,7 @@ async function init() {
     
     // 2. Popula banco de dados (apenas se estiver vazio)
     // await seedDatabase(); // Popula coleção 'content' com dados mockados
-    //  await populateDatabase(true); // Popula coleção 'content' com conteúdo curado (YouTube IDs válidos)
+    // await populateDatabase(false); // Popula coleção 'content' com conteúdo curado (YouTube IDs válidos)
     
     // 3. Inicializa estados globais
     initAuthState();

@@ -22,7 +22,7 @@ function getUserId() {
  * @returns {string|null} ProfileId ou null se não encontrado
  */
 function getProfileId() {
-  const profileId = localStorage.getItem('selectedProfileId');
+  const profileId = localStorage.getItem('petflix_selected_profile_id');
   return profileId || null;
 }
 

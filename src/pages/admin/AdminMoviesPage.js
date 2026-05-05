@@ -507,10 +507,10 @@ function renderTable() {
       <tr class="hover:bg-zinc-800 transition-colors">
         <td class="px-6 py-4">
           <img 
-            src="${movie.image || '/assets/placeholder.jpg'}" 
+            src="${movie.image || 'https://images.unsplash.com/photo-1543466835-00a54d68f1f1?w=200&auto=format&fit=crop'}" 
             alt="${movie.title}" 
             class="w-16 h-24 object-cover rounded"
-            onerror="this.src='https://via.placeholder.com/160x240?text=Sem+Imagem'"
+            onerror="this.src='https://images.unsplash.com/photo-1543466835-00a54d68f1f1?w=200&auto=format&fit=crop'"
           />
         </td>
         <td class="px-6 py-4">

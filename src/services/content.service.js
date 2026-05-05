@@ -1,4 +1,4 @@
-import { db, collection } from '../config/firebase.js';
+import { db, auth, collection } from '../config/firebase.js';
 import { getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
 // Cache local para evitar múltiplas leituras do Firestore
@@ -234,7 +234,7 @@ export async function create(data) {
     
     return docRef.id;
   } catch (error) {
-    console.error('❌ Erro ao criar filme:', error);
+      console.error('❌ Erro ao criar filme:', error);
     throw error;
   }
 }
@@ -246,6 +246,12 @@ export async function create(data) {
  * @returns {Promise<void>}
  */
 export async function update(id, data) {
+  const user = auth.currentUser;
+  console.log('--- DEBUG SAVE ---');
+  console.log('ID do Filme:', id);
+  console.log('Usuário Logado:', user ? user.email : 'NÃO LOGADO');
+  console.log('UID:', user ? user.uid : 'null');
+  
   try {
     const contentRef = doc(db, 'content', id);
     await updateDoc(contentRef, {
