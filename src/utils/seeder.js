@@ -187,14 +187,10 @@ const MOVIES = [
  */
 export async function seedDatabase() {
     try {
-        const moviesCollection = collection(db, 'movies');
-
-        // Opcional: Limpar coleção existente (CUIDADO EM PRODUÇÃO!)
-        // Para simplificar e evitar muitas leituras/escritas, vamos apenas adicionar
-        // Se quiser limpar: buscar todos docs e deletar em batch.
+        const contentCollection = collection(db, 'content');
 
         // Vamos verificar se já existem filmes para não duplicar excessivamente
-        const snapshot = await getDocs(moviesCollection);
+        const snapshot = await getDocs(contentCollection);
         if (!snapshot.empty && snapshot.size > 5) {
             return { success: true, added: 0, message: 'Banco já populado' };
         }
@@ -203,9 +199,13 @@ export async function seedDatabase() {
         let count = 0;
 
         MOVIES.forEach(movie => {
-            const docRef = doc(moviesCollection); // Gera ID automático
+            const docRef = doc(contentCollection); // Gera ID automático
+            const videoId = movie.videoUrl ? movie.videoUrl.split('v=')[1]?.split('&')[0] : 'Ws-9ra38AlI';
+            
             batch.set(docRef, {
                 ...movie,
+                image: movie.thumbnail, // Padronização Petflix
+                videoId: videoId,
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             });
@@ -213,7 +213,7 @@ export async function seedDatabase() {
         });
 
         await batch.commit();
-        return { success: true, added: count, message: `${count} filmes adicionados com sucesso!` };
+        return { success: true, added: count, message: `${count} conteúdos sincronizados com sucesso!` };
 
     } catch (error) {
         console.error('Erro ao popular banco:', error);

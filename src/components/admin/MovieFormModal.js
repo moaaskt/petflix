@@ -16,7 +16,11 @@ export class MovieFormModal {
       type: movie?.type || 'movie',
       featured: movie?.featured || false,
       trending: movie?.trending || false,
-      original: movie?.original || false
+      original: movie?.original || false,
+      cast: movie?.cast || '',
+      director: movie?.director || '',
+      year: movie?.year || new Date().getFullYear().toString(),
+      duration: movie?.duration || ''
     };
   }
 
@@ -107,6 +111,35 @@ export class MovieFormModal {
                     <input type="text" id="movieVideoId" name="videoId" required value="${this.formData.videoId}"
                       class="w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-mono text-xs placeholder-zinc-600 focus:outline-none focus:border-red-600/50 focus:bg-white/10 transition-all"
                       placeholder="ex: Ws-9ra38AlI">
+                  </div>
+                <!-- Seção: Metadados Avançados -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="space-y-2">
+                    <label for="movieCast" class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Elenco</label>
+                    <input type="text" id="movieCast" name="cast" value="${this.formData.cast}"
+                      class="w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-medium placeholder-zinc-600 focus:outline-none focus:border-red-600/50 focus:bg-white/10 transition-all"
+                      placeholder="Ex: Totó, Rex, Luna">
+                  </div>
+                  <div class="space-y-2">
+                    <label for="movieDirector" class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Direção</label>
+                    <input type="text" id="movieDirector" name="director" value="${this.formData.director}"
+                      class="w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-medium placeholder-zinc-600 focus:outline-none focus:border-red-600/50 focus:bg-white/10 transition-all"
+                      placeholder="Ex: Steven Spielpet">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="space-y-2">
+                    <label for="movieYear" class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Ano de Lançamento</label>
+                    <input type="number" id="movieYear" name="year" value="${this.formData.year}"
+                      class="w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-medium placeholder-zinc-600 focus:outline-none focus:border-red-600/50 focus:bg-white/10 transition-all"
+                      placeholder="2024">
+                  </div>
+                  <div class="space-y-2">
+                    <label for="movieDuration" class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] ml-1">Duração</label>
+                    <input type="text" id="movieDuration" name="duration" value="${this.formData.duration}"
+                      class="w-full px-5 py-4 bg-white/5 border border-white/5 rounded-2xl text-white font-medium placeholder-zinc-600 focus:outline-none focus:border-red-600/50 focus:bg-white/10 transition-all"
+                      placeholder="Ex: 1h 45min ou 2 Temporadas">
                   </div>
                 </div>
 
@@ -226,8 +259,9 @@ export class MovieFormModal {
               <!-- Card Preview -->
               <div id="card-preview-container" class="w-64 transform scale-110">
                 <div class="relative aspect-[2/3] rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-zinc-900 group">
-                  <img id="preview-image" src="${this.formData.image || 'https://via.placeholder.com/400x600?text=Petflix+Capa'}" 
-                    class="w-full h-full object-cover transition-transform duration-700">
+                  <img id="preview-image" src="${this.formData.image || 'https://images.unsplash.com/photo-1543466835-00a54d68f1f1?w=400&auto=format&fit=crop'}" 
+                    class="w-full h-full object-cover transition-transform duration-700"
+                    onerror="this.src='https://images.unsplash.com/photo-1543466835-00a54d68f1f1?w=400&auto=format&fit=crop'">
                   <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
                   
                   <div class="absolute bottom-6 left-6 right-6">
@@ -318,7 +352,7 @@ export class MovieFormModal {
         if (url) {
           previewImage.src = url;
         } else {
-          previewImage.src = 'https://via.placeholder.com/400x600?text=Petflix+Capa';
+          previewImage.src = 'https://images.unsplash.com/photo-1543466835-00a54d68f1f1?w=400&auto=format&fit=crop';
         }
       });
     }
@@ -406,7 +440,11 @@ export class MovieFormModal {
           type: formData.get('type'),
           featured: formData.get('featured') === 'on',
           trending: formData.get('trending') === 'on',
-          original: formData.get('original') === 'on'
+          original: formData.get('original') === 'on',
+          cast: formData.get('cast'),
+          director: formData.get('director'),
+          year: formData.get('year'),
+          duration: formData.get('duration')
         };
 
         try {

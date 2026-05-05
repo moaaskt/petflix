@@ -16,10 +16,11 @@ import { toggleItem, isInList, getList } from '../../services/list.service.js';
 import { AppState } from '../../state/AppState.js';
 import { ratingService } from '../../services/rating.service.js';
 import { Toast } from '../../utils/toast.js';
+import ContentDetailModal from '../../components/modals/ContentDetailModal.jsx';
 
 // --- React Components ---
 
-const DashboardHeroCarousel = ({ items, myListIds, onToggleList }) => {
+const DashboardHeroCarousel = ({ items, myListIds, onToggleList, onMoreInfo }) => {
   const normalizedItems = items.map(item => {
     const itemId = item.id || item.videoId;
     const isInList = myListIds.has(itemId);
@@ -60,9 +61,7 @@ const DashboardHeroCarousel = ({ items, myListIds, onToggleList }) => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           ),
-          onClick: () => {
-            Toast.info('Mais informações em breve');
-          },
+          onClick: () => onMoreInfo(item),
           variant: 'ghost'
         }
       ]
@@ -83,6 +82,10 @@ const DashboardApp = () => {
   const [featuredItems, setFeaturedItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [myListIds, setMyListIds] = useState(new Set());
+  
+  // Estado do Modal de Detalhes
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedContent, setSelectedContent] = useState(null);
   
   // Inicializa com o tipo de pet do estado global ou localStorage
   const [species, setSpecies] = useState(() => {
@@ -267,6 +270,10 @@ const DashboardApp = () => {
         items={featuredItems} 
         myListIds={myListIds} 
         onToggleList={handleToggleList} 
+        onMoreInfo={(item) => {
+          setSelectedContent(item);
+          setIsDetailModalOpen(true);
+        }}
       />
 
       <div className="space-y-12 relative z-20 -mt-24">
@@ -283,12 +290,26 @@ const DashboardApp = () => {
                 image={item.thumbnail}
                 onPlay={() => navigateTo(`/player?videoId=${item.id}`)}
                 onAddToList={() => handleToggleList(item)}
+                onMoreInfo={() => {
+                  setSelectedContent(item);
+                  setIsDetailModalOpen(true);
+                }}
                 isAdded={myListIds.has(item.id || item.videoId)}
               />
             )}
           />
         ))}
       </div>
+
+      {/* Modal de Detalhes */}
+      <ContentDetailModal 
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+        content={selectedContent}
+        onPlay={(c) => navigateTo(`/player?videoId=${c.id || c.videoId}`)}
+        onToggleList={handleToggleList}
+        isAdded={selectedContent ? myListIds.has(selectedContent.id || selectedContent.videoId) : false}
+      />
     </div>
   );
 };

@@ -17,7 +17,7 @@ import RatingStars from './RatingStars.jsx';
  *   image="https://example.com/poster.jpg"
  * />
  */
-const ContentCard = ({ id, title, image, onPlay, onAddToList, isAdded = false }) => {
+const ContentCard = ({ id, title, image, onPlay, onAddToList, onMoreInfo, isAdded = false }) => {
     return (
         <div
             className="group cursor-pointer relative flex flex-col gap-3 transition-all duration-500"
@@ -65,6 +65,22 @@ const ContentCard = ({ id, title, image, onPlay, onAddToList, isAdded = false })
                                 </svg>
                             )}
                         </div>
+                    </button>
+                )}
+
+                {/* Botão Mais Info (Canto Inferior Direito) */}
+                {onMoreInfo && (
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onMoreInfo();
+                        }}
+                        className="absolute bottom-3 right-3 z-30 w-8 h-8 rounded-full bg-zinc-900/60 text-white border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 hover:bg-zinc-800 hover:border-white/30"
+                        title="Mais Informações"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
                     </button>
                 )}
 

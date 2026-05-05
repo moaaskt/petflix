@@ -5,6 +5,7 @@ import { Toast } from '../../utils/toast.js';
 import HeroFeaturedCarousel from '../HeroFeaturedCarousel.jsx';
 import ContentRail from '../ContentRail.jsx';
 import ContentCard from '../ContentCard.jsx';
+import ContentDetailModal from '../modals/ContentDetailModal.jsx';
 import { navigateTo } from '../../router/navigator.js';
 
 const CategoryPageTemplate = ({ category, title, genres = [] }) => {
@@ -12,6 +13,10 @@ const CategoryPageTemplate = ({ category, title, genres = [] }) => {
   const [featuredItems, setFeaturedItems] = useState([]);
   const [railData, setRailData] = useState([]);
   const [myListIds, setMyListIds] = useState(new Set());
+  
+  // Estado do Modal de Detalhes
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [selectedContent, setSelectedContent] = useState(null);
   
   // Melhor detecção de espécie sincronizada com o body e localStorage
   const [species] = useState(() => {
@@ -125,9 +130,46 @@ const CategoryPageTemplate = ({ category, title, genres = [] }) => {
     }
   };
 
+  // Mapear itens do Hero com ações
+  const heroItems = featuredItems.map(item => {
+    const isInList = myListIds.has(item.id || item.videoId);
+    return {
+      ...item,
+      actions: [
+        {
+          label: isInList ? 'Na Minha Lista' : 'Minha Lista',
+          icon: isInList ? (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          ),
+          onClick: () => handleToggleList(item),
+          variant: isInList ? 'primary' : 'secondary'
+        },
+        {
+          label: 'Mais Info',
+          icon: (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          ),
+          onClick: () => {
+            setSelectedContent(item);
+            setIsDetailModalOpen(true);
+          },
+          variant: 'ghost'
+        }
+      ]
+    };
+  });
+
   return (
     <div className="min-h-screen bg-[#141414] pb-20">
-      {hasFeatured && <HeroFeaturedCarousel items={featuredItems} />}
+      {hasFeatured && <HeroFeaturedCarousel items={heroItems} />}
       
       {/* Só aplica o degradê de sobreposição se houver um Hero */}
       {hasFeatured ? (
@@ -150,6 +192,10 @@ const CategoryPageTemplate = ({ category, title, genres = [] }) => {
                 image={item.thumbnail}
                 onPlay={() => navigateTo(`/player?videoId=${item.id}`)}
                 onAddToList={() => handleToggleList(item)}
+                onMoreInfo={() => {
+                  setSelectedContent(item);
+                  setIsDetailModalOpen(true);
+                }}
                 isAdded={myListIds.has(item.id || item.videoId)}
               />
             )}
@@ -176,6 +222,16 @@ const CategoryPageTemplate = ({ category, title, genres = [] }) => {
           </button>
         </div>
       )}
+
+      {/* Modal de Detalhes */}
+      <ContentDetailModal 
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+        content={selectedContent}
+        onPlay={(c) => navigateTo(`/player?videoId=${c.id || c.videoId}`)}
+        onToggleList={handleToggleList}
+        isAdded={selectedContent ? myListIds.has(selectedContent.id || selectedContent.videoId) : false}
+      />
     </div>
   );
 };
